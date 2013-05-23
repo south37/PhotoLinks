@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    <h2>Hello! {{ name }}!</h2>
+
+    <h3>コントローラーのコード</h3>
+    <pre>
+        {{ phpcode|raw }}
+    </pre>
+
+    <h3>このコードのデバッグトレース表示 (下から順番に処理されています)</h3>
+    <pre>
+        {{ debug() }}
+    </pre>
+
+
+{% endblock %}
+

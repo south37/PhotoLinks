@@ -1,0 +1,59 @@
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    <!-- Main hero unit for a primary marketing message or call to action -->
+    <div class="hero-unit">
+        <h1>GroupWorkBase の基礎</h1>
+        <p>About GroupWorkBase.</p>
+    </div>
+
+    <p id="document">
+        {{ markdown|raw }}
+    </p>
+
+    <!-- Example row of columns -->
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('/js/markdown.js') }}"></script>
+    <script>
+        (function(){
+            // Markdownのドキュメント
+            var DocumentModel = Backbone.Model.extend({
+                body: '',
+                initialize: function() {
+                    this.body = $('p#document').html();
+                }
+            });
+
+            // Markdownで表示View
+            var MarkdownView = Backbone.View.extend({
+                initialize: function () {
+                    this.render();
+                },
+                render: function() {
+                    this.el = markdown.toHTML(this.model.body);
+                    $('p#document').html(this.el);
+                    return this;
+                }
+            });
+
+            // そのまま表示するView
+            var RawView = Backbone.View.extend({
+                initialize: function () {
+                    this.render();
+                },
+                render: function() {
+                    this.el = this.model.body;
+                    $('p#document').html(this.el.replace(/\n/g, '<br>'));
+                    return this;
+                }
+            });
+
+            var MarkdownDocument = new DocumentModel({});
+            var MarkdownDocumentView =  new MarkdownView({model: MarkdownDocument});
+            //var RawDocumentView =  new RawView({model: MarkdownDocument});
+        })();
+    </script>
+{% endblock %}
