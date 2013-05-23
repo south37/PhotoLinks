@@ -1,0 +1,9 @@
+.dbup/applied
+.idea
+composer.phar
+phpunit.phar
+php-cs-fixer.phar
+dbup.phar
+var/log/*
+var/cache/*
+vendor/*
