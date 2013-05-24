@@ -15,6 +15,10 @@ GroupWork ベースアプリ (VOYAGE GROUP)
 
     $ make install
 
+## 設定
+
+- DB設定 ... アプリ用 (`src/config.php`) と マイグレーションツール用 (`.dbup/properties.ini`)
+
 ## Databaseの初期化
 
     $make mig-up
