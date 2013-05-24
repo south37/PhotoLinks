@@ -2,12 +2,12 @@
 use Symfony\Component\Validator\Constraints as Assert;
 
 ログイン: {
-    $app->get('/user/login', function() use ($app, $container){
+    $app->get('/user/login', function() use ($app, $container) {
             $app->render('user/login.html.twig');
         })
         ->name('user_login')
     ;
-    $app->post('/user/login', function() use ($app, $container){
+    $app->post('/user/login', function() use ($app, $container) {
             $input = $app->request()->post();
 
             // 入力チェック
@@ -19,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ],
             ]);
             $errors = $container['validator']->validateValue($input, $constraint);
-
 
             if (count($errors) === 0) {
                 // ユーザーの存在チェック
@@ -44,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 }
 
 ログアウト: {
-    $app->get('/user/logout', function() use ($app, $container){
+    $app->get('/user/logout', function() use ($app, $container) {
             $container['session']->clear();
             $app->redirect($app->urlFor('user_login'));
         })
@@ -53,12 +52,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 }
 
 新規登録: {
-    $app->get('/user/register', function () use ($app, $container){
+    $app->get('/user/register', function () use ($app, $container) {
             $app->render('user/register.html.twig');
         })
         ->name('user_register')
     ;
-    $app->post('/user/register', function () use ($app, $container){
+    $app->post('/user/register', function () use ($app, $container) {
             $input = $app->request()->post();
 
             // 入力チェック
@@ -128,8 +127,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         };
     };
 
-
-    $app->get('/user/edit', $rediretIfNotLogin($container['session']), function () use ($app, $container){
+    $app->get('/user/edit', $rediretIfNotLogin($container['session']), function () use ($app, $container) {
             $repository = $container['repository.user'];
             $user = $repository->findById($container['session']->get('user.id'));
 
@@ -137,7 +135,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         })
         ->name('user_edit')
     ;
-    $app->post('/user/update', function () use ($app, $container){
+    $app->post('/user/update', function () use ($app, $container) {
             $input = $app->request()->post();
 
             // 入力チェック
@@ -179,5 +177,3 @@ use Symfony\Component\Validator\Constraints as Assert;
         ->name('user_update')
     ;
 }
-
-

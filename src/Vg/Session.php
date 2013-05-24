@@ -32,8 +32,8 @@ class Session
     /**
      * セッション変数を設定する
      *
-     * @param string $name 変数名
-     * @param mixed $value 値
+     * @param string $name  変数名
+     * @param mixed  $value 値
      */
     public function set($name, $value)
     {
@@ -43,15 +43,16 @@ class Session
     /**
      * セッション変数を取得する
      *
-     * @param string $name 変数名
-     * @param mixed $default 取得できなかった場合の初期値
-     * @return mixed セッション変数値
+     * @param  string $name    変数名
+     * @param  mixed  $default 取得できなかった場合の初期値
+     * @return mixed  セッション変数値
      */
     public function get($name, $default = null)
     {
         if (isset($_SESSION[$name])) {
             return $_SESSION[$name];
         }
+
         return $default;
     }
 

@@ -1,7 +1,8 @@
 <?php
 namespace Vg\Model;
 
-class User {
+class User
+{
     public $id;
     public $name;
     public $email;
@@ -13,7 +14,8 @@ class User {
     {
     }
 
-    public function setProperties($data) {
+    public function setProperties($data)
+    {
         foreach (array('name', 'id', 'email', 'password', 'salt', 'birthday') as $property) {
             $this->{$property} = (isset($data[$property]))? $data[$property]: "";
         }
@@ -30,6 +32,7 @@ class User {
         for ($i = 0; $i < 1000; $i++) {
             $x = hash('sha256', $x . $password . $salt, true);
         }
+
         return base64_encode($x);
     }
 }

@@ -2,7 +2,6 @@
 /**
  * このファイルでコンテナに設定項目を定義する
  */
-use Pimple\Pimeple;
 
 // see also: http://pimple.sensiolabs.org/
 $container = new Pimple();
@@ -21,4 +20,3 @@ DB設定 :{
 }
 
 return $container;
-

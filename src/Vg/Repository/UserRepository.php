@@ -38,7 +38,6 @@ class UserRepository
         $sth->execute();
     }
 
-
     /**
      * ユーザー更新
      * @param $user
@@ -52,7 +51,6 @@ class UserRepository
                                          birthday=:birthday,
                                          updated_at=now()
                                   where id=:id');
-
 
         $sth->bindValue(':id', $user->id, \PDO::PARAM_INT);
         $sth->bindValue(':email', $user->email, \PDO::PARAM_STR);
@@ -74,6 +72,7 @@ class UserRepository
     public function findByEmailPassword($email, $password)
     {
         $user = $this->findByEmail($email);
+
         return ($user->password === User::hashPassword($password, $user->salt))? $user: null;
     }
 

@@ -18,7 +18,7 @@ test:
 testrunner:
 	$(TESTRUNNER) "phpunit"  --preload-script ./vendor/autoload.php  --phpunit-config ./phpunit.xml --autotest ./tests ./src
 fixer:
-	$(PHP) php-cs-fixer.phar ./src --level=all
+	$(PHP) php-cs-fixer.phar fix ./src --level=all
 server:
 	$(PHP) -S $(HOST):$(PORT) -t ./public_html
 mig-up:

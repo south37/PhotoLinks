@@ -7,17 +7,17 @@ require __DIR__ .'/../vendor/autoload.php';
 $container = include __DIR__ . '/config.php';
 
 // Twig
-$container['twig'] = $container->protect(function($request, $router) use($container){
+$container['twig'] = $container->protect(function($request, $router) use ($container) {
         \Slim\Extras\Views\Twig::$twigTemplateDirs = $container['twig.templateDir'];
 
         $twig = new \Slim\Extras\Views\Twig;
         $env = $twig->getEnvironment();
         // asset function
-        $env->addFunction(new Twig_SimpleFunction('asset', function ($path) use ($request){
+        $env->addFunction(new Twig_SimpleFunction('asset', function ($path) use ($request) {
                 return $request->getRootUri() . '/' .  trim($path, '/');
             }));
         // urlFor function
-        $env->addFunction(new Twig_SimpleFunction('urlFor', function ($name, $params = []) use ($router){
+        $env->addFunction(new Twig_SimpleFunction('urlFor', function ($name, $params = []) use ($router) {
                 return $router->urlFor($name, $params);
             }));
         // debug
@@ -51,7 +51,6 @@ $container['validator'] = function() {
 $container['error'] = $container->protect(function($message) {
     return new \Symfony\Component\Validator\ConstraintViolation($message, '', [], [], [], []);
 });
-
 
 // モデル
 $container['repository.user'] = $container->share(function($c){
