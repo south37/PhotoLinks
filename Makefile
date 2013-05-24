@@ -1,6 +1,5 @@
 PHP=$(shell which php)
 CURL=$(shell which curl)
-PHPUNIT=phpunit.phar
 TESTRUNNER=vendor/bin/testrunner
 HOST=localhost
 PORT=9999
@@ -15,7 +14,7 @@ install: setup
 	$(PHP) composer.phar install
 	$(PHP) vendor/bin/testrunner compile -p vendor/autoload.php
 test:
-	$(PHP) $(PHPUNIT) --tap --colors ./tests
+	$(PHP) ./vendor/bin/phpunit --bootstrap ./vendor/autoload.php -c ./phpunit.xml ./tests
 testrunner:
 	$(TESTRUNNER) "phpunit"  --preload-script ./vendor/autoload.php  --phpunit-config ./phpunit.xml --autotest ./tests ./src
 fixer:
