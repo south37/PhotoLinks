@@ -70,6 +70,6 @@ Userリポジトリは、Userモデルをデータベースに保存したり、
 ### バリデータ
 
 入力値のチェックのような値の妥当性を行うのがバリデータです。Slimには標準でバリデータは含まれていません。
-GroupWorkBase では Symfony Component というWebアプリケーション構築で利用できるライブラリから Validator Component を単独で利用しています。
+GroupWorkBase では [Respsect\Validation](http://documentup.com/Respect/Validation/) というライブラリを使っています。
 具体的な利用例は `/src/app/user.php` を見てみてください。
 

@@ -1,5 +1,6 @@
 <?php
 use Symfony\Component\Validator\Constraints as Assert;
+use Respect\Validation\Validator as v;
 
 ログイン: {
     $app->get('/user/login', function() use ($app, $container) {
@@ -11,23 +12,30 @@ use Symfony\Component\Validator\Constraints as Assert;
             $input = $app->request()->post();
 
             // 入力チェック
-            // see also: https://github.com/symfony/Validator/blob/master/Constraints
-            $constraint = new Assert\Collection([
-                'email'    => new Assert\NotBlank(['message' => 'メールアドレスを入力してください']),
-                'password'   =>  [
-                    new Assert\NotBlank(['message' => 'パスワードを入力してください']),
-                ],
-            ]);
-            $errors = $container['validator']->validateValue($input, $constraint);
+            // http://documentup.com/Respect/Validation/
+            $inputValidator = v::arr()
+                ->key('email', v::string()->setName('mailaddress')->notEmpty())
+                ->key('password', v::string()->setName('password')->notEmpty())
+                ;
+
+            $errors = [];
+            try {
+                $inputValidator->assert($input);
+            } catch(\InvalidArgumentException $e) {
+                $errors = $e->findMessages([
+                        'mailaddress.notEmpty' => 'メールアドレスを入力してください',
+                        'password.notEmpty' => 'パスワードを入力してください',
+                    ]);
+            }
 
             if (count($errors) === 0) {
                 // ユーザーの存在チェック
                 $repository = $container['repository.user'];
                 $user = $repository->findByEmailPassword($input['email'], $input['password']);
                 if (!$user) {
-                    $errors->add($container['error']('メールアドレスまたはパスワードを確認してください'));
+                    $errors['form'] = 'メールアドレスまたはパスワードを確認してください';
                     $app->render('user/login.html.twig', ['errors' => $errors, 'input' => $input]);
-                    $app->stop();
+                    $app->stop('メールアドレスまたはパスワードを確認してください');
                 }
                 $container['session']->set('isLogin', true);
                 $container['session']->set('user.name', $user->name);
@@ -61,31 +69,34 @@ use Symfony\Component\Validator\Constraints as Assert;
             $input = $app->request()->post();
 
             // 入力チェック
-            // see also: https://github.com/symfony/Validator/blob/master/Constraints
-            $constraint = new Assert\Collection([
-                'name' =>  [
-                    new Assert\NotBlank(['message' => '名前を入力してください']),
-                    new Assert\Length(['max' => 255, 'maxMessage' => '255文字以内で登録してください']),
+            // http://documentup.com/Respect/Validation/
+            $inputValidator = v::arr()
+                ->key('name', v::string()->setName('name')->notEmpty()->length(4,255))
+                ->key('email', v::email()->setName('mailaddress')->notEmpty()->length(1,255))
+                ->key('password', v::string()->setName('password')->notEmpty()->length(6,64)->regex('/\A[0-9a-zA-Z&%$#!?_]{6,64}\z/'))
+                ->key('birthday', v::oneOf(
+                        v::regex('/\A[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\z/'),
+                        v::equals('')
+                    )->setName('birthday')
+                )
+            ;
 
-                ],
-                'email'    => [
-                    new Assert\NotBlank(['message' => 'メールアドレスを入力してください']),
-                    new Assert\Email(['message' => 'メールアドレスが正しくありません']),
-                ],
-                'password'   => [
-                    new Assert\NotBlank(['message' => 'パスワードを入力してください']),
-                    new Assert\Length([
-                        'min' => 6, 'minMessage' => 'パスワードは6文字以上で登録してください',
-                        'max' => 64, 'maxMessage' => 'パスワードは120文字以上で登録してください',
-                    ]),
-                    new Assert\Regex(['pattern' => '/\A[0-9a-zA-Z&%$#!?_]{6,64}\z/',
-                                      'message' => 'パスワードは半角英数&%$#!?_の組み合わせで登録してください']),
-                ],
-                'birthday'   => new Assert\Regex(['pattern' => '/\A[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\z/',
-                                                  'message' => '誕生日はyyyy-mm-dd形式で登録してください']),
-            ]);
+            $errors = [];
+            try {
+                $inputValidator->assert($input);
+            } catch(\InvalidArgumentException $e) {
+                $errors = $e->findMessages([
+                        'name.notEmpty' => '名前を入力してください',
+                        'name.length' => '名前は{{minValue}}〜{{maxValue}}文字内で入力してください',
+                        'mailaddress.email' => 'メールアドレスを入力してください',
+                        'mailaddress.notEmpty' => 'メールアドレスを入力してください',
+                        'mailaddress.length' => 'メールアドレスは{{minValue}}〜{{maxValue}}文字内で入力してください',
+                        'password.notEmpty' => 'パスワードを入力してください',
+                        'password.regex' => 'パスワードは半角英数&%$#!?_の組み合わせで登録してください',
+                        'birthday.regex' => '誕生日はyyyy-mm-dd形式で登録してください',
+                    ]);
+            }
 
-            $errors = $container['validator']->validateValue($input, $constraint);
             if (count($errors) === 0) {
                 $user = new \Vg\Model\User();
                 $user->setProperties($input);
@@ -139,22 +150,30 @@ use Symfony\Component\Validator\Constraints as Assert;
             $input = $app->request()->post();
 
             // 入力チェック
-            // see also: https://github.com/symfony/Validator/blob/master/Constraints
-            $constraint = new Assert\Collection([
-                'name' =>  [
-                    new Assert\NotBlank(['message' => '名前を入力してください']),
-                    new Assert\Length(['max' => 255, 'maxMessage' => '255文字以内で登録してください']),
+            $inputValidator = v::arr()
+                ->key('name', v::string()->setName('name')->notEmpty()->length(4,255))
+                ->key('email', v::email()->setName('mailaddress')->notEmpty()->length(1,255))
+                ->key('birthday', v::oneOf(
+                        v::regex('/\A[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\z/'),
+                        v::equals('')
+                    )->setName('birthday')
+                )
+            ;
 
-                ],
-                'email'    => [
-                    new Assert\NotBlank(['message' => 'メールアドレスを入力してください']),
-                    new Assert\Email(['message' => 'メールアドレスが正しくありません']),
-                ],
-                'birthday'   => new Assert\Regex(['pattern' => '/\A[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\z/',
-                                                  'message' => '誕生日はyyyy-mm-dd形式で登録してください']),
-            ]);
+            $errors = [];
+            try {
+                $inputValidator->assert($input);
+            } catch(\InvalidArgumentException $e) {
+                $errors = $e->findMessages([
+                        'name.notEmpty' => '名前を入力してください',
+                        'name.length' => '名前は{{minValue}}〜{{maxValue}}文字内で入力してください',
+                        'mailaddress.email' => 'メールアドレスを入力してください',
+                        'mailaddress.notEmpty' => 'メールアドレスを入力してください',
+                        'mailaddress.length' => 'メールアドレスは{{minValue}}〜{{maxValue}}文字内で入力してください',
+                        'birthday.regex' => '誕生日はyyyy-mm-dd形式で登録してください',
+                    ]);
+            }
 
-            $errors = $container['validator']->validateValue($input, $constraint);
             if (count($errors) === 0) {
                 $repository = $container['repository.user'];
                 $user = $repository->findById($container['session']->get('user.id'));
