@@ -42,16 +42,6 @@ $container['session'] = $container->share(function() {
         return new \Vg\Session();
     });
 
-// バリデーター
-$container['validator'] = function() {
-    return \Symfony\Component\Validator\Validation::createValidator();
-};
-
-// Validationのエラーリストにエラーを追加するためのエイリアス
-$container['error'] = $container->protect(function($message) {
-    return new \Symfony\Component\Validator\ConstraintViolation($message, '', [], [], [], []);
-});
-
 // モデル
 $container['repository.user'] = $container->share(function($c){
         return new \Vg\Repository\UserRepository($c['db']);
