@@ -21,7 +21,7 @@ use Respect\Validation\Validator as v;
             $errors = [];
             try {
                 $inputValidator->assert($input);
-            } catch(\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
                 $errors = $e->findMessages([
                         'mailaddress.notEmpty' => 'メールアドレスを入力してください',
                         'password.notEmpty' => 'パスワードを入力してください',
@@ -84,7 +84,7 @@ use Respect\Validation\Validator as v;
             $errors = [];
             try {
                 $inputValidator->assert($input);
-            } catch(\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
                 $errors = $e->findMessages([
                         'name.notEmpty' => '名前を入力してください',
                         'name.length' => '名前は{{minValue}}〜{{maxValue}}文字内で入力してください',
@@ -149,32 +149,11 @@ use Respect\Validation\Validator as v;
     $app->post('/user/update', function () use ($app, $container) {
             $input = $app->request()->post();
 
-            // 入力チェック
-            $inputValidator = v::arr()
-                ->key('name', v::string()->setName('name')->notEmpty()->length(4,255))
-                ->key('email', v::email()->setName('mailaddress')->notEmpty()->length(1,255))
-                ->key('birthday', v::oneOf(
-                        v::regex('/\A[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\z/'),
-                        v::equals('')
-                    )->setName('birthday')
-                )
-            ;
+            // ここでは上記コントローラーと異なり
+            // バリデータをコントローラーの内部ではなく外部に委譲した実装例
+            $validator = $container['validator.user.edit'];
 
-            $errors = [];
-            try {
-                $inputValidator->assert($input);
-            } catch(\InvalidArgumentException $e) {
-                $errors = $e->findMessages([
-                        'name.notEmpty' => '名前を入力してください',
-                        'name.length' => '名前は{{minValue}}〜{{maxValue}}文字内で入力してください',
-                        'mailaddress.email' => 'メールアドレスを入力してください',
-                        'mailaddress.notEmpty' => 'メールアドレスを入力してください',
-                        'mailaddress.length' => 'メールアドレスは{{minValue}}〜{{maxValue}}文字内で入力してください',
-                        'birthday.regex' => '誕生日はyyyy-mm-dd形式で登録してください',
-                    ]);
-            }
-
-            if (count($errors) === 0) {
+            if ($validator->validate($input)) {
                 $repository = $container['repository.user'];
                 $user = $repository->findById($container['session']->get('user.id'));
                 $user->name = $input['name'];
@@ -191,7 +170,7 @@ use Respect\Validation\Validator as v;
                 $app->redirect($app->urlFor('welcome'));
             }
 
-            $app->render('user/edit.html.twig', ['errors' => $errors, 'input' => $input]);
+            $app->render('user/edit.html.twig', ['errors' => $validator->errors(), 'input' => $input]);
         })
         ->name('user_update')
     ;

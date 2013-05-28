@@ -42,9 +42,18 @@ $container['session'] = $container->share(function() {
         return new \Vg\Session();
     });
 
-// モデル
-$container['repository.user'] = $container->share(function($c){
-        return new \Vg\Repository\UserRepository($c['db']);
-    });
+モデル: {
+    // ユーザー
+    $container['repository.user'] = $container->share(function($c){
+            return new \Vg\Repository\UserRepository($c['db']);
+        });
+}
+
+バリデータ: {
+    // ユーザー 編集
+    $container['validator.user.edit'] = $container->share(function($c){
+            return new \Vg\Validator\UserEdit();
+        });
+}
 
 return $container;
