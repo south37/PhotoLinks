@@ -27,7 +27,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         $input = [
             'name' => '',
-            ];        
+            ];
         $validator = new Vg\Validator\UserEdit;
         $validator->validate($input);
         $errors = $validator->errors();
@@ -38,7 +38,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         $input = [
             'name' => str_repeat('あ', 255),
-            ];        
+            ];
         $validator = new Vg\Validator\UserEdit;
         $validator->validate($input);
         $errors = $validator->errors();
@@ -49,7 +49,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         $input = [
             'name' => str_repeat('あ', 256),
-            ];        
+            ];
         $validator = new Vg\Validator\UserEdit;
         $validator->validate($input);
         $errors = $validator->errors();
@@ -60,7 +60,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         $input = [
             'email' => '',
-            ];        
+            ];
         $validator = new Vg\Validator\UserEdit;
         $validator->validate($input);
         $errors = $validator->errors();
@@ -94,7 +94,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         $input = [
             'email' => str_repeat('a', 255),
-            ];        
+            ];
         $validator = new Vg\Validator\UserEdit;
         $validator->validate($input);
         $errors = $validator->errors();
@@ -105,7 +105,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         $input = [
             'email' => str_repeat('a', 256),
-            ];        
+            ];
         $validator = new Vg\Validator\UserEdit;
         $validator->validate($input);
         $errors = $validator->errors();

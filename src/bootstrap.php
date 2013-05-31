@@ -50,6 +50,10 @@ $container['session'] = $container->share(function() {
 }
 
 バリデータ: {
+    // ユーザー 登録
+    $container['validator.user.register'] = $container->share(function($c){
+            return new \Vg\Validator\UserRegister();
+        });
     // ユーザー 編集
     $container['validator.user.edit'] = $container->share(function($c){
             return new \Vg\Validator\UserEdit();
