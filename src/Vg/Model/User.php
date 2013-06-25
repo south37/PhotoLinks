@@ -16,7 +16,7 @@ class User
 
     public function __construct()
     {
-        $this->{'hash_method'} = Stretcher::currentMethod();
+        $this->hash_method = Stretcher::currentMethod();
     }
 
     public function setProperties($data)
@@ -29,10 +29,10 @@ class User
         }
         if ( isset($data['password_hash']) ) {
             //DBからの読み込みの場合
-            $this->{'password_hash'} = $data['password_hash'];
+            $this->password_hash = $data['password_hash'];
         } elseif ( isset($data['password']) ) {
             //フォームからの入力の場合
-            $this->{'password_hash'} = $this->stretch($data['password']);
+            $this->password_hash = $this->stretch($data['password']);
         }
     }
 

@@ -18,6 +18,8 @@ class Stretcher
         if ($method === self::SHA256_10000) {
             return new Stretcher('sha256', 10000);
         } else {
+            //フォールバック。謎のメソッドが指定されたらデフォルトを返す
+            //XXX 例外を送出すべきか？
             return self::create(self::currentMethod());
         }
     }
