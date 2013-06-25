@@ -7,15 +7,18 @@ class Stretcher
     public $num;
 
     const SHA256_10000 = 'sha256_10000';
+    const SHA256_20000 = 'sha256_20000';
 
     public static function currentMethod()
     {
-        return self::SHA256_10000;
+        return self::SHA256_20000;
     }
 
     public static function create($method)
     {
-        if ($method === self::SHA256_10000) {
+        if ($method === self::SHA256_20000) {
+            return new Stretcher('sha256', 20000);
+        } elseif ($method === self::SHA256_10000) {
             return new Stretcher('sha256', 10000);
         } else {
             //フォールバック。謎のメソッドが指定されたらデフォルトを返す
