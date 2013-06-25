@@ -24,13 +24,13 @@ class User
         foreach (array('name', 'id', 'email', 'birthday') as $property) {
             $this->{$property} = (isset($data[$property]))? $data[$property]: "";
         }
-        if( isset($data['hash_method']) ){
+        if ( isset($data['hash_method']) ) {
             $this->hash_method = $data['hash_method'];
         }
-        if( isset($data['password_hash']) ){
+        if ( isset($data['password_hash']) ) {
             //DBからの読み込みの場合
             $this->{'password_hash'} = $data['password_hash'];
-        } else if( isset($data['password']) ){
+        } elseif ( isset($data['password']) ) {
             //フォームからの入力の場合
             $this->{'password_hash'} = $this->stretch($data['password']);
         }
@@ -40,6 +40,7 @@ class User
     {
         $s = Stretcher::create($this->hash_method);
         $salt = User::generateSalt($this->email);
+
         return $s->stretch($password, $salt);
     }
 

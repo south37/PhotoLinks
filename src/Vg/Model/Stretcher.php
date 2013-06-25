@@ -15,7 +15,7 @@ class Stretcher
 
     public static function create($method)
     {
-        if( $method === self::SHA256_10000 ) {
+        if ($method === self::SHA256_10000) {
             return new Stretcher('sha256', 10000);
         } else {
             return self::create(self::currentMethod());
@@ -38,4 +38,3 @@ class Stretcher
         return base64_encode($x);
     }
 }
-
