@@ -1,5 +1,6 @@
 <?php
 use Vg\Model\User;
+use Vg\Model\Stretcher;
 
 class UserTest extends PHPUnit_Framework_TestCase
 {
@@ -19,8 +20,37 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $user->id, 'IDをセットできること');
         $this->assertEquals('test', $user->name, '名前をセットできること');
         $this->assertEquals('test@example.com', $user->email, 'メールアドレスをセットできること');
-        $this->assertEquals('password', $user->password, 'メールアドレスをセットできること');
         $this->assertEquals('2013-07-07', $user->birthday, '誕生日をセットできること');
+        $this->assertEquals('sha256_10000', $user->hash_method, 'ハッシュ方式をセットできること');
+        $this->assertEquals(
+            'RXlDvTB3xpgnZ/+Sli293NveavQXQz6wDy+IwCQmNVE=', $user->password_hash,
+            '生パスワードではなくストレッチングされたハッシュ値がセットされる');
+    }
+
+    public function test同じパスワードでもユーザ毎に異なるハッシュ値が生成されること()
+    {
+        $properties = [
+            'email' => 'test2@example.com',
+            'password' => 'password',
+        ];
+
+        $user = new User();
+        $user->setProperties($properties);
+
+        $this->assertEquals(
+            'o7/iszOdqE6XiVQPtqP73uYPE65OMh0W5VkqBM2rrvA=', $user->password_hash,
+            'test@example.comの人とは違うハッシュ値');
+    }
+
+    public function testパスワードハッシュをセットできること()
+    {
+        $properties = [ 'password_hash' => 'hogehoge' ];
+
+        $user = new User();
+        $user->setProperties($properties);
+
+        $this->assertEquals('hogehoge', $user->password_hash,
+            'DBからの読み込み時はpassword_hashがそのままセットされる');
     }
 
     public function testユーザー編集時に名前が空だとエラー文言がセットされること()
@@ -136,5 +166,10 @@ class UserTest extends PHPUnit_Framework_TestCase
         $input = ['birthday' => '2012-11-222'];
         $validator->validate($input);
         $this->assertNotEquals('', $validator->errors()['birthday_regex']);
+    }
+
+    public function testプリフィックスがついたsaltを得る()
+    {
+        $this->assertEquals(User::SALT_PREFIX.'_user_id', User::generateSalt('_user_id'));
     }
 }

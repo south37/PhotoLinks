@@ -18,22 +18,19 @@ class UserRepository
      */
     public function insert($user)
     {
-        $user->salt = User::generateSalt();
-        $user->password = User::hashPassword($user->password, $user->salt);
-
         $sth = $this->db->prepare('insert into user set
                                          email=:email,
                                          name=:name,
-                                         password=:password,
-                                         salt=:salt,
+                                         password_hash=:password_hash,
+                                         hash_method=:hash_method,
                                          birthday=:birthday,
                                          created_at=now(),
                                          updated_at=now()');
 
         $sth->bindValue(':email', $user->email, \PDO::PARAM_STR);
         $sth->bindValue(':name', $user->name, \PDO::PARAM_STR);
-        $sth->bindValue(':password', $user->password, \PDO::PARAM_STR);
-        $sth->bindValue(':salt', $user->salt, \PDO::PARAM_STR);
+        $sth->bindValue(':password_hash', $user->password_hash, \PDO::PARAM_STR);
+        $sth->bindValue(':hash_method', $user->hash_method, \PDO::PARAM_STR);
         $sth->bindValue(':birthday', $user->birthday, \PDO::PARAM_INT);
         $sth->execute();
     }
@@ -73,7 +70,7 @@ class UserRepository
     {
         $user = $this->findByEmail($email);
 
-        return ($user->password === User::hashPassword($password, $user->salt))? $user: null;
+        return ( $user->password_hash === $user->stretch($password) ) ? $user: null;
     }
 
     /**
