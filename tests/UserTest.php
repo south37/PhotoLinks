@@ -21,36 +21,54 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('test', $user->name, '名前をセットできること');
         $this->assertEquals('test@example.com', $user->email, 'メールアドレスをセットできること');
         $this->assertEquals('2013-07-07', $user->birthday, '誕生日をセットできること');
-        $this->assertEquals('sha256_10000', $user->hash_method, 'ハッシュ方式をセットできること');
-        $this->assertEquals(
-            'RXlDvTB3xpgnZ/+Sli293NveavQXQz6wDy+IwCQmNVE=', $user->password_hash,
-            '生パスワードではなくストレッチングされたハッシュ値がセットされる');
+        $this->assertEquals(Stretcher::currentMethod(), $user->hash_method, 'ハッシュ方式をセットできること');
+        $this->assertNotNull($user->password_hash, '生パスワードではなくストレッチングされたハッシュ値がセットされる');
     }
 
     public function test同じパスワードでもユーザ毎に異なるハッシュ値が生成されること()
     {
-        $properties = [
+        $prop1 = [
+            'email' => 'test1@example.com',
+            'password' => 'password',
+            'hash_method' => 'sha256_10000',
+        ];
+        $prop2 = [
             'email' => 'test2@example.com',
             'password' => 'password',
+            'hash_method' => 'sha256_10000',
+        ];
+        $prop3 = [
+            'email' => 'test2@example.com',
+            'password' => 'password',
+            'hash_method' => 'sha256_20000',
+        ];
+
+        $user1 = new User();
+        $user1->setProperties($prop1);
+
+        $user2 = new User();
+        $user2->setProperties($prop2);
+
+        $user3 = new User();
+        $user3->setProperties($prop3);
+
+        $this->assertEquals('feoUTZ56Qxo8/dOfj8Xtuu3aXOP3DG4T8aCMZ87yX0s=', $user1->password_hash, 'メアドが違えばパスワードが同じでも違うハッシュ値');
+        $this->assertEquals('o7/iszOdqE6XiVQPtqP73uYPE65OMh0W5VkqBM2rrvA=', $user2->password_hash, 'メアドが違えばパスワードが同じでも違うハッシュ値');
+        $this->assertEquals('J0pzdQbjV24p+yvWTS54zL0TUI+Fb5vmlAbAsEqXgac=', $user3->password_hash, 'ハッシュ方式が違えば違うハッシュ値');
+    }
+
+    public function testパスワードハッシュをセットできること()
+    {
+        $properties = [
+            'password_hash' => 'hogehoge',
+            'hash_method' => 'sha256_100',
         ];
 
         $user = new User();
         $user->setProperties($properties);
 
-        $this->assertEquals(
-            'o7/iszOdqE6XiVQPtqP73uYPE65OMh0W5VkqBM2rrvA=', $user->password_hash,
-            'test@example.comの人とは違うハッシュ値');
-    }
-
-    public function testパスワードハッシュをセットできること()
-    {
-        $properties = [ 'password_hash' => 'hogehoge' ];
-
-        $user = new User();
-        $user->setProperties($properties);
-
-        $this->assertEquals('hogehoge', $user->password_hash,
-            'DBからの読み込み時はpassword_hashがそのままセットされる');
+        $this->assertEquals('hogehoge', $user->password_hash, 'DBからの読み込み時はpassword_hashがそのままセットされる');
+        $this->assertEquals('sha256_100', $user->hash_method, 'DBからの読み込み時はhash_methodがそのままセットされる');
     }
 
     public function testユーザー編集時に名前が空だとエラー文言がセットされること()
