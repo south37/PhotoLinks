@@ -23,6 +23,17 @@ GroupWork ベースアプリ (VOYAGE GROUP)
 
     $make mig-up
 
+## httpd.confの設定例
+
+    <Directory /var/www/GroupWorkBase/public_html>
+    Options Indexes FollowSymLinks +MultiViews
+    AllowOverride All
+
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+    </Directory>
+
 ## 開発用組込みサーバーを起動
 
     $ make server
