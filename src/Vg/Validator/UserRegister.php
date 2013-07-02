@@ -40,8 +40,8 @@ class UserRegister
             $this->errors = $e->findMessages([
                                                  'name.notEmpty' => '名前を入力してください',
                                                  'name.length' => '名前は{{minValue}}〜{{maxValue}}文字内で入力してください',
-                                                 'mailaddress.email' => 'メールアドレスを入力してください',
                                                  'mailaddress.notEmpty' => 'メールアドレスを入力してください',
+                                                 'mailaddress.email' => 'メールアドレスの形式を確認してください',
                                                  'mailaddress.length' => 'メールアドレスは{{minValue}}〜{{maxValue}}文字内で入力してください',
                                                  'password.notEmpty' => 'パスワードを入力してください',
                                                  'password.regex' => 'パスワードは半角英数&%$#!?_の組み合わせで登録してください',
