@@ -1,5 +1,4 @@
 <?php
-use Symfony\Component\Validator\Constraints as Assert;
 use Respect\Validation\Validator as v;
 
 ログイン: {
@@ -70,7 +69,7 @@ use Respect\Validation\Validator as v;
 
             // ここでは上記コントローラーと異なり
             // バリデータをコントローラーの内部ではなく外部に委譲した実装例
-            $validator = $container['validator.user.register'];
+            $validator = new \Vg\Validator\UserRegister();
 
             if ($validator->validate($input)) {
                 $user = new \Vg\Model\User();
@@ -125,7 +124,7 @@ use Respect\Validation\Validator as v;
     $app->post('/user/update', function () use ($app, $container) {
             $input = $app->request()->post();
 
-            $validator = $container['validator.user.edit'];
+            $validator = new \Vg\Validator\UserEdit();
 
             if ($validator->validate($input)) {
                 $repository = $container['repository.user'];
