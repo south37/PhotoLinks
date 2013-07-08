@@ -69,8 +69,7 @@
 </div>
 
 <div class="container">
-    {% block contents %}
-    {% endblock %}
+    {% block contents '' %}
     <footer>
         <p>&copy; Company 2013</p>
     </footer>
@@ -84,6 +83,6 @@
 <script src="{{ asset('/js/underscore.js') }}"></script>
 <script src="{{ asset('/js/backbone.js') }}"></script>
 <script src="{{ asset('/bootstrap/js/bootstrap.js') }}"></script>
-{% block javascript %}{% endblock %}
+{% block javascript '' %}
 </body>
 </html>
