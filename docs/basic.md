@@ -1,5 +1,4 @@
-
-## GroupWorkBase の基本
+## GroupWorkBase の基本について
 
 GroupWorkBase は Slim2 という PHP製Webアプリケーション用 マイクロフレームワークで構築されています。
 
