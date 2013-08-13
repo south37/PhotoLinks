@@ -13,7 +13,7 @@
         ->name('doc_basic')
     ;
 
-    $app->get('/doc/extens', function() use ($app) {
+    $app->get('/doc/extends', function() use ($app) {
             $markdown = file_get_contents(__DIR__. '/../../docs/extend.md');
             $app->render('doc/markdown.html.twig', ['markdown' => $markdown]);
         })
