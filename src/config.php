@@ -11,9 +11,9 @@ $container = new Pimple();
  */
 DB設定 :{
     $container['db.host']     = 'localhost';
-    $container['db.database'] = 'groupwork';
-    $container['db.user']     = 'demouser';
-    $container['db.password'] = 'demopass';
+    $container['db.database'] = 'group_c';
+    $container['db.user']     = 'group_c';
+    $container['db.password'] = 'group_cpass';
 }
 テンプレート設定: {
     $container['twig.templateDir'] = __DIR__ . '/views';
