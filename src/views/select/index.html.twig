@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    {% include 'error.html.twig' with {errors: errors} %}
+
+    <div class="row">
+        <div class="span6 offset3">
+            <form action="{{ urlFor('add') }}" method="post">
+                <button id="add" type="submit" class="btn btn-primary">コマを追加</button>
+            </form>
+            <form action="{{ urlFor('story_view') }}" method="post">
+                <button id="story-view" type="submit" class="btn btn-primary">ストーリーを見る</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
