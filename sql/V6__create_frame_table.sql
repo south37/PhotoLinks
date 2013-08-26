@@ -4,7 +4,7 @@ CREATE  TABLE IF NOT EXISTS `frame` (
   `user_id` INT UNSIGNED NOT NULL ,
   `theme_id` INT UNSIGNED NOT NULL ,
   `image_id` INT UNSIGNED NOT NULL ,
-  `parent_id` INT UNSIGNED NOT NULL ,
+  `parent_id` INT UNSIGNED NULL ,
   `last_story_id` INT UNSIGNED NOT NULL ,
   `caption` VARCHAR(255) NOT NULL ,
   `created_at` DATETIME NOT NULL ,
