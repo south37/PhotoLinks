@@ -2,13 +2,12 @@
 use Respect\Validation\Validator as v;
 
 他の: {
-    $app->map('/story-view', function() use ($app, $container) {
+    $app->post('/story-view', function() use ($app, $container) {
         $input = $app->request()->post();
         echo 'story view' . PHP_EOL;
         var_dump($input);
     })
-        ->name('story_view')
-        ->via('GET', 'POST')
+        ->name('story_view_post')
         ;
 
     $app->map('/add', function() use ($app, $container) {
