@@ -1,7 +1,7 @@
 <?php
 ドキュメント: {
     $app->get('/doc', function() use ($app) {
-            $app->render('doc/index.html.twig');
+             $app->render('doc/index.html.twig');
         })
         ->name('doc_top')
     ;

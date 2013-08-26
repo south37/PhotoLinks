@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    {% include 'error.html.twig' with {errors: errors} %}
+
+    <div class="row">
+        <div class="span6 offset3">
+            <form action="{{ urlFor('upload_post')}}" method="post" enctype="multipart/form-data" class="form-horizontal well">
+                <div class="control-group">
+                    <input type="file" name="upfile" accept="image/*" class="span3"/>
+                </div>
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">アップロードする</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
