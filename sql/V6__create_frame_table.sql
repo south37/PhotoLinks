@@ -1,11 +1,11 @@
 -- sample sql
 CREATE  TABLE IF NOT EXISTS `frame` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `user_id` INT NOT NULL ,
-  `theme_id` INT NOT NULL ,
-  `image_id` INT NOT NULL ,
-  `parent_id` INT NOT NULL ,
-  `last_story_id` INT NOT NULL ,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `user_id` INT UNSIGNED NOT NULL ,
+  `theme_id` INT UNSIGNED NOT NULL ,
+  `image_id` INT UNSIGNED NOT NULL ,
+  `parent_id` INT UNSIGNED NOT NULL ,
+  `last_story_id` INT UNSIGNED NOT NULL ,
   `caption` VARCHAR(255) NOT NULL ,
   `created_at` DATETIME NOT NULL ,
   `updated_at` DATETIME NULL ,

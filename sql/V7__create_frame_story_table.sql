@@ -1,8 +1,8 @@
 -- sample sql
 CREATE  TABLE IF NOT EXISTS `frame_story` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `frame_id` INT NOT NULL ,
-  `story_id` INT NOT NULL ,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `frame_id` INT UNSIGNED NOT NULL ,
+  `story_id` INT UNSIGNED NOT NULL ,
   `created_at` DATETIME NOT NULL ,
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`),
