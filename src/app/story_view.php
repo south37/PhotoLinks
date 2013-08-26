@@ -19,11 +19,14 @@ $app->get('/story_view', function() use ($app){
 })
     ->name('story_view')
     ;
-
  */
+
 $app->get('/story_view',function() use($app, $container){
     $input = $app->request()->get();
     var_dump($input);
+    // todo intのエラー処理！
+
+
     //postでframe_idをカンマ区切りで取得．
     $frameListStr = $input["selected-frames-id"];
     $frameList = explode(',',$frameListStr);
