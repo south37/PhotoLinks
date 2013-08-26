@@ -47,4 +47,19 @@ $container['repository.user'] = $container->share(function($c){
         return new \Vg\Repository\UserRepository($c['db']);
     });
 
+// テーマリポジトリ
+$container['repository.theme'] = $container->share(function($c){
+        return new \Vg\Repository\ThemeRepository($c['db']);
+    });
+
+// イメージリポジトリ
+$container['repository.image'] = $container->share(function($c){
+        return new \Vg\Repository\ImageRepository($c['db']);
+    });
+
+// フレームリポジトリ
+$container['repository.frame'] = $container->share(function($c){
+        return new \Vg\Repository\FrameRepository($c['db']);
+    });
+
 return $container;
