@@ -26,12 +26,18 @@ class ThemeRepository
                                          frame_num=:frame_num,
                                          created_at=now(),
                                          updated_at=now()');
-
         $sth->bindValue(':user_id', $user->user_id, \PDO::PARAM_INT);
         $sth->bindValue(':frame_id', $user->frame_id, \PDO::PARAM_INT);
         $sth->bindValue(':title', $user->title, \PDO::PARAM_STR);
         $sth->bindValue(':fix_num', $user->fix_num, \PDO::PARAM_INT);
         $sth->bindValue(':frame_num', $user->frame_num, \PDO::PARAM_INT);
-        $sth->execute();
+        try
+        {
+            $sth->execute();
+        }
+        catch(PDOException $e)
+        {
+            die($e->getMessage());
+        }
     }
 }

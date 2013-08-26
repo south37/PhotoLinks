@@ -26,6 +26,7 @@ class FrameRepository
                                          image_id=:image_id,
                                          parent_id=:parent_id,
                                          last_story_id=:last_story_id,
+                                         caption=:caption,
                                          created_at=now(),
                                          updated_at=now()');
 
@@ -34,6 +35,7 @@ class FrameRepository
         $sth->bindValue(':image_id', $frame->image_id, \PDO::PARAM_INT);
         $sth->bindValue(':parent_id', $frame->parent_id, \PDO::PARAM_INT);
         $sth->bindValue(':last_story_id', $frame->last_story_id, \PDO::PARAM_INT);
+        $sth->bindValue(':caption', $frame->caption, \PDO::PARAM_STR);
         try
         {
             $sth->execute();
