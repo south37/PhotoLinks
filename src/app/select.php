@@ -3,11 +3,12 @@ use Respect\Validation\Validator as v;
 
 見る: {
     $app->get('/select', function() use ($app, $container) {
+        $first_frame = [
+            'src' => 'http://192.168.56.110:18003/img/plus.png',
+            'id'  => 1
+        ];
+
         $frame_rows = [
-            [
-                ['src' => 'http://192.168.56.110:18003/img/plus.png',
-                 'id'  => 1]
-            ],
             [
                 ['src' => 'http://192.168.56.110:18003/img/plus.png',
                  'id'  => 2],
@@ -23,7 +24,7 @@ use Respect\Validation\Validator as v;
         ];
 
         var_dump($frame_rows);
-        $app->render('select/select.html.twig', ['frame_rows' => $frame_rows]);
+        $app->render('select/select.html.twig', ['first_frame' => $first_frame, 'frame_rows' => $frame_rows]);
         })
         ->name('select')
     ;
