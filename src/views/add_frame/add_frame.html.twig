@@ -1,0 +1,42 @@
+
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    {% include 'error.html.twig' with {errors: errors} %}
+
+    <div class="row">
+        <div class="span6 offset3">
+
+            <form action"{{urlFor('welcome')}}" class="form-horizontal well">
+                <div class="controls">
+                    <button id="btn_upload" type="submit" class="btn btn-primary">素材をアップロード</button>
+                </div>
+            </form>
+
+            <form action="{{ urlFor('make_frame') }}" method="post" class="form-horizontal well">
+              <div class="control-group">
+                   <label class="control-label" for="password">Caption</label>
+                   <div class="controls">
+                       <input id="caption" name="caption" type="text"class="span3" />
+                   </div>
+                </div>
+                <div class="controls">
+                    <button id="make_frame" type="submit" class="btn btn-primary">コマを追加</button>
+                </div>
+            </form>
+
+            <form action="{{ urlFor('make_story') }}" method="post" class="form-horizontal well">
+                 <div class="control-group">
+                   <label class="control-label" for="Title">Title</label>
+                   <div class="controls">
+                       <input id="title" name="title" type="text" class="span3" value="{{ input.email }}" />
+                   </div>
+                </div>
+                <div class="controls">
+                    <button id="make_story" type="submit" class="btn btn-primary">ストーリーを作成</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

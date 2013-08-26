@@ -14,6 +14,9 @@ use Slim\Slim;
     require  __DIR__ . '/../src/app/welcome.php';
     require  __DIR__ . '/../src/app/document.php';
     require  __DIR__ . '/../src/app/user.php';
+
+    // add view4 controller
+    require  __DIR__ . '/../src/app/add_frame.php';
 }
 
 アプリケーションの実行: {
