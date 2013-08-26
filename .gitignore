@@ -8,3 +8,4 @@ var/log/*
 var/cache/*
 vendor/*
 *.swp
+public_html/index.php
