@@ -17,7 +17,10 @@ use Slim\Slim;
 
     // add controller by 1000
     require  __DIR__ . '/../src/app/story_view.php';
+
+    // add by nantyoku
     require  __DIR__ . '/../src/app/select.php';
+    require  __DIR__ . '/../src/app/others.php';
 }
 
 アプリケーションの実行: {
