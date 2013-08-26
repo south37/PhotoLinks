@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    {% include 'error.html.twig' with {errors: errors} %}
+
+    <div class="row">
+        <div class="span6 offset3">
+            <div class="frames">
+                <form action="{{ urlFor('add') }}" method="post" class="add-fm">
+                    <img src="http://192.168.56.110:18003/img/plus.png" alt="plus2" value="1" width="100" height="100">
+                </form>
+            </div>
+            <div class="frames">
+                <form action="{{ urlFor('add') }}" method="post" class="add-fm">
+                    <img src="http://192.168.56.110:18003/img/plus.png" alt="plus1" value="2" width="100" height="100">
+                    <img src="http://192.168.56.110:18003/img/plus.png" alt="plus2" value="3" width="100" height="100">
+                    <input type="text" name="parent-frame-id" value="" />
+                    <button type="submit" class="btn btn-primary">コマを追加</button>
+                </form>
+            </div>
+            <div class="frames">
+                <form action="{{ urlFor('add') }}" method="post" class="add-fm">
+                    <img src="http://192.168.56.110:18003/img/plus.png" alt="plus1" value="4" width="100" height="100">
+                    <img src="http://192.168.56.110:18003/img/plus.png" alt="plus2" value="5" width="100" height="100">
+                    <input type="text" name="parent-frame-id" value="" />
+                    <button type="submit" class="btn btn-primary">コマを追加</button>
+                </form>
+            </div>
+            <form action="{{ urlFor('story_view') }}" method="post" id="story-fm">
+                <input type="text" name="selected-frames-id" value="-1" />
+                <button id="story-view-btn" type="submit" class="btn btn-primary">ストーリーを見る</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('/js/select.js') }}"></script>
+{% endblock %}
