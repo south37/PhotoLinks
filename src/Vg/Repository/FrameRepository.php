@@ -84,7 +84,7 @@ SQL;
                 INNER JOIN frame
                     ON image.id = frame.image_id
                 INNER JOIN theme
-                    theme.id = frame.theme_id
+                    ON theme.id = frame.theme_id
             WHERE theme.id = :themeId;
 SQL;
         $sth = $this->db->prepare($sql);
@@ -96,7 +96,7 @@ SQL;
         {
             $frame = new Frame();
             $frame->setProperties($data);
-            $frames->push($frame);
+            array_push($frames, $frame);
         }
         return $frames;
      }
