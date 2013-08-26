@@ -100,6 +100,7 @@ SQL;
      *
      * @return Image
      */
+    /*
      public function findByFrameId($frameId)
      {
         $sql = <<< SQL
@@ -114,4 +115,5 @@ SQL;
         $data = $sth->fetch(\PDO::FETCH_ASSOC);
         return $data['path'];
      }
+     */
 }
