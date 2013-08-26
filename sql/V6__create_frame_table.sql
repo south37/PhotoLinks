@@ -15,6 +15,7 @@ CREATE  TABLE IF NOT EXISTS `frame` (
   FOREIGN KEY (`theme_id`)
     REFERENCES theme (`id`),
   FOREIGN KEY (`image_id`)
-    REFERENCES image (`id`)
+    REFERENCES image (`id`),
+  INDEX parent_id_idx(`parent_id`)
 )
 ENGINE = InnoDB;
