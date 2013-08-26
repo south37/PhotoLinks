@@ -84,6 +84,10 @@ use Respect\Validation\Validator as v;
 
                 $app->redirect($app->urlFor('user_login'));
             }
+var_dump($input);
+// var_dump($user);
+// var_dump($container);
+exit;
 
             $app->render('user/register.html.twig', ['errors' => $validator->errors(), 'input' => $input]);
         })

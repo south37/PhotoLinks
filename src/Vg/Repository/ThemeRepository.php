@@ -20,18 +20,40 @@ class ThemeRepository
     {
         $sth = $this->db->prepare('insert into theme set
                                          user_id=:user_id,
-                                         theme_id=:theme_id,
-                                         image_id=:image_id,
-                                         parent_id=:parent_id,
-                                         last_story_id=:last_story_id,
+                                         frame_id=:frame_id,
+                                         title=:title,
+                                         fix_num=:fix_num,
+                                         frame_num=:frame_num,
                                          created_at=now(),
                                          updated_at=now()');
-
         $sth->bindValue(':user_id', $user->user_id, \PDO::PARAM_INT);
-        $sth->bindValue(':theme_id', $user->theme_id, \PDO::PARAM_INT);
-        $sth->bindValue(':image_id', $user->image_id, \PDO::PARAM_INT);
-        $sth->bindValue(':parent_id', $user->parent_id, \PDO::PARAM_INT);
-        $sth->bindValue(':last_story_id', $user->last_story_id, \PDO::PARAM_INT);
-        $sth->execute();
+        $sth->bindValue(':frame_id', $user->frame_id, \PDO::PARAM_INT);
+        $sth->bindValue(':title', $user->title, \PDO::PARAM_STR);
+        $sth->bindValue(':fix_num', $user->fix_num, \PDO::PARAM_INT);
+        $sth->bindValue(':frame_num', $user->frame_num, \PDO::PARAM_INT);
+        try
+        {
+            $sth->execute();
+        }
+        catch(PDOException $e)
+        {
+            die($e->getMessage());
+        }
     }
+
+    public function findById($id){
+        $sql = <<< SQL
+            SELECT * FROM theme
+            WHERE id = :id;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':id', $id, \PDO::PARAM_INT);
+        $sth->execute();
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        $theme = new Theme();
+        $theme->setProperties($data);
+
+        return $theme;
+    }
+
 }
