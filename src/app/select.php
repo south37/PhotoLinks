@@ -20,9 +20,10 @@ use Respect\Validation\Validator as v;
                  'id'  => 4],
                 ['src' => 'http://192.168.56.110:18003/img/plus.png',
                  'id'  => 5]
-            ]
+            ],
         ];
 
+        array_push($frame_rows, []);
         var_dump($frame_rows);
         $app->render('select/select.html.twig', ['first_frame' => $first_frame, 'frame_rows' => $frame_rows]);
         })

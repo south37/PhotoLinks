@@ -7,8 +7,8 @@
         <div class="span6 offset3">
             <div class="frames">
                 <form action="" method="post" class="add-fm">
-                    <input type="hidden" name="parent-frame-id" value="" />
                     <img src="{{ first_frame['src'] }}" alt="plus1" value="{{ first_frame['id'] }}" width="100" height="100">
+                    <input type="hidden" name="parent-frame-id" value="" />
                 </form>
             </div>
             
@@ -23,7 +23,8 @@
                     </form>
                 </div>
             {% endfor %}
-            <form action="{{ urlFor('story_view_post') }}" method="post" id="story-fm">
+            
+           <form action="{{ urlFor('story_view_post') }}" method="post" id="story-fm">
                 <input type="text" name="selected-frames-id" value="" />
                 <button id="story-view-btn" type="submit" class="btn btn-primary">ストーリーを見る</button>
             </form>
