@@ -5,6 +5,7 @@ class Theme
 {
     public $id;
     public $user_id;
+    public $frame_id;
     public $title;
     public $fix_num;
     public $frame_num;
@@ -15,7 +16,7 @@ class Theme
 
     public function setProperties($data)
     {
-        foreach (array('id', 'user_id', 'title', 'fix_num', 'frame_num') as $property) {
+        foreach (array('id', 'user_id', 'frame_id', 'title', 'fix_num', 'frame_num') as $property) {
             $this->{$property} = (isset($data[$property]))? $data[$property]: "";
         }
     }
