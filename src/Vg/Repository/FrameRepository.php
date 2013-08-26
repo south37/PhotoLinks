@@ -85,6 +85,7 @@ SQL;
                     theme.id = frame.theme_id
             WHERE theme.id = :themeId;
 SQL;
+        $sth = $this->db->prepare($sql);
         $sth->bindValue(':themeId', $themeId, \PDO::PARAM_INT);
         $sth->execute();
         //$frames = new Array();

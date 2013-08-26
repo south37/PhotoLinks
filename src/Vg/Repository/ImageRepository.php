@@ -58,6 +58,7 @@ class ImageRepository
             SELECT * FROM image
             WHERE id = :id;
 SQL;
+        $sth = $this->db->prepare($sql);
         $sth->bindValue(':id', $id, \PDO::PARAM_INT);
         $sth->execute();
         $data = $sth->fetch(\PDO::FETCH_ASSOC);
@@ -82,6 +83,7 @@ SQL;
                     ON image.id = frame.image_id
             WHERE frame.id = :frameId;
 SQL;
+        $sth = $this->db->prepare($sql);
         $sth->bindValue(':frameId', $frameId, \PDO::PARAM_INT);
         $sth->execute();
         $data = $sth->fetch(\PDO::FETCH_ASSOC);
