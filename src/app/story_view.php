@@ -37,8 +37,10 @@ $app->get('/story_view',function() use($app, $container){
 
     for($i = 1; $i < count($frameList); $i++){
         $tmpFrame = $repository->findById($frameList[$i]);
-        $imgPath = "/img/ismTest/hatsune01.png";
-        array_push($imgPathList, $imgPath);
+        //$imgPath = "/img/ismTest/hatsune01.png";
+        //$imgPath = $container['repository.image']->findById($tmpFrame->image_id);
+        $tmpImage = $container['repository.image']->findByFrameId(2);
+        array_push($imgPathList, $tmpImage->path);
     }
 
     $app->render('story_view/story_view.html.twig',["imgPathList" => $imgPathList]);
