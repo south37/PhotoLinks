@@ -55,27 +55,14 @@ function inner(&$list, $tree, $depth) {
     $app->get('/select', function() use ($app, $container) {
         $theme_id = 1;
 
-//        $theme_repository = $container['repository.theme'];
-//        $theme = $theme_repository->findById($theme_id);
-//        $root_id = $theme->root_id;
-        $root_id = 1;
+        $theme_repository = $container['repository.theme'];
+        $theme = $theme_repository->findById($theme_id);
+        $root_id = $theme->frame_id;
 
-//        $frame_repository = $container['repository.frame'];
-//        $frames = $frame_repository->findByThemeId($theme_id);
+        $frame_repository = $container['repository.frame'];
+        $frames = $frame_repository->findsByThemeId($theme_id);
 
 //        $image_repository = $container['repository.image'];
-
-//        foreach ($frames as $key => $frame) {
-//            if ($frame->id === $root_id) {
-//                $image = $image_repository->findById($frame->image_id);
-//                $first_frame = [
-//                    'src' => $image->path,
-//                    'id'  => $frame->id
-//                ];
-//                unset($frames[$key]);
-//            }
-//        }
-//
 
         $frames = [
             ['id' => 1, 'parent_id' => 0, 'src' => '/img/ismTest/hatsune01.png'],
