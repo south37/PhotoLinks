@@ -4,11 +4,11 @@ INSERT INTO `theme` (`id`, `user_id`, `frame_id`, `title`, `fix_num`, `frame_num
 
 -- image
 INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, `updated_at`)
-    VALUES (1, 1, 'img/public_html/study2.png', 1, 0, NOW(), NOW());
+    VALUES (1, 1, 'img/ismTest/hatsune01.png', 1, 0, NOW(), NOW());
 INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, `updated_at`)
-    VALUES (2, 1, 'img/public_html/study2.png', 1, 0, NOW(), NOW());
+    VALUES (2, 1, 'img/ismTest/hatsune02.png', 1, 0, NOW(), NOW());
 INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, `updated_at`)
-    VALUES (3, 1, 'img/public_html/study2.png', 1, 0, NOW(), NOW());
+    VALUES (3, 1, 'img/ismTest/hatsune01.png', 1, 0, NOW(), NOW());
 
 -- frame
 INSERT INTO `frame` (`id`, `user_id`, `theme_id`, `image_id`, `parent_id`, `last_story_id`, `caption`, `created_at`, `updated_at`)
