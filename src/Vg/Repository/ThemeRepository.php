@@ -34,4 +34,20 @@ class ThemeRepository
         $sth->bindValue(':frame_num', $user->frame_num, \PDO::PARAM_INT);
         $sth->execute();
     }
+
+    public function findById($id){
+        $sql = <<< SQL
+            SELECT * FROM theme
+            WHERE id = :id;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':id', $id, \PDO::PARAM_INT);
+        $sth->execute();
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        $theme = new Theme();
+        $theme->setProperties($data);
+
+        return $theme;
+    }
+
 }
