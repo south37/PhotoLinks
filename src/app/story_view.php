@@ -9,7 +9,7 @@ $app->get('/story_view', function() use ($app){
     //debug
     $imgPathList = [];
 
-    //DBから画像パスを取得．
+    //Default画像を出すテスト
     for($i = 0; $i < 10; $i++){
         $imgPath = "/img/ismTest/hatsune01.png";
         array_push($imgPathList, $imgPath);
@@ -27,7 +27,8 @@ $app->post('/story_view',function() use($app){
     //postでframe_idをカンマ区切りで取得．
     //$frameListStr = $input["parent-frame-id"];
     $testStr = ",1,4,6";
-    $frameList = "hoge" ;
+    $frameList = explode(',',$testStr);
+    echo $frameList;
 
     $imgPathList =[];
 

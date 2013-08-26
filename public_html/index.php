@@ -17,6 +17,7 @@ use Slim\Slim;
 
     // add controller by 1000
     require  __DIR__ . '/../src/app/story_view.php';
+    require  __DIR__ . '/../src/app/select.php';
 }
 
 アプリケーションの実行: {
