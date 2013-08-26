@@ -7,7 +7,7 @@ use Respect\Validation\Validator as v;
         echo 'story view' . PHP_EOL;
         var_dump($input);
     })
-        ->name('story_view')
+        ->name('story_view_get')
         ;
 
     $app->get('/add', function() use ($app, $container) {

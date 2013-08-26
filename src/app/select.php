@@ -82,7 +82,7 @@ function list_to_tree($list) {
         ];
 
         $tree = list_to_tree($test_data);
-//        var_dump($tree);
+        var_dump($tree);
 
         array_push($frame_rows, []);
         $app->render('select/select.html.twig', ['first_frame' => $first_frame, 'frame_rows' => $frame_rows]);
