@@ -58,6 +58,7 @@ class FrameRepository
             SELECT * FROM frame
             WHERE id = :id;
 SQL;
+        $sth = $this->db->prepare($sql);
         $sth->bindValue(':id', $id, \PDO::PARAM_INT);
         $sth->execute();
         $data = $sth->fetch(\PDO::FETCH_ASSOC);
@@ -86,7 +87,8 @@ SQL;
 SQL;
         $sth->bindValue(':themeId', $themeId, \PDO::PARAM_INT);
         $sth->execute();
-        $frames = new Array();
+        //$frames = new Array();
+        $frames = [];
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
         {
             $frame = new Frame();
