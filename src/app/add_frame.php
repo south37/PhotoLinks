@@ -13,11 +13,17 @@ $app->get('/add_frame', function() use ($app) {
 // フレームを追加
 $app->post('/add_frame', function() use ($app) {
     $input = $app->request()->post();
+    var_dump($input);
+    $app->render('add_frame/add_frame.html.twig');
+
 })->name('make_frame');
 
 
 // ストーリーを作成 
 $app->post('/add_frame', function() use ($app) {
     $input = $app->request()->post();
+    var_dump($input);
+    $app->render('add_frame/add_frame.html.twig');
+
 })->name('make_story');
     

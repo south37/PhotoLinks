@@ -7,11 +7,15 @@
     <div class="row">
         <div class="span6 offset3">
 
-            <form action"{{urlFor('welcome')}}" class="form-horizontal well">
+            <form action="{{urlFor('upload_image')}}" method="get" class="form-horizontal well">
                 <div class="controls">
                     <button id="btn_upload" type="submit" class="btn btn-primary">素材をアップロード</button>
                 </div>
             </form>
+
+            <div>
+                <img src="/img/ismTest/placeholder.png" alt="file not found">
+            </div>
 
             <form action="{{ urlFor('make_frame') }}" method="post" class="form-horizontal well">
               <div class="control-group">
