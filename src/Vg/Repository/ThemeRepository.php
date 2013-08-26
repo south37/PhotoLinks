@@ -40,4 +40,20 @@ class ThemeRepository
             die($e->getMessage());
         }
     }
+
+    public function findById($id){
+        $sql = <<< SQL
+            SELECT * FROM theme
+            WHERE id = :id;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':id', $id, \PDO::PARAM_INT);
+        $sth->execute();
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        $theme = new Theme();
+        $theme->setProperties($data);
+
+        return $theme;
+    }
+
 }
