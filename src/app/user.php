@@ -113,38 +113,38 @@ use Respect\Validation\Validator as v;
     };
 
     $app->get('/user/edit', $redirectIfNotLogin($container['session']), function () use ($app, $container) {
-            $repository = $container['repository.user'];
-            $user = $repository->findById($container['session']->get('user.id'));
+        $repository = $container['repository.user'];
+        $user = $repository->findById($container['session']->get('user.id'));
 
-            $app->render('user/edit.html.twig', ['input' => $user]);
-        })
+        $app->render('user/edit.html.twig', ['input' => $user]);
+    })
         ->name('user_edit')
-    ;
+        ;
 
     $app->post('/user/update', $redirectIfNotLogin($container['session']), function () use ($app, $container) {
-            $input = $app->request()->post();
+        $input = $app->request()->post();
 
-            $validator = new \Vg\Validator\UserEdit();
+        $validator = new \Vg\Validator\UserEdit();
 
-            if ($validator->validate($input)) {
-                $repository = $container['repository.user'];
-                $user = $repository->findById($container['session']->get('user.id'));
-                $user->name = $input['name'];
-                $user->email = $input['email'];
-                $user->birthday = $input['birthday'];
+        if ($validator->validate($input)) {
+            $repository = $container['repository.user'];
+            $user = $repository->findById($container['session']->get('user.id'));
+            $user->name = $input['name'];
+            $user->email = $input['email'];
+            $user->birthday = $input['birthday'];
 
-                try {
-                    $repository->update($user);
-                } catch (Exception $e) {
-                    $app->halt(500, $e->getMessage());
-                }
-
-                $container['session']->set('user.name', $user->name);
-                $app->redirect($app->urlFor('welcome'));
+            try {
+                $repository->update($user);
+            } catch (Exception $e) {
+                $app->halt(500, $e->getMessage());
             }
 
-            $app->render('user/edit.html.twig', ['errors' => $validator->errors(), 'input' => $input]);
-        })
+            $container['session']->set('user.name', $user->name);
+            $app->redirect($app->urlFor('welcome'));
+        }
+
+        $app->render('user/edit.html.twig', ['errors' => $validator->errors(), 'input' => $input]);
+    })
         ->name('user_update')
-    ;
+        ;
 }

@@ -1,0 +1,27 @@
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    {% include 'error.html.twig' with {errors: errors} %}
+
+    <div class="row">
+        <div class="span6 offset3 text-center">
+            <h1>title</h1>
+            <p>username</p>
+            <p>favNum:hoge</p>
+
+            <!--画像表示するところ-->
+            {% for path in imgPathList %}
+                <img src="{{ path }}" alt="パス不明">
+                <br>caption<br>
+            {% endfor %}
+
+            <!--selectに飛ばす-->
+            <form action = "{{ urlFor('welcome') }} ">
+                 <div class="controls">
+                    <button id="return_select" type="submit" class="btn btn-primary">コマ選択に戻る</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}
