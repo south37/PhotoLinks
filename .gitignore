@@ -7,3 +7,4 @@ dbup.phar
 var/log/*
 var/cache/*
 vendor/*
+*.swp
