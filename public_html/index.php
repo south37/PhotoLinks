@@ -15,6 +15,7 @@ use Slim\Slim;
     require  __DIR__ . '/../src/app/document.php';
     require  __DIR__ . '/../src/app/user.php';
     require  __DIR__ . '/../src/app/select.php';
+    require  __DIR__ . '/../src/app/others.php';
 }
 
 アプリケーションの実行: {
