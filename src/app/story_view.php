@@ -7,14 +7,13 @@
 $app->get('/story_view', function() use ($app){
 
     //debug
-    $imgPathList = [1,2,3,4,5,6,7,8,9,10];
+    $imgPathList = [];
 
     //DBから画像パスを取得．
-    for($i = 0; $i < count($imgPathList); $i++){
-        $imgPath = "../public_html/img/ismTest/hatsune01.png";
+    for($i = 0; $i < 10; $i++){
+        $imgPath = "/img/ismTest/hatsune01.png";
         array_push($imgPathList, $imgPath);
     }
-
 
     $app->render('story_view/story_view.html.twig',["imgPathList" => $imgPathList]);
 })
