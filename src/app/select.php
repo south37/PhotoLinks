@@ -75,14 +75,14 @@ function list_to_tree($list) {
 //        }
 //
 
-        $test_data = [
-            ['id' => 1, 'parent_id' => 0],
-            ['id' => 2, 'parent_id' => 1],
-            ['id' => 3, 'parent_id' => 1]
+        $frames = [
+            ['id' => 1, 'parent_id' => 0, 'src' => 'http://192.168.56.110:18003/img/plus.png'],
+            ['id' => 2, 'parent_id' => 1, 'src' => 'http://192.168.56.110:18003/img/plus.png'],
+            ['id' => 3, 'parent_id' => 1, 'src' => 'http://192.168.56.110:18003/img/plus.png']
         ];
 
-        $tree = list_to_tree($test_data);
-        var_dump($tree);
+        $frame_tree = list_to_tree($frames)['0'];
+        var_dump($frame_tree);
 
         array_push($frame_rows, []);
         $app->render('select/select.html.twig', ['first_frame' => $first_frame, 'frame_rows' => $frame_rows]);
