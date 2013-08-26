@@ -8,12 +8,16 @@
         var selected_val = $(this).attr('value');
         $(this).parent().parent().next('div.frames').find('input').attr('value', selected_val);
 
-        var frames = '-1';
+        var frames = '';
+        var first = true;
         $('div.frames').each( function() {
             var val = $(this).find('input').attr('value');
             if (val !== '') {
-                frames += ',';
+                if (!first) {
+                    frames += ',';
+                }
                 frames += val;
+                first = false;
             }
         });
         $('#story-fm [name=selected-frames-id]').val(frames);
