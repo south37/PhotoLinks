@@ -24,7 +24,7 @@
                 </div>
             {% endfor %}
             
-           <form action="{{ urlFor('story_view') }}" method="get" id="story-fm">
+           <form action="{{ urlFor('story_view_get') }}" method="get" id="story-fm">
                 <input type="text" name="selected-frames-id" value="" />
                 <button id="story-view-btn" type="submit" class="btn btn-primary">ストーリーを見る</button>
             </form>
