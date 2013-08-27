@@ -1,9 +1,9 @@
 <?php
 namespace Vg\Repository;
 
-use Vg\Model\Story;
+use Vg\Model\FrameStory;
 
-class StoryRepository
+class FrameStoryRepository
 {
     protected $db;
 
@@ -14,23 +14,21 @@ class StoryRepository
 
     /**
      * 登録
-     * @param $story
+     * @param $frame_story
      *
-     * @return storyId 
+     * @return boolean
      *
      */
-    public function insert($story)
+    public function insert($frame_story)
     {
-        $sth = $this->db->prepare('insert into story set
-                                         user_id=:user_id,
-                                         title=:title,
-                                         favorite=:favorite,
+        $sth = $this->db->prepare('insert into frame_story set
+                                         frame_id=:frame_id,
+                                         story_id=:story_id,
                                          created_at=now(),
                                          updated_at=now()');
 
-        $sth->bindValue(':user_id', $story->user_id, \PDO::PARAM_INT);
-        $sth->bindValue(':title', $story->title, \PDO::PARAM_STR);
-        $sth->bindValue(':favorite', $story->favorite, \PDO::PARAM_INT);
+        $sth->bindValue(':frame_id', $frame_story->frame_id, \PDO::PARAM_INT);
+        $sth->bindValue(':story_id', $frame_story->story_id, \PDO::PARAM_INT);
         try
         {
             $sth->execute();
@@ -45,24 +43,23 @@ class StoryRepository
 
     /**
      * 更新
-     * @param $story
+     * @param $frame_story
      *
      * @return boolean
      *
      */
-    public function update($story)
+    public function update($frame_story)
     {
         $sql = <<< SQL
-            UPDATE image SET 
-                user_id=:user_id,
-                title=:title,
-                favorite=:favorite
+            UPDATE frame_story SET 
+                frame_id=:frame_id,
+                story_id=:story_id
             WHERE id=:id;
 SQL;
         $sth = $this->db->prepare($sql);
-        $sth->bindValue(':user_id', $story->user_id, \PDO::PARAM_INT);
-        $sth->bindValue(':title', $story->title, \PDO::PARAM_STR);
-        $sth->bindValue(':favorite', $story->favorite, \PDO::PARAM_INT);
+        $sth->bindValue(':id', $story->id, \PDO::PARAM_INT);
+        $sth->bindValue(':frame_id', $frame_story->frame_id, \PDO::PARAM_INT);
+        $sth->bindValue(':story_id', $frame_story->story_id, \PDO::PARAM_INT);
         try
         {
             $sth->execute();
@@ -70,29 +67,31 @@ SQL;
         catch(PDOException $e)
         {
             die($e->getMessage());
+            return false;
         }
+        return true;
     }
 
     /**
-     * フレームIDで検索する
+     * IDで検索する
      *
      * @param $id
      *
-     * @return Story
+     * @return FrameStory
      */
     public function findById($id)
     {
         $sql = <<< SQL
-            SELECT * FROM story 
+            SELECT * FROM frame_story 
             WHERE id = :id;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':id', $id, \PDO::PARAM_INT);
         $sth->execute();
         $data = $sth->fetch(\PDO::FETCH_ASSOC);
-        $story = new Story();
-        $story->setProperties($data);
+        $frame_story = new FrameStory();
+        $frame_story->setProperties($data);
 
-        return $story;
+        return $frame_story;
     }
 }
