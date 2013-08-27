@@ -31,7 +31,7 @@ use Respect\Validation\Validator as v;
                     } catch (Exception $e) {
                         $app->halt(500, $e->getMessage());
                     }
-                        $app->render('upload/upload.finish.html.twig');
+                    $app->render('upload/upload.finish.html.twig');
                 } else {
                     $app->render('upload/upload.error.html.twig');
                 }
