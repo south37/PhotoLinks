@@ -23,6 +23,7 @@ use Slim\Slim;
 
     // add by nantyoku
     require  __DIR__ . '/../src/app/select.php';
+    require  __DIR__ . '/../src/app/material.php';
     require  __DIR__ . '/../src/app/others.php';
 
     // add view4 controller
