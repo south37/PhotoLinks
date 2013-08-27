@@ -141,7 +141,7 @@ SQL;
      *
      * @param $page
      *
-     * @return Image
+     * @return Image[]
      *
      * 件数は20の定数なので、変更したければ引数に加えてください
      */
