@@ -20,7 +20,9 @@ $app->get('/add_frame', function() use ($app,$container) {
     $container['session']->set('parent_id',$input['parent-id']);
 
     $image_id = -1;
-    $app->render('add_frame/add_frame.html.twig',["image_id" => $image_id]);
+    $parent_id = $input['parent-id'];
+
+    $app->render('add_frame/add_frame.html.twig',["image_id" => $image_id,"parent_id" => $parent_id]);
     })
     ->name('add_frame_from_select')
     ;
@@ -28,9 +30,9 @@ $app->get('/add_frame', function() use ($app,$container) {
 // geti_from_view5
 $app->get('/add_frame/:image_id', function($image_id) use ($app) {
     $input = $app->request()->get();
-    echo $image_id;
+    $parent_id = $input['parent-id'];
 
-    $app->render('add_frame/add_frame.html.twig',["image_id"=>$image_id]);
+    $app->render('add_frame/add_frame.html.twig',["image_id"=>$image_id,"parent_id" => $parent_id]);
     })
     ->name('add_frame_from_upload')
     ;
@@ -49,7 +51,8 @@ $app->post('/add_frame/make_frame', function() use ($app,$container) { // formæƒ
     $validator = new  \Vg\Validator\AddFrame();
 
     if (!$validator->validate($input)){
-        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator->errors(),'image_id'=>$input['image_id']]);
+        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator->errors(),
+            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
         exit;
     }
 
