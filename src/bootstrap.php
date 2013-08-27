@@ -62,4 +62,11 @@ $container['repository.frame'] = $container->share(function($c){
         return new \Vg\Repository\FrameRepository($c['db']);
     });
 
+// ストーリリポジトリ
+$container['repository.story'] = $container->share(function($c){
+        return new \Vg\Repository\StoryRepository($c['db']);
+    });
+
+
+
 return $container;

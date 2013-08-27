@@ -30,7 +30,9 @@
                 </div>
 
                 <div class="controls">
-                    <button id="make_frame" type="submit" class="btn btn-primary">コマを追加</button>
+                    <button id="make_frame" type="submit" class="btn btn-primary"
+                    onClick="this.form.action='{{urlFor('make_frame')}}'">コマを追加</button>
+                    
                 </div>
                 <br> 
                  <div class="control-group">
@@ -40,8 +42,9 @@
                    </div>
                 </div>
 
-                <div class="controls">
-                    <button id="make_story" type="submit" class="btn btn-primary" onClick="this.form.action='{{urlFor('make_frame')}}'">ストーリーを作成</button>
+                <div class="controls">"
+                    <button id="make_story" type="submit" class="btn btn-primary"
+                    onClick="this.form.action='{{urlFor('make_story')}}'">ストーリーを作成</button>
                 </div>
   
              </form>
