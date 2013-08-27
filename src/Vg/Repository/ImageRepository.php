@@ -149,7 +149,7 @@ SQL;
      {
          $sql = <<< SQL
             SELECT * FROM image
-            OREDER BY id DESC LIMIT :start, 20;
+            ORDER BY id DESC LIMIT :start, 20;
 SQL;
          $sth = $this->db->prepare($sql);
          $sth->bindValue(':start', $page * 20, \PDO::PARAM_INT);
