@@ -7,12 +7,15 @@
 
         var selected_id = $(this).attr('value');
         var child_div   = $('#' + selected_id);
-        var next_depth  = $(this).parent().parent().data('depth')+1;
-   
-        var next_depth_divs = $('[data-depth=' + next_depth + ']');
-        next_depth_divs.css({'display': 'none'});
-        next_depth_divs.find('input').attr('value', '');
+        var depth  = $(this).parent().parent().data('depth');
 
+        $('div.frames').each( function() {
+            if($(this).data('depth') > depth) {
+                $(this).css({'display':'none'});
+                $(this).find('input').attr('value', '');
+            }
+        });
+   
         child_div.css({'display':'block'});
         child_div.find('input').attr('value', selected_id);
 
