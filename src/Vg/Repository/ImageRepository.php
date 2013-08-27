@@ -139,6 +139,34 @@ SQL;
      }
 
     /**
+     * 最新の画像を件数を指定してページ単位で検索する
+     *
+     * @param $page
+     *
+     * @return Image[]
+     *
+     * 件数は20の定数なので、変更したければ引数に加えてください
+     */
+     public function findByPage($page)
+     {
+         $sql = <<< SQL
+            SELECT * FROM image
+            ORDER BY id DESC LIMIT :start, 20;
+SQL;
+         $sth = $this->db->prepare($sql);
+         $sth->bindValue(':start', $page * 20, \PDO::PARAM_INT);
+         $sth->execute();
+         $images = [];
+         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+         {
+             $image = new Image();
+             $image->setProperties($data);
+             array_push($images, $image);
+         }
+         return $images;
+     }
+
+    /**
      * frameIDで画像パスを検索する
      *
      * @param $frameId
