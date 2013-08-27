@@ -55,23 +55,26 @@ function inner(&$list, $tree, $depth) {
     $app->get('/select', function() use ($app, $container) {
         $theme_id = 1;
 
-        $theme_repository = $container['repository.theme'];
-        $theme = $theme_repository->findById($theme_id);
+        $theme = $container['repository.theme']->findById($theme_id);
         $root_id = $theme->frame_id;
 
-        $frame_repository = $container['repository.frame'];
-        $frames = $frame_repository->findsByThemeId($theme_id);
+        $frame_array = $container['repository.frame']->findsByThemeId($theme_id);
+        $image_repository = $container['repository.image'];
 
-//        $image_repository = $container['repository.image'];
+        $frames = [];
+        foreach ($frame_array as $frame) {
+            $temp_frame = [
+                'id'        => (INT) $frame->id,
+                'parent_id' => (INT) $frame->parent_id,
+                'src'       => $image_repository->findByFrameId($frame->id)->path
+            ];
 
-        $frames = [
-            ['id' => 1, 'parent_id' => 0, 'src' => '/img/ismTest/hatsune01.png'],
-            ['id' => 2, 'parent_id' => 1, 'src' => '/img/ismTest/hatsune02.png'],
-            ['id' => 3, 'parent_id' => 1, 'src' => '/img/plus.png'],
-            ['id' => 4, 'parent_id' => 2, 'src' => '/img/plus.png'],
-            ['id' => 5, 'parent_id' => 3, 'src' => '/img/plus.png'] 
-        ];
-
+            if ($temp_frame['id'] === $root_id) {
+                $temp_frame['parent_id'] = 0;
+            }
+            array_push($frames, $temp_frame);
+        }
+       
         $frame_tree = list_to_tree($frames);
         $frame_rows = tree_to_list_with_depth($frame_tree);
         array_push($frame_rows, []);

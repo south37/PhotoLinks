@@ -80,12 +80,8 @@ SQL;
      public function findsByThemeId($themeId)
      {
         $sql = <<< SQL
-            SELECT * FROM image
-                INNER JOIN frame
-                    ON image.id = frame.image_id
-                INNER JOIN theme
-                    ON theme.id = frame.theme_id
-            WHERE theme.id = :themeId;
+            SELECT * FROM frame
+            WHERE theme_id = :themeId;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':themeId', $themeId, \PDO::PARAM_INT);
