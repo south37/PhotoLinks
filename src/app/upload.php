@@ -35,7 +35,7 @@ use Respect\Validation\Validator as v;
 
                     // image_idと画像の拡張子を取得してpathを更新
                     $extension = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
-                    $imagefile = array("id"=>$image_id,"user_id"=>($container['session']->get('user.id')),"path"=>__DIR__."/../../public_html/img/public_img/".$image_id.".".$extension,"scope"=>0,"deleted"=>0);
+                    $imagefile = array("id"=>$image_id,"user_id"=>($container['session']->get('user.id')),"path"=>"/img/public_img/".$image_id.".".$extension,"scope"=>0,"deleted"=>0);
                     $image->setProperties($imagefile);
                      try {
                         $repository->update($image);
