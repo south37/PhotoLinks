@@ -48,13 +48,16 @@ function inner(&$list, $tree, $depth) {
             $list[$depth][$parent_id]['parent_id'] = $parent_id;
             $list[$depth][$parent_id]['childs']    = [];
         }
-        array_push($list[$depth][$parent_id]['childs'], [
+        $num = array_push($list[$depth][$parent_id]['childs'], [
             'id'        => $node['id'],
-            'src'       => $node['src']
+            'src'       => $node['src'],
+            'is_grandchild_exists' => true
         ]);
         
         if (array_key_exists('kids', $node)) {
             inner($list, $node['kids'], $depth+1);
+        } else {
+            $list[$depth][$parent_id]['childs'][$num-1]['is_grandchild_exists'] = false;
         }
     }
 }
@@ -89,21 +92,24 @@ function inner(&$list, $tree, $depth) {
        
         $frame_tree = list_to_tree($frames);
         $frame_rows = tree_to_list_with_depth($frame_tree);
-        $rows_num = count($frame_rows);
-        $frame_rows[$rows_num] = [];
+        
+        foreach ($frame_rows as $depth => $frame_row) {
+            foreach ($frame_row as $frames) {
+                foreach ($frames['childs'] as $frame) {
+                    if (!isset($frame_rows[$depth+1])) {
+                        $frame_rows[$depth+1] = [];
+                    }
 
-        foreach ($frame_rows[$rows_num-1] as $frame_row) {
-            foreach ($frame_row['childs'] as $frame) {
-                $parent_id = $frame['id'];
-                if (!(array_key_exists($parent_id, $frame_rows[$rows_num]))) {
-                    $frame_rows[$rows_num][$parent_id] = [];
-                    $frame_rows[$rows_num][$parent_id]['childs'] = [];
+                    $parent_id = $frame['id'];
+                    if (!(array_key_exists($parent_id, $frame_rows[$depth+1]))) {
+                        $frame_rows[$depth+1][$parent_id] = [];
+                        $frame_rows[$depth+1][$parent_id]['childs'] = [];
+                    }
+                    $frame_rows[$depth+1][$parent_id]['depth']     = $depth+1;
+                    $frame_rows[$depth+1][$parent_id]['parent_id'] = $parent_id;
                 }
-                $frame_rows[$rows_num][$parent_id]['depth']     = $rows_num;
-                $frame_rows[$rows_num][$parent_id]['parent_id'] = $parent_id;
             }
         }
-        var_dump($frame_rows);
 
         $first_frame = $frame_rows[0][0]['childs'][0];
         unset($first_frame[0]);
