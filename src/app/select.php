@@ -103,7 +103,7 @@ function inner(&$list, $tree, $depth) {
                 $frame_rows[$rows_num][$parent_id]['parent_id'] = $parent_id;
             }
         }
-        var_dump($frame_rows);
+        //var_dump($frame_rows);
 
         $first_frame = $frame_rows[0][0]['childs'][0];
         unset($first_frame[0]);

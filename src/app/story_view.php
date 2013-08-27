@@ -39,7 +39,7 @@ $app->get('/story_view',function() use($app, $container){
         $tmpFrame = $repository->findById($frameList[$i]);
         //$imgPath = "/img/ismTest/hatsune01.png";
         //$imgPath = $container['repository.image']->findById($tmpFrame->image_id);
-        $tmpImage = $container['repository.image']->findByFrameId(2);
+        $tmpImage = $container['repository.image']->findByFrameId($tmpFrame->id);
         array_push($imgPathList, $tmpImage->path);
     }
 
