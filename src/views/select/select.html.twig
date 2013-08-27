@@ -13,7 +13,7 @@
             </div>
             
             {% for frames in frame_rows %}
-                <div class="frames">
+                <div class="frames" style="display:none">
                     <form action="{{ urlFor('add') }}" method="get" class="add-fm">
                     {% for frame in frames %} 
                         <img src="{{ frame['src'] }}" alt="plus1" value="{{ frame['id'] }}" width="100" height="100">
