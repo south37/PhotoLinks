@@ -6,7 +6,8 @@
         $(this).css({'border': '2px solid #009999'});
 
         var selected_val = $(this).attr('value');
-        var next_div = $(this).parent().parent().next('div.frames');
+//        var next_div = $(this).parent().parent().next('div.frames')
+        var next_div = $('[parent-id=' + selected_val + ']');
         next_div.css({'display':'block'});
         next_div.find('input').attr('value', selected_val);
 
