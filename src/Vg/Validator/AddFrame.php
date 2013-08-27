@@ -50,4 +50,3 @@ class AddFrame
         return $this->errors;
     }
 }
-}
