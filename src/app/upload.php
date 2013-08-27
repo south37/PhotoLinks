@@ -27,12 +27,12 @@ use Respect\Validation\Validator as v;
                     $image->setProperties($imagefile);
                     $repository = $container['repository.image'];
                     try {
-                        $repository->insert($image);
+                        $image_id = $repository->insert($image);
                     } catch (Exception $e) {
                         $app->halt(500, $e->getMessage());
                     }
                         //$app->render('upload/upload.finish.html.twig',["image_id" => 3]);
-                        $app->redirect($app->urlFor('add_frame_from_upload',array("image_id" => 3)));
+                        $app->redirect($app->urlFor('add_frame_from_upload',array("image_id" => $image_id)));
                 } else {
                     $app->render('upload/upload.error.html.twig');
                 }
