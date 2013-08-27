@@ -12,12 +12,12 @@
         $('div.frames').each( function() {
             if($(this).data('depth') > depth) {
                 $(this).css({'display':'none'});
-                $(this).find('input').attr('value', '');
+                $(this).find('[name=parent-id]').attr('value', '');
             }
         });
    
         child_div.css({'display':'block'});
-        child_div.find('input').attr('value', selected_id);
+        child_div.find('[name=parent-id]').attr('value', selected_id);
 
         var frames = '';
         var first = true;

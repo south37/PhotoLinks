@@ -6,7 +6,7 @@
     <div class="row">
         <div class="span6 offset3">
             <div class="frames" data-depth="0">
-                <form action="" method="get" class="add-fm">
+                <form action="" method="get">
                     <img src="{{ first_frame['src'] }}" alt="plus1" value="{{ first_frame['id'] }}" width="100" height="100">
                     <input type="hidden" name="parent-frame-id" value="" />
                 </form>
@@ -15,7 +15,7 @@
             {% for frame_row in frame_rows %}
                 {% for frames in frame_row %}
                     <div class="frames" style="display:none" data-depth="{{ frames['depth'] }}" id="{{ frames['parent_id'] }}">
-                        <form action="{{ urlFor('add_frame_from_select') }}" method="get" class="add-fm">
+                        <form action="{{ urlFor('add_frame_from_select') }}" method="get">
 
                         {% for frame in frames['childs'] %}
                             {% if frame['src'] != ''%}
@@ -23,11 +23,11 @@
                             {% endif %}
                         {% endfor %}
 
-                        <input type="text"   name="parent-id" value="" />
-                        <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
-                        <button type="submit" class="btn btn-primary">コマを追加</button>
-                    </form>
-                </div>
+                            <input type="text"   name="parent-id" value="" />
+                            <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
+                            <button type="submit" class="btn btn-primary">コマを追加</button>
+                        </form>
+                    </div>
                 {% endfor %}
             {% endfor %}
             
