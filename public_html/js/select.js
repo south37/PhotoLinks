@@ -6,8 +6,13 @@
         $(this).css({'border': '2px solid #009999'});
 
         var selected_val = $(this).attr('value');
-//        var next_div = $(this).parent().parent().next('div.frames')
-        var next_div = $('[parent-id=' + selected_val + ']');
+        var next_div     = $('[parent-id=' + selected_val + ']');
+        var next_depth   = $(this).parent().parent().data('depth')+1;
+   
+        var next_depth_divs = $('[data-depth=' + next_depth + ']');
+        next_depth_divs.css({'display': 'none'});
+        next_depth_divs.find('input').attr('value', '');
+
         next_div.css({'display':'block'});
         next_div.find('input').attr('value', selected_val);
 
