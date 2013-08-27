@@ -8,13 +8,13 @@ INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, 
 INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, `updated_at`)
     VALUES (2, 1, 'img/ismTest/hatsune02.png', 1, 0, NOW(), NOW());
 INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, `updated_at`)
-    VALUES (3, 1, 'img/ismTest/hatsune01.png', 1, 0, NOW(), NOW());
+    VALUES (3, 1, 'img/ismTest/miku1.jpg', 1, 0, NOW(), NOW());
 INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, `updated_at`)
-    VALUES (4, 1, 'img/ismTest/hatsune02.png', 1, 0, NOW(), NOW());
+    VALUES (4, 1, 'img/ismTest/miku2.jpg', 1, 0, NOW(), NOW());
 INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, `updated_at`)
-    VALUES (5, 1, 'img/ismTest/hatsune01.png', 1, 0, NOW(), NOW());
+    VALUES (5, 1, 'img/ismTest/miku3.jpg', 1, 0, NOW(), NOW());
 INSERT INTO `image` (`id`, `user_id`, `path`, `scope`, `deleted`, `created_at`, `updated_at`)
-    VALUES (6, 1, 'img/ismTest/hatsune02.png', 1, 0, NOW(), NOW());
+    VALUES (6, 1, 'img/ismTest/miku4.gif', 1, 0, NOW(), NOW());
 
 -- frame
 INSERT INTO `frame` (`id`, `user_id`, `theme_id`, `image_id`, `parent_id`, `last_story_id`, `caption`, `created_at`, `updated_at`)

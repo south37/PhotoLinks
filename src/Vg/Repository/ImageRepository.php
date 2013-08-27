@@ -35,8 +35,9 @@ class ImageRepository
         $sth->bindValue(':deleted', $image->deleted, \PDO::PARAM_INT);
         $sth->execute();
         // insertされたカラムのIDを取得する
-        $imageId = getLatestId();
-        return $imageId;
+        //$imageId = getLatestId();
+        //return $imageId;
+        return true;
     }
 
     /**
