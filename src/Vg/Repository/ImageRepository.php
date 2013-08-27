@@ -16,8 +16,8 @@ class ImageRepository
      * 画像登録
      * @param $image
      *
-     * @return boolean 
-     +
+     * @return imageId 
+     *
      */
     public function insert($image)
     {
@@ -33,16 +33,58 @@ class ImageRepository
         $sth->bindValue(':path', $image->path, \PDO::PARAM_STR);
         $sth->bindValue(':scope', $image->scope, \PDO::PARAM_INT);
         $sth->bindValue(':deleted', $image->deleted, \PDO::PARAM_INT);
+        $sth->execute();
+        // insertされたカラムのIDを取得する
+        $imageId = getLatestId();
+        return $imageId;
+    }
+
+    /**
+     * image更新
+     * @param $image
+     *
+     * @return boolean
+     *
+     */
+    public function update($image)
+    {
+        $sql = <<< SQL
+            UPDATE image SET 
+                user_id=:user_id,
+                path=:path,
+                scope=:scope,
+                deleted=:deleted;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':user_id', $image->user_id, \PDO::PARAM_INT);
+        $sth->bindValue(':path', $image->path, \PDO::PARAM_STR);
+        $sth->bindValue(':scope', $image->scope, \PDO::PARAM_INT);
+        $sth->bindValue(':deleted', $image->deleted, \PDO::PARAM_INT);
         try
         {
             $sth->execute();
         }
-        catch (PDOException $e)
+        catch(PDOException $e)
         {
-            die ($e->getMassage());
-            return false;
+            die($e->getMessage());
         }
-        return true;
+    }
+
+    /**
+    * 最後のimageカラムのIDを取得する
+    * @return imageID
+    */
+    private function getLatestId()
+    {
+        // IDを降順にして取得
+        $sql = <<< SQL
+            SELECT * FROM image ORDER BY id DESC;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->execute();
+        // 最初の一個目を取得
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        return $data['id'];
     }
     
     /**

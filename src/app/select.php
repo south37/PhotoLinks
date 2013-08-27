@@ -41,8 +41,9 @@ function inner(&$list, $tree, $depth) {
             $list[$depth] = [];
         }
         array_push($list[$depth], [
-            'id'  => $node['id'],
-            'src' => $node['src']
+            'id'        => $node['id'],
+            'parent_id' => $node['parent_id'],
+            'src'       => $node['src']
         ]);
         
         if (array_key_exists('kids', $node)) {
@@ -75,9 +76,12 @@ function inner(&$list, $tree, $depth) {
             array_push($frames, $temp_frame);
         }
        
-        $frame_tree = list_to_tree($frames);
-        $frame_rows = tree_to_list_with_depth($frame_tree);
-        array_push($frame_rows, []);
+        $frame_tree   = list_to_tree($frames);
+        $frame_rows   = tree_to_list_with_depth($frame_tree);
+        $last_row_num = count($frame_rows) -1 ;
+        $last_row_id  = $frame_rows[$last_row_num][0]['id'];
+        var_dump($last_row_id);
+        array_push($frame_rows, [['parent_id' => $last_row_id]]);
 
         $first_frame = $frame_rows[0][0];
         unset($frame_rows[0]);
