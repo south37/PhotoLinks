@@ -14,7 +14,7 @@
             
             {% for frame_row in frame_rows %}
                 {% for frames in frame_row %}
-                    <div class="frames" style="display:none" data-depth="{{ frames['depth'] }}" parent-id="{{ frames['parent_id'] }}">
+                    <div class="frames" style="display:none" data-depth="{{ frames['depth'] }}" id="{{ frames['parent_id'] }}">
                         <form action="{{ urlFor('add_frame_from_select') }}" method="get" class="add-fm">
 
                         {% for frame in frames['childs'] %}
