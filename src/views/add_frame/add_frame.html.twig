@@ -6,16 +6,21 @@
 
     <div class="row">
         <div class="span6 offset3">
-
-            <form action="{{urlFor('upload_image')}}" method="get" class="form-horizontal well">
-                <div class="controls">
+            <!--
+            <form action="{{urlFor('upload_image')}}" method="get" class="form-horizontal">
+                <div class="text-center">
                     <button id="btn_upload" type="submit" class="btn btn-primary">素材をアップロード</button>
                     <a href="{{ urlFor('material') }}" class="btn btn-primary">素材を選択</a>
                 </div>
             </form>
+            -->
+           <div class="text-center">
+               <a class="btn btn-primary" href="{{urlFor('upload_image')}}"><i class="icon-plus icon-white"></i> 写真から</a>
+               <a class="btn btn-primary" href="{{urlFor('material')}}"><i class="icon-folder-open icon-white"></i> 素材箱から</a>
+           </div>
 
-            <div>
-                <img src="/img/ismTest/placeholder.png" alt="file not found">
+            <div class="text-center">
+                <img src="{{ imgPath }}" alt="file not found" width="200" height="200">
                 <br>{{image_id}}<br>
             </div>
 
@@ -42,24 +47,12 @@
                    </div>
                 </div>
 
-                <div class="controls">"
+                <div class="controls">
                     <button id="make_story" type="submit" class="btn btn-primary"
                     onClick="this.form.action='{{urlFor('make_story')}}'">ストーリーを作成</button>
                 </div>
   
              </form>
-
-            <form action="{{ urlFor('make_story') }}" method="post" class="form-horizontal well">
-                 <div class="control-group">
-                   <label class="control-label" for="Title">Title</label>
-                   <div class="controls">
-                       <input id="title" name="title" type="text" class="span3" value="{{ input.title }}" />
-                   </div>
-                </div>
-                <div class="controls">
-                    <button id="make_story" type="submit" class="btn btn-primary">ストーリーを作成</button>
-                </div>
-            </form>
 
         </div>
     </div>
