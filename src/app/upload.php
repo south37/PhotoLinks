@@ -31,7 +31,8 @@ use Respect\Validation\Validator as v;
                     } catch (Exception $e) {
                         $app->halt(500, $e->getMessage());
                     }
-                    $app->render('upload/upload.finish.html.twig');
+                        //$app->render('upload/upload.finish.html.twig',["image_id" => 3]);
+                        $app->redirect($app->urlFor('add_frame_from_upload',array("image_id" => 3)));
                 } else {
                     $app->render('upload/upload.error.html.twig');
                 }

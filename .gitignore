@@ -9,4 +9,3 @@ var/cache/*
 vendor/*
 *.swp
 public_html/index.php
-public_html/img/*
