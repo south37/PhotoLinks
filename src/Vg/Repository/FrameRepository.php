@@ -86,7 +86,6 @@ SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':themeId', $themeId, \PDO::PARAM_INT);
         $sth->execute();
-        //$frames = new Array();
         $frames = [];
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
         {
@@ -95,5 +94,63 @@ SQL;
             array_push($frames, $frame);
         }
         return $frames;
+     }
+    
+    /**
+     * storyIDで検索する
+     *
+     * @param $storyId
+     *
+     * @return frame[]
+     */
+     public function findsByStoryId($storyId)
+     {
+        $sql = <<< SQL
+            SELECT
+                frame.id, frame.user_id, frame.theme_id, frame.image_id,
+                frame.parent_id, frame.last_story_id, frame.caption
+            FROM frame
+                INNER JOIN frame_story
+                    ON frame.id = frame_story.id
+                INNER JOIN story
+                    ON frame_story.id = story.id
+            WHERE story_id = :storyId;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':themeId', $themeId, \PDO::PARAM_INT);
+        $sth->execute();
+        $frames = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $frame = new Frame();
+            $frame->setProperties($data);
+            array_push($frames, $frame);
+        }
+        return $frames;
+     }
+    
+    /**
+     * 指定されたIDの親フレームを検索する
+     *
+     * @param $id
+     *
+     * @return frame
+     */
+     public function findByParentId($id)
+     {
+        $sql = <<< SQL
+            SELECT 
+                f1.id, f1.user_id, f1.theme_id, f1.image_id,
+                f1.parent_id, f1.last_story_id, f1.caption
+            FROM frame f1, frame f2
+            WHERE f1.id = f2.parentId AND f2.id = :id;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':id', $id, \PDO::PARAM_INT);
+        $sth->execute();
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        $frame = new Frame();
+        $frame->setProperties($data);
+        return $frame;
      }
 }

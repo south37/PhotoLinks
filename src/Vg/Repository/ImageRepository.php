@@ -55,7 +55,7 @@ class ImageRepository
                 path=:path,
                 scope=:scope,
                 deleted=:deleted
-		WHERE id=:id;
+            WHERE id=:id;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':id', $image->id, \PDO::PARAM_INT);
