@@ -1,5 +1,4 @@
 <?php
-use Respect\Validation\Validator as v;
 
 他の: {
     $app->get('/add', function() use ($app, $container) {
