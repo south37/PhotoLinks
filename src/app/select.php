@@ -40,9 +40,16 @@ function inner(&$list, $tree, $depth) {
         if (!array_key_exists($depth, $list)) {
             $list[$depth] = [];
         }
-        array_push($list[$depth], [
+        
+        $parent_id = $node['parent_id'];
+        if (!array_key_exists($parent_id, $list[$depth])) {
+            $list[$depth][$parent_id] = [];
+            $list[$depth][$parent_id]['depth']     = $depth;
+            $list[$depth][$parent_id]['parent_id'] = $parent_id;
+            $list[$depth][$parent_id]['childs']    = [];
+        }
+        array_push($list[$depth][$parent_id]['childs'], [
             'id'        => $node['id'],
-            'parent_id' => $node['parent_id'],
             'src'       => $node['src']
         ]);
         
@@ -80,15 +87,26 @@ function inner(&$list, $tree, $depth) {
             array_push($frames, $temp_frame);
         }
        
-        $frame_tree   = list_to_tree($frames);
-        $frame_rows   = tree_to_list_with_depth($frame_tree);
-        $last_row_num = count($frame_rows) -1 ;
-        $last_row_id  = $frame_rows[$last_row_num][0]['id'];
-        var_dump($last_row_id);
-        array_push($frame_rows, [['parent_id' => $last_row_id]]);
+        $frame_tree = list_to_tree($frames);
+        $frame_rows = tree_to_list_with_depth($frame_tree);
+        $rows_num = count($frame_rows);
+        $frame_rows[$rows_num] = [];
 
-        $first_frame = $frame_rows[0][0];
-        unset($frame_rows[0]);
+        foreach ($frame_rows[$rows_num-1] as $frame_row) {
+            foreach ($frame_row['childs'] as $frame) {
+                $parent_id = $frame['id'];
+                if (!(array_key_exists($parent_id, $frame_rows[$rows_num]))) {
+                    $frame_rows[$rows_num][$parent_id] = [];
+                    $frame_rows[$rows_num][$parent_id]['childs'] = [];
+                }
+                $frame_rows[$rows_num][$parent_id]['depth']     = $rows_num;
+                $frame_rows[$rows_num][$parent_id]['parent_id'] = $parent_id;
+            }
+        }
+        var_dump($frame_rows);
+
+        $first_frame = $frame_rows[0][0]['childs'][0];
+        unset($first_frame[0]);
 
         $app->render('select/select.html.twig', ['first_frame' => $first_frame, 'frame_rows' => $frame_rows, 'theme_id' => $theme_id]);
         })
