@@ -117,7 +117,7 @@ SQL;
             WHERE story_id = :storyId;
 SQL;
         $sth = $this->db->prepare($sql);
-        $sth->bindValue(':themeId', $themeId, \PDO::PARAM_INT);
+        $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
         $sth->execute();
         $frames = [];
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
