@@ -5,4 +5,9 @@
 
 アップロード終了らしいよー
 
+      <form action="{{ urlFor('add_frame') }}" method="get" id="return_add_frame">
+        <input type="text" name="image_id" value="{{ image_id }}" />
+        <button id="btn_return_add_frame" type="submit" class="btn btn-primary">return</button>
+     </form>
+
 {% endblock %}
