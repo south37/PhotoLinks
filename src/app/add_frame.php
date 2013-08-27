@@ -13,6 +13,11 @@ use Respect\Validation\Validator as v;
  
 // get_from_view2
 $app->get('/add_frame', function() use ($app,$container) {
+    //addressを無理やり入れられた時の対策をしましょう
+    
+
+    //
+    
     $input = $app->request()->get();
     var_dump($input);
 
@@ -49,7 +54,7 @@ $app->post('/add_frame/make_frame', function() use ($app,$container) { // form�
     var_dump($input);
 
     // validation
-    $validator = new  \Vg\Validator\AddFrame();
+    $validator = new \Vg\Validator\AddFrame();
 
     if (!$validator->validate($input)){
         $app->render('add_frame/add_frame.html.twig',['errors'=> $validator->errors(),
@@ -68,22 +73,37 @@ $app->post('/add_frame/make_frame', function() use ($app,$container) { // form�
 
 
 // ストーリーを作成 
-$app->post('/add_frame/make_story', function() use ($app) {
+$app->post('/add_frame/make_story', function() use ($app,$container) {
     // make data 
     $input = $app->request()->post();
     $input['last_story_id'] = 0;
     $input['user_id'] = $container['session']->get('user.id');
     $input['theme_id'] = $container['session']->get('theme_id');
 
-    // validation
-    $validator = new  \Vg\Validator\AddFrame();
+    var_dump($input);
 
-    if (!$validator->validate($input)){
-        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator->errors(),
+    // validation
+    $validator_frame = new  \Vg\Validator\AddFrame();
+    $validator_story = new  \Vg\Validator\AddStory();
+    if (!$validator_frame->validate($input)){
+        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_frame->errors(),
             'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
         exit;
     }
 
+    if (!$validator_story->validate($input)){
+        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_story->errors(),
+            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
+        exit;
+    }
+
+    // makeStory + addDB
+    if(!makeStory($input,$app,$container)){
+        exit;
+    }
+
+    $input['last_story_id'] = 1; 
+    
     // makeFrame + addDB 
     if (!makeFrame($input,$app,$container)){
         exit;
@@ -105,7 +125,6 @@ function makeFrame($property,$app,$c){
         return true;
     } catch (Exception $e) {
         $app->halt(500, $e->getMessage());
-
         return false;
     }
 };
