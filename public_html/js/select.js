@@ -5,9 +5,11 @@
         $(this).parent().children('img').css({'border': '0px solid #000000'});
         $(this).css({'border': '2px solid #009999'});
 
+        var next_depth   = $(this).parent().parent().data('depth')+1;
         var selected_val = $(this).attr('value');
-//        var next_div = $(this).parent().parent().next('div.frames')
-        var next_div = $('[parent-id=' + selected_val + ']');
+        var next_div     = $('[parent-id=' + selected_val + ']');
+    
+        $('[data-depth=' + next_depth + ']').css({'display':'none'});
         next_div.css({'display':'block'});
         next_div.find('input').attr('value', selected_val);
 
