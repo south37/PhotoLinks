@@ -28,9 +28,9 @@ $app->get('/add_frame', function() use ($app,$container) {
     ;
 
 // geti_from_view5
-$app->get('/add_frame/:image_id', function($image_id) use ($app) {
+$app->get('/add_frame/:image_id', function($image_id) use ($app,$container) {
     $input = $app->request()->get();
-    $parent_id = $input['parent-id'];
+    $parent_id = $container['session']->get('parent_id');
 
     $app->render('add_frame/add_frame.html.twig',["image_id"=>$image_id,"parent_id" => $parent_id]);
     })
