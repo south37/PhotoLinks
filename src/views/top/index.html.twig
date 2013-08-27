@@ -3,8 +3,65 @@
 {% block contents %}
     <!-- Main hero unit for a primary marketing message or call to action -->
     <div class="hero-unit">
-        <h1>Welcome GroupWorkBase Application</h1>
-        <p>This is a demonstration page with GroupWorkBase.</p>
+        <h1>Photo Links(仮)</h1>
+        <p>let's make our stories.</p>
         <p><a href="{{urlFor('doc_top')}}" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
     </div>
+
+   <h2>Top Favs!</h2>
+   <div class="row text-center">
+    <ul class="bxslider" id="slider">
+        <li><a href="{{urlFor('select')}}"><img src="img/plus.png" alt="hoge" width="200"></a>hoge</li>
+        <li><img src="img/plus.png" alt=""width="200"></li>
+        <li><img src="img/study2.png" alt=""width="200" ></li>
+        <li><img src="img/plus.png" alt=""width="200" ></li>
+    </ul>
+   </div>
+
+   <div class="row">
+        <div class="tabbable span12">
+            <ul class="nav nav-tabs text-center">
+                <li class="active span3"><a href="#1" data-toggle="tab">theme</a></li>
+                <li class="span3 offset1"><a href="#2"data-toggle="tab"> stories</a></li>
+                <li class="span3 offset1"><a href="#3"data-toggle="tab"> material</a></li>
+            </ul>
+            
+            <div class="tab-content">
+                <!--1つめのtab内容．新着テーマ順-->
+                <div id="1" class="tab-pane active">
+                    <p>hoge</p>
+                </div>
+                
+                <!--２つめのtab.新着ストーリ-->
+                <div id="2" class="tab-pane">
+                    <p>var</p>
+                </div>
+                
+                <!--3つめのtab.新着material-->
+                <div id="3" class="tab-pane">
+                    <p>nya</p>
+                </div>
+            </div>
+        </div>
+   </div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function(){
+       $('#slider').bxSlider({
+           auto: true,
+           pause:  5000,
+           speed: 1000,
+           pager: false,
+           slideWidth: 600,
+           minSlides: 3, //一画面に表示する数
+           maxSlides: 4,
+           moveSlides: 1, //移動時にずれる数
+           prevText: '<',
+           nextText: '>'
+     });
+    });
+</script>
+
 {% endblock %}

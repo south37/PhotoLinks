@@ -1,6 +1,6 @@
 <?php
 /**
- * サンプル welcomeコントローラー
+ * top画面 
  */
 $app->get('/', function() use ($app) {
         $app->render('top/index.html.twig');
