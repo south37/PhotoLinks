@@ -22,14 +22,16 @@
                         {% endif %}
                     {% endfor %}
 
-                        <input type="text" name="parent-id" value="" />
+                        <input type="text"   name="parent-id" value="" />
+                        <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
                         <button type="submit" class="btn btn-primary">コマを追加</button>
                     </form>
                 </div>
             {% endfor %}
             
            <form action="{{ urlFor('story_view_get') }}" method="get" id="story-fm">
-                <input type="text" name="selected-frames-id" value="" />
+                <input type="text"   name="selected-frames-id" value="" />
+                <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
                 <button id="story-view-btn" type="submit" class="btn btn-primary">ストーリーを見る</button>
             </form>
         </div>

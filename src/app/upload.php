@@ -22,22 +22,37 @@ use Respect\Validation\Validator as v;
             if (is_uploaded_file($_FILES['upfile']['tmp_name'])) {
                 if(move_uploaded_file($_FILES['upfile']['tmp_name'],__DIR__.'/../../public_html/img/public_img/'.$_FILES['upfile']['name'])) {
 
-                    $imagefile = array("user_id"=>($container['session']->get('user.id')),"path"=>"","scope"=>0,"deleted"=>0); 
                     $image = new \Vg\Model\Image();
+                    $imagefile = array("user_id"=>($container['session']->get('user.id')),"path"=>"","scope"=>0,"deleted"=>0); 
                     $image->setProperties($imagefile);
                     $repository = $container['repository.image'];
-                    try {
-                        $repository->insert($image);
+                    // 画像データをDBにInsert
+                     try {
+                        $image_id = $repository->insert($image);
                     } catch (Exception $e) {
                         $app->halt(500, $e->getMessage());
                     }
-                        //$app->render('upload/upload.finish.html.twig',["image_id" => 3]);
-                        $app->redirect($app->urlFor('add_frame_from_upload',array("image_id" => 3)));
+
+                    // image_idと画像の拡張子を取得してpathを更新
+                    $extension = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
+                    $imagefile = array("id"=>$image_id,"user_id"=>($container['session']->get('user.id')),"path"=>__DIR__."/../../public_html/img/public_img/".$image_id.".".$extension,"scope"=>0,"deleted"=>0);
+                    $image->setProperties($imagefile);
+                     try {
+                        $repository->update($image);
+                    } catch (Exception $e) {
+                        $app->halt(500, $e->getMessage());
+                    }
+                    // リネーム処理
+                    rename(__DIR__.'/../../public_html/img/public_img/'.$_FILES['upfile']['name'],__DIR__."/../../public_html/img/public_img/".$image_id.".".$extension);
+
+                    $app->redirect($app->urlFor('add_frame_from_upload',array("image_id" => $image_id)));
                 } else {
-                    $app->render('upload/upload.error.html.twig');
+                    $app->flash('info', 'アップロード失敗。');
+                    $app->redirect($app->urlFor('upload_post'));
                 }
             } else {
-                $app->render('upload/upload.error.html.twig');
+                    $app->flash('info', 'アップロード失敗');
+                    $app->redirect($app->urlFor('upload_post'));
             }
         })
         ->name('upload_post')

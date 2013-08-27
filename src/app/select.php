@@ -54,6 +54,10 @@ function inner(&$list, $tree, $depth) {
 
 見る: {
     $app->get('/select', function() use ($app, $container) {
+        $input = $app->request()->get();
+        if (isset($input['theme_id'])) {
+            $theme_id = $input['theme_id'];
+        }
         $theme_id = 1;
 
         $theme = $container['repository.theme']->findById($theme_id);
@@ -86,7 +90,7 @@ function inner(&$list, $tree, $depth) {
         $first_frame = $frame_rows[0][0];
         unset($frame_rows[0]);
 
-        $app->render('select/select.html.twig', ['first_frame' => $first_frame, 'frame_rows' => $frame_rows]);
+        $app->render('select/select.html.twig', ['first_frame' => $first_frame, 'frame_rows' => $frame_rows, 'theme_id' => $theme_id]);
         })
         ->name('select')
     ;

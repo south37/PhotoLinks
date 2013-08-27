@@ -35,9 +35,9 @@ class ImageRepository
         $sth->bindValue(':deleted', $image->deleted, \PDO::PARAM_INT);
         $sth->execute();
         // insertされたカラムのIDを取得する
-        //$imageId = getLatestId();
-        //return $imageId;
-        return true;
+        $imageId = $this->getLatestId();
+        return $imageId;
+        // return true;
     }
 
     /**
@@ -54,9 +54,11 @@ class ImageRepository
                 user_id=:user_id,
                 path=:path,
                 scope=:scope,
-                deleted=:deleted;
+                deleted=:deleted
+            WHERE id=:id;
 SQL;
         $sth = $this->db->prepare($sql);
+        $sth->bindValue(':id', $image->id, \PDO::PARAM_INT);
         $sth->bindValue(':user_id', $image->user_id, \PDO::PARAM_INT);
         $sth->bindValue(':path', $image->path, \PDO::PARAM_STR);
         $sth->bindValue(':scope', $image->scope, \PDO::PARAM_INT);
@@ -134,6 +136,34 @@ SQL;
         $image->setProperties($data);
         
         return $image;
+     }
+
+    /**
+     * 最新の画像を件数を指定してページ単位で検索する
+     *
+     * @param $page
+     *
+     * @return Image[]
+     *
+     * 件数は20の定数なので、変更したければ引数に加えてください
+     */
+     public function findByPage($page)
+     {
+         $sql = <<< SQL
+            SELECT * FROM image
+            ORDER BY id DESC LIMIT :start, 20;
+SQL;
+         $sth = $this->db->prepare($sql);
+         $sth->bindValue(':start', $page * 20, \PDO::PARAM_INT);
+         $sth->execute();
+         $images = [];
+         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+         {
+             $image = new Image();
+             $image->setProperties($data);
+             array_push($images, $image);
+         }
+         return $images;
      }
 
     /**
