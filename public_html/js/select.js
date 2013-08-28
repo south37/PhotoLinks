@@ -34,8 +34,8 @@
                 //クリック画像以下すべて非表示
                 //$(this).css({'display':'none'});
                 $(this).hide();
-                $(this).children('div.frames').hide();
-                $(this).children('div.frames').attr('data-parent', '');
+                $(this).find('div.frames').hide();
+                //$(this).find('div.frames').attr('data-parent', '');
                 $(this).find('img').css({'border': '0px solid #000000'});
             } else if (depth === now_depth) {
                 //クリック画像段は枠だけを消す
@@ -49,16 +49,20 @@
 
         // step5
         $('#field-' + (now_depth+1)).show();
-        $('#field-' + (now_depth+1)).children('div.frames').show();
-        alert("sel:"+selected_id + " now_depth:"+now_depth);
+        $('#field-' + (now_depth+1)).find('div.frames').show();
         if(now_depth !== 0){
-            alert('if');
-            //$('#field-' + (now_depth+1)).children('.frames').each( function() {
-            $('#field-'+now_depth).children('div.frames').each( function() {
+            //$('#field-'+(now_depth+1)).find('.frames','[data-parent!='+selected_id+']').hide();
+            $('#field-' + (now_depth+1)).find('.frames').each( function() {
+                   
+                    if(selected_id == $(this).data('parent')){
+                        $(this).show();
+                    }else{
+                        $(this).hide();
+                        
                     //alert("sel:"+selected_id+" parent:" + $(this).data('parent'));
-                    alert("sel:"+selected_id);
-                    });
+                    }});
         }
+
         child_div.find('div.frames').attr('data-parent', selected_id);//<-何のため？
 
         // step6
