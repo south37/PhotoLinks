@@ -131,17 +131,14 @@ SQL;
         $sth->execute();
         $frames = [];
         
-        $data = $sth->fetch(\PDO::FETCH_ASSOC);
-        var_dump($data);
+      //  $data = $sth->fetch(\PDO::FETCH_ASSOC);
+       // var_dump($data);
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
         {
             $frame = new Frame();
-            var_dump($data);
             $frame->setProperties($data);
             array_push($frames, $frame);
-            echo "in while";
         }
-        echo "jhoge"  ;
         return $frames;
      }
     

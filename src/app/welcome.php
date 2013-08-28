@@ -5,23 +5,21 @@
 $app->get('/', function() use ($app, $container) {
 
     // get top story array
+    
     $repository_story = $container['repository.story'];
     $repository_frame = $container['repository.frame'];
     $repository_image = $container['repository.image'];
 
     $storyArrayOrderedByFavs = [];
     $lastFrameArrayOrderedByFavs = [];
-    $frameArray;
+    $frameArray = [];
 
     try{
         // storyの配列
         $storyArrayOrderedByFavs = $repository_story->findsHotStories(0,5);
         // 
         foreach ($storyArrayOrderedByFavs as $story) {
-            //var_dump($story);
-            //var_dump((INT)($story->id));
-            $frames = $repository_frame->findsByStoryId(1);
-            var_dump($frames);exit;
+            $frames = $repository_frame->findsByStoryId((INT)($story->id));
             $frame  = $frames[count($frames)-1];
            
             $add_frame = [
@@ -30,6 +28,7 @@ $app->get('/', function() use ($app, $container) {
                 'story_id'  => (INT) $frame->last_story_id,
                 'src'       => $repository_image->findByFrameId($frame->id)->path
                 ];
+           echo $add_frame['src'];
             array_push($frameArray, $add_frame);
         }
 
@@ -37,11 +36,10 @@ $app->get('/', function() use ($app, $container) {
         $app->halt(500, $e->getMessage());
    
     }
-    var_dump($frameArray);
-
+    
     // rendering
     $app->render('top/index.html.twig',["frameArray"=>$frameArray]);
-
+    //$app->render('top/index.html.twig');
 })
     ->name('welcome')
     ;

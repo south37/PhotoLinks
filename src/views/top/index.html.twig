@@ -17,7 +17,7 @@
         <li><img src="img/study2.png" alt=""width="200" ></li>
         {% for frame in frameArray %}
         <li>
-        <a href="{{urlFor('story_view',{'story_id': frame['story_id']}) }}"><img src="{{frame['path']}}" alt="not found" width="300"><br>caption</a>
+        <a href="{{urlFor('story_view_story',{'story_id': frame['story_id']}) }}"><img src="{{frame['src']}}" alt="not found" width="300"><br>caption</a>
         </li>
         {% endfor %}
     </ul>
