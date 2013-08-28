@@ -21,11 +21,10 @@
    
 
     // Topページからの遷移
-    // $app->get('/story_view/story/:story_id',function($storyId) use($app, $container){
-    $app->get('/story_view/story',function() use($app, $container){
-       //  $input = $app->request()->get();
+    $app->get('/story_view/story/:story_id',function($storyId) use($app, $container){
+   //  $app->get('/story_view/story',function() use($app, $container){
        
-       $storyId = 1;
+      //  $storyId = 1;
        $tmpStory = $container['repository.story']->findByID($storyId);
        $storyTitle = $tmpStory->title;
        $tmpUser = $container['repository.user']->findById($tmpStory->user_id);
