@@ -15,6 +15,11 @@
         <li><a href="{{urlFor('select')}}"><img src="img/plus.png" alt="hoge" width="300"></a>title<br>fabs</li>
         <li><a href="{{urlFor('select')}}"><img src="img/plus.png" alt="hoge" width="300"></a>title<br>fabs</li>
         <li><img src="img/study2.png" alt=""width="200" ></li>
+        {% for frame in frameArray %}
+        <li>
+        <a href="{{urlFor('story_view',{'story_id': frame['story_id']}) }}"><img src="{{frame['path']}}" alt="not found" width="300"><br>caption</a>
+        </li>
+        {% endfor %}
     </ul>
    </div>
 
