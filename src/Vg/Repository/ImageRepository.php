@@ -174,14 +174,14 @@ SQL;
      * @return $numberOfColumn 
      *
      */
-     public function getNumOfImageColumn($page)
+     public function getNumOfImageRow()
      {
          $sql = <<< SQL
             SELECT * FROM image;
 SQL;
          $sth = $this->db->prepare($sql);
          $sth->execute();
-         $numberOfColumn = $sth->fetchColumn();
-         return $numberOfColumn;
+         $numberOfRow = $sth->rowCount();
+         return $numberOfRow;
      }
 }
