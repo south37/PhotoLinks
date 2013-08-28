@@ -17,40 +17,39 @@
     </div>
 
     {% for depth, frames_row in frame_rows %}
-        <div class="row">
+        <div class="row frames-field"  data-depth="{{ depth }}" id="field-{{depth}}">
+        
             <!--left_img_frame-->
-            <div class="span2 offset1 text-center">
-                <img src="/img/assets/searchIcon.png" alt="no_source" width="150" height="150" />
+            <div class="span3 text-center">
+                <img class="preview-frame" src="/img/assets/searchIcon.png" alt="no_source" width="150" height="150" id="preview-{{depth}}" />
             </div>
        
             <!--main frames-->
             <div class="span6 text-center">
                 {% for parent_id, frames in frames_row %}
-                    <div class="frames" style="display:none" data-depth="{{ depth }}" id="{{ parent_id }}">
+                    <div class="frames" data-parent="{{parent_id}}" id="childlen-of-{{ parent_id }}">
                         {% for frame in frames %}
                             {% if frame['src'] != ''%}
-                                <img src="{{ frame['src'] }}" alt="plus1" value="{{ frame['id'] }}" width="100" height="100" />
+                                <img class="frame" src="{{ frame['src'] }}" alt="not found" value="{{ frame['id'] }}" width="100" height="100" />
                             {% endif %}
                         {% endfor %}
-                        
-                        <!--hidden param from here-->
-                        <form action="{{ urlFor('add_frame_from_select') }}" method="get">
-                            <input type="hidden" name="parent-id" value="" />
-                            {% if (depth != 0) %}
-                                <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
-                                <input type="image" src="/img/public_img/plus.png" alt="コマを追加" width="100" height="100">
-                            {% endif %}
-                        </form>
-                        <!--hidden param to here-->
+
                     </div>
                 {% endfor %}
             </div>
 
             <!--right_plus_img-->
             <div class="span2 text-center">
-                <img src="/img/assets/plusIcon.png" alt="no_source" width="100" height="100" />
+               <!--hidden param from here-->
+               <form action="{{ urlFor('add_frame_from_select') }}" method="get">
+                   <input type="hidden" name="parent-id" value="" />
+                   {% if (depth != 0) %}
+                       <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
+                       <input type="image" src="/img/assets/plusIcon.png" alt="コマを追加" width="50" height="50">
+                   {% endif %}
+               </form>
+               <!--hidden param to here-->
             </div>
-       
 
         </div>
     {% endfor %}
@@ -61,8 +60,6 @@
                 <button id="story-view-btn" type="submit" class="btn btn-primary">ストーリーを見る</button>
            </form>
 
-        </div>
-    </div>
 {% endblock %}
 
 {% block javascript %}
