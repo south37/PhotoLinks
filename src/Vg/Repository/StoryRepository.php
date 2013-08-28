@@ -31,7 +31,7 @@ class StoryRepository
         $sth->bindValue(':user_id', $story->user_id, \PDO::PARAM_INT);
         $sth->bindValue(':title', $story->title, \PDO::PARAM_STR);
         $sth->bindValue(':favorite', $story->favorite, \PDO::PARAM_INT);
-        $sth->execute();
+     
         $storyId = $this->getLatestId();
         return $storyId;
     }

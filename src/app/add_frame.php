@@ -96,11 +96,6 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
     // validation
     $validator_frame = new  \Vg\Validator\AddFrame();
     $validator_story = new  \Vg\Validator\AddStory();
-    if (!$validator_frame->validate($input)){
-        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_frame->errors(),
-            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
-        exit;
-    }
 
     if (!$validator_story->validate($input)){
         $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_story->errors(),
@@ -109,14 +104,25 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
     }
 
     // makeStory + addDB
-    if(!makeStory($input,$app,$container)){
+    if($storyId = makeStory($input,$app,$container) < 0){
         exit;
     }
 
-    $input['last_story_id'] = 1; 
-    
+    $input['last_story_id'] = $storyId; 
+
+    if (!$validator_frame->validate($input)){
+        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_frame->errors(),
+            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
+        exit;
+    }
+
     // makeFrame + addDB 
-    if (!makeFrame($input,$app,$container)){
+    if ($lastFrameId = makeFrame($input,$app,$container) < 0){
+        exit;
+    }
+
+    // connect frame to story
+    if (!connectFramesToStory($lastFrameId,$storyId,$app,$container)){
         exit;
     }
 
@@ -130,11 +136,11 @@ function makeFrame($property,$app,$c){
     $repository = $c['repository.frame'];
     
     try {
-        $repository->insert($frame);
-        return true;
+        $newFrameId = $repository->insert($frame);
+        return $newFrameId;
     } catch (Exception $e) {
         $app->halt(500, $e->getMessage());
-        return false;
+        return -1;
     }
 };
 
@@ -145,14 +151,18 @@ function makeStory($property,$app,$c){
     $repository = $c['repository.story'];
     
     try {
-        $repository->insert($story);
-        return true;
+        $newStoryId = $repository->insert($story);
+        return $newStoryId;
     } catch (Exception $e) {
         $app->halt(500, $e->getMessage());
-        return false;
+        return -1;
     }
 };
 
+// story_frame関連付け
+function connectFramesToStory($lastFrameId, $storyId, $app, $c){
+    $repository = $c['repository.story_frame'];
+}
 
 // 確認画面
 $app->get('/add_frame/confirm',function() use ($app){
