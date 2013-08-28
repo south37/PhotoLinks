@@ -49,8 +49,13 @@ use Respect\Validation\Validator as v;
                 $app->redirect($app->urlFor('upload_image'));
             }
 
-            if (!in_array($mime_type, ['image/jpeg', 'image/png', 'image/gif'])) {
-                $app->flash('info', '画像の形式が間違っています');
+            if ($extension === 'jpg') {
+                $mime_extension = 'image/jpeg';
+            } else {
+                $mime_extension = 'image/' + $extension;
+            }
+            if ($mime_extension !== $mime_type) {
+                $app->flash('info', '画像の形式と拡張子が一致していません');
                 $app->redirect($app->urlFor('upload_image'));
             }
             
