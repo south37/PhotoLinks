@@ -1,6 +1,10 @@
 "use strict";
 
 (function(){
+    $(function () {
+        $('#0').css({'display': 'block'});
+    });
+
     $('div.frames img').click( function () {
         var selected_id = $(this).attr('value');
         var child_div   = $('#' + selected_id);
