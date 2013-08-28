@@ -151,4 +151,29 @@ SQL;
         }
         return true;
     }
+    
+    /**
+     * storyをfavoriteの降順でソートして返す 
+     *
+     * @return Story[]
+     * 
+     */
+    public function findsHotStories()
+    {
+        // ストーリーの「いいね」の多い順にソートする
+        $sql = <<< SQL
+            SELECT * FROM story
+            ORDER BY favorite DESC;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
+    }
 }
