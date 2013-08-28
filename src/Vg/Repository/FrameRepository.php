@@ -130,12 +130,14 @@ SQL;
         $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
         $sth->execute();
         $frames = [];
+
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
         {
             $frame = new Frame();
             $frame->setProperties($data);
             array_push($frames, $frame);
         }
+
         return $frames;
      }
     

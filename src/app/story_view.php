@@ -3,25 +3,45 @@
  * story_view controller
  */
 
-/*
-$app->get('/story_view', function() use ($app){
+    // 画像PathとCaptionをDBから取得
+    function select_frame_data_list($container,$frameList) {
 
-    //debug
-    $imgPathList = [];
+        $frameDataList = [];
 
-    //Default画像を出すテスト
-    for($i = 0; $i < 10; $i++){
-        $imgPath = "/img/ismTest/hatsune02.png";
-        array_push($imgPathList, $imgPath);
+	for($i = 0; $i < count($frameList); $i++){
+	    $tmpFrame = $container['repository.frame']->findById($frameList[$i]);
+	    $tmpImage = $container['repository.image']->findByFrameId($tmpFrame->id);
+            $tmpCaption = $container['repository.frame']->findById($frameList[$i]);
+            $tmpFrameData = array("image"=>$tmpImage->path,"caption"=>$tmpCaption->caption); 
+            array_push($frameDataList,$tmpFrameData);
+	}
+
+        return $frameDataList;
     }
+   
 
-    $app->render('story_view/story_view.html.twig',["imgPathList" => $imgPathList]);
-})
-    ->name('story_view')
+    // Topページからの遷移
+    // $app->get('/story_view/story/:story_id',function($storyId) use($app, $container){
+    $app->get('/story_view/story',function() use($app, $container){
+       //  $input = $app->request()->get();
+       
+       $storyId = 1;
+       $tmpStory = $container['repository.story']->findByID($storyId);
+       $storyTitle = $tmpStory->title;
+       $tmpUser = $container['repository.user']->findById($tmpStory->user_id);
+       $namedUserName = $tmpUser->name;
+
+       $tmpFrameStories = $container['repository.frame']->findsByStoryId($storyId);
+       $frameList = []; 
+       foreach( $tmpFrameStories as $tmpFrameStory){
+           array_push($frameList,$tmpFrameStory->id);
+       }
+       $app->render('story_view/story_view.html.twig',["storyTitle"=>$storyTitle,"namedUserName"=>$namedUserName,"frameDataList"=>select_frame_data_list($container,$frameList)]);  
+    }) ->name('story_view_story')
     ;
- */
 
-    $app->get('/story_view',function() use($app, $container){
+    // Selectページからの遷移
+    $app->get('/story_view/frames',function() use($app, $container){
 	$input = $app->request()->get();
 	var_dump($input);
 	// todo intのエラー処理！
@@ -31,41 +51,6 @@ $app->get('/story_view', function() use ($app){
 	$frameListStr = $input["selected-frames-id"];
 	$frameList = explode(',',$frameListStr);
 
-	//DBから画像パスを取得．
-	$repository = $container['repository.frame'];
-	$imgPathList =[];
-
-        $captionList = [];
-	for($i = 0; $i < count($frameList); $i++){
-	    $tmpFrame = $repository->findById($frameList[$i]);
-	    //$imgPath = "/img/ismTest/hatsune01.png";
-	    //$imgPath = $container['repository.image']->findById($tmpFrame->image_id);
-	    $tmpImage = $container['repository.image']->findByFrameId($tmpFrame->id);
-	    array_push($imgPathList, $tmpImage->path);
-            $tmpCaption = $container['repository.frame']->findById($frameList[$i]);
-            array_push($captionList,$tmpCaption->caption);
-	}
-	$app->render('story_view/story_view.html.twig',["imgPathList" => $imgPathList,"captionList"=>$captionList]);
-    })  ->name('story_view_get')
+	$app->render('story_view/story_view.html.twig',["frameDataList"=>select_frame_data_list($container,$frameList)]);
+    })  ->name('story_view_frames')
     ;
-
-/*
-$app->post('/story_view',function() use($app){
-    $input = $app->request()->post();
-
-    //postでframe_idをカンマ区切りで取得．
-    $frameListStr = $input["selected-frames-id"];
-    $frameList = explode(',',$frameListStr);
-
-    //DBから画像パスを取得．
-    $repository = $container['repository.']
-    $imgPathList =[];
-    for($i = 1; $i < count($frameList); $i++){
-        $imgPath = "/img/ismTest/hatsune01.png";
-        array_push($imgPathList, $imgPath);
-    }
-
-    $app->render('story_view/story_view.html.twig',["imgPathList" => $imgPathList]);
-})->name('story_view_post')
-    ;
- */
