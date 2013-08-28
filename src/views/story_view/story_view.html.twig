@@ -10,9 +10,9 @@
             <p>favNum:hoge</p>
 
             <!--画像表示するところ-->
-            {% for path in imgPathList %}
+            {% for path in imgPathList and caption in captionList %}
                 <img src="{{ path }}" alt="パス不明" width="400" height="400">
-                <br>caption<br><br>
+                <br>{{ caption }}<br><br>
             {% endfor %}
 
             <!--selectに飛ばす-->
