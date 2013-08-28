@@ -7,7 +7,10 @@
         <div class="span6 offset3">
             <form action="{{ urlFor('upload_post')}}" method="post" enctype="multipart/form-data" class="form-horizontal well">
                 <div class="control-group">
-                    <input type="file" name="upfile" accept="image/*" class="span3"/>
+                    <input id="image-select" type="file" name="upfile" accept="image/*" class="span3"/>
+                </div>
+                <div type="text-center">
+                    <img src="/img/public_img/200x200.jpg" id="preview" alt="preview" width="320" />
                 </div>
                 <div class="controls">
                     <button type="submit" class="btn btn-primary">アップロードする</button>
@@ -15,4 +18,8 @@
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('/js/upload.js') }}"></script>
 {% endblock %}
