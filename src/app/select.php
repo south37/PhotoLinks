@@ -44,11 +44,8 @@ function inner(&$list, $tree, $depth) {
         $parent_id = $node['parent_id'];
         if (!array_key_exists($parent_id, $list[$depth])) {
             $list[$depth][$parent_id] = [];
-            $list[$depth][$parent_id]['depth']     = $depth;
-            $list[$depth][$parent_id]['parent_id'] = $parent_id;
-            $list[$depth][$parent_id]['childs']    = [];
         }
-        $num = array_push($list[$depth][$parent_id]['childs'], [
+        $num = array_push($list[$depth][$parent_id], [
             'id'        => $node['id'],
             'src'       => $node['src'],
             'is_grandchild_exists' => true
@@ -57,7 +54,7 @@ function inner(&$list, $tree, $depth) {
         if (array_key_exists('kids', $node)) {
             inner($list, $node['kids'], $depth+1);
         } else {
-            $list[$depth][$parent_id]['childs'][$num-1]['is_grandchild_exists'] = false;
+            $list[$depth][$parent_id][$num-1]['is_grandchild_exists'] = false;
         }
     }
 }
@@ -95,26 +92,15 @@ function inner(&$list, $tree, $depth) {
         
         foreach ($frame_rows as $depth => $frame_row) {
             foreach ($frame_row as $frames) {
-                foreach ($frames['childs'] as $frame) {
+                foreach ($frames as $frame) {
                     if (!isset($frame_rows[$depth+1])) {
                         $frame_rows[$depth+1] = [];
                     }
-
-                    $parent_id = $frame['id'];
-                    if (!(array_key_exists($parent_id, $frame_rows[$depth+1]))) {
-                        $frame_rows[$depth+1][$parent_id] = [];
-                        $frame_rows[$depth+1][$parent_id]['childs'] = [];
-                    }
-                    $frame_rows[$depth+1][$parent_id]['depth']     = $depth+1;
-                    $frame_rows[$depth+1][$parent_id]['parent_id'] = $parent_id;
                 }
             }
         }
 
-        $first_frame = $frame_rows[0][0]['childs'][0];
-        unset($first_frame[0]);
-
-        $app->render('select/select.html.twig', ['first_frame' => $first_frame, 'frame_rows' => $frame_rows, 'theme_id' => $theme_id]);
+        $app->render('select/select.html.twig', ['frame_rows' => $frame_rows, 'theme_id' => $theme_id]);
         })
         ->name('select')
     ;
