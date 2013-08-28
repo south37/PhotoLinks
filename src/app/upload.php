@@ -4,7 +4,7 @@ use Respect\Validation\Validator as v;
 
 
 画像アップロード: {
-    $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app) {
+    $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app, $container) {
             // CSRF対策のトークンを埋め込む
             $token = $container['session']->id();
             $app->render('upload/upload.html.twig', ['token'=>$token]);
@@ -14,6 +14,7 @@ use Respect\Validation\Validator as v;
 
     $app->post('/upload', $redirectIfNotLogin($container['session']), function () use ($app,$container) {
             $input = $app->request()->post();
+            $mime_type = image_type_to_mime_type(exif_imagetype($_FILES['upfile']['tmp_name']));
 
             // CSRF対策
             if($input['token'] != $container['session']->id())
@@ -21,7 +22,7 @@ use Respect\Validation\Validator as v;
                 $app->flash('info', '画面遷移に失敗しました');
                 $app->redirect($app->urlFor('welcome'));
             }
-
+            
             $validator = new \Vg\Validator\Upload();
             if (!$validator->validate($input)) {
                 $errors = $validator->errors();
@@ -42,6 +43,17 @@ use Respect\Validation\Validator as v;
                 $app->redirect($app->urlFor('upload_image'));
             }
 
+            $extension = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
+            if (!in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+                $app->flash('info', '画像の形式はjpgかpngかgifでお願いします');
+                $app->redirect($app->urlFor('upload_image'));
+            }
+
+            if (!in_array($mime_type, ['image/jpeg', 'image/png', 'image/gif'])) {
+                $app->flash('info', '画像の形式が間違っています');
+                $app->redirect($app->urlFor('upload_image'));
+            }
+            
             $image = new \Vg\Model\Image();
             $imagefile = [
                 "user_id" => ($container['session']->get('user.id')),
