@@ -103,6 +103,13 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
 
     var_dump($input);
 
+    // CSRF対策
+    if($input['token'] != $container['session']->id())
+    {
+        $app->flash('info', '画面遷移に失敗しました');
+        $app->redirect($app->urlFor('welcome'));
+    }
+
     // validation
     $validator_frame = new  \Vg\Validator\AddFrame();
     $validator_story = new  \Vg\Validator\AddStory();
