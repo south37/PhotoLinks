@@ -5,14 +5,23 @@ use Respect\Validation\Validator as v;
 
 画像アップロード: {
     $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app) {
-            $app->render('upload/upload.html.twig');
+            // CSRF対策のトークンを埋め込む
+            $token = $container['session']->id();
+            $app->render('upload/upload.html.twig', ['token'=>$token]);
         })
         ->name('upload_image')
     ;
 
     $app->post('/upload', $redirectIfNotLogin($container['session']), function () use ($app,$container) {
             $input = $app->request()->post();
-                
+
+            // CSRF対策
+            if($input['token'] != $container['session']->id())
+            {
+                $app->flash('info', '画面遷移に失敗しました');
+                $app->redirect($app->urlFor('welcome'));
+            }
+
             $validator = new \Vg\Validator\Upload();
             if (!$validator->validate($input)) {
                 $errors = $validator->errors();
