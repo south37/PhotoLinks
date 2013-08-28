@@ -2,20 +2,22 @@
 
 (function(){
     $('div.frames img').click( function () {
-        $(this).parent().children('img').css({'border': '0px solid #000000'});
-        $(this).css({'border': '2px solid #009999'});
-
         var selected_id = $(this).attr('value');
         var child_div   = $('#' + selected_id);
-        var depth  = $(this).parent().parent().data('depth');
+        var now_depth   = $(this).parent().parent().data('depth');
 
         $('div.frames').each( function() {
-            if($(this).data('depth') > depth) {
+            var depth = $(this).data('depth');
+            if(depth > now_depth) {
                 $(this).css({'display':'none'});
                 $(this).find('[name=parent-id]').attr('value', '');
+                $(this).find('img').css({'border': '0px solid #000000'});
+            } else if (depth === now_depth) {
+                $(this).find('img').css({'border': '0px solid #000000'});
             }
         });
-   
+
+        $(this).css({'border': '2px solid #009999'});
         child_div.css({'display':'block'});
         child_div.find('[name=parent-id]').attr('value', selected_id);
 
