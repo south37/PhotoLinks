@@ -161,7 +161,23 @@ function makeStory($property,$app,$c){
 
 // story_frame関連付け
 function connectFramesToStory($lastFrameId, $storyId, $app, $c){
-    $repository = $c['repository.story_frame'];
+    $repository_Frame = $c['repository.frame'];
+    $repository_FrameStory = $c['repository.story_frame'];
+
+    try{
+        $tmpFrame = $repository_Frame->findById($lastFrameId);
+
+        while($tmpFrame->parent_id){
+            $tmpConnect = ['frame_id' => $tmpFrame->id, 'story_id' => $storyId];
+            $repository_FrameStory->insert($tmpConnect);
+            $tmpFrame = $repository_Frame->findById($tmpFrame->parent_id);
+        }
+        return true;
+
+    } catch (Exception $e){
+        $app->halt(500, $e->getMessage());
+        return false;
+    }
 }
 
 // 確認画面
