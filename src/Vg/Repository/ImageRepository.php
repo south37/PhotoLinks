@@ -167,26 +167,21 @@ SQL;
      }
 
     /**
-     * frameIDで画像パスを検索する
+     * imageのカラム数を取得する
      *
-     * @param $frameId
+     * @param $page
      *
-     * @return Image
+     * @return $numberOfColumn 
+     *
      */
-    /*
-     public function findByFrameId($frameId)
+     public function getNumOfImageColumn($page)
      {
-        $sql = <<< SQL
-            SELECT * FROM image
-                INNER JOIN frame
-                    ON image.id = frame.image_id
-            WHERE frame.id = :frameId;
+         $sql = <<< SQL
+            SELECT * FROM image;
 SQL;
-        $sth = $this->db->prepare($sql);
-        $sth->bindValue(':frameId', $frameId, \PDO::PARAM_INT);
-        $sth->execute();
-        $data = $sth->fetch(\PDO::FETCH_ASSOC);
-        return $data['path'];
+         $sth = $this->db->prepare($sql);
+         $sth->execute();
+         $numberOfColumn = $sth->fetchColumn();
+         return $numberOfColumn;
      }
-     */
 }
