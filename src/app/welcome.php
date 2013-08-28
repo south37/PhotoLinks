@@ -20,12 +20,13 @@ $app->get('/', function() use ($app, $container) {
         // 
         foreach ($storyArrayOrderedByFavs as $story) {
             $frames = $repository_frame->findsByStoryId((INT)($story->id));
-            $frame  = $frames[count($frames)-1];
+            $frame  = $frames[0];
            
             $add_frame = [
                 'id'        => (INT) $frame->id,
                 'parent_id' => (INT) $frame->parent_id,
                 'story_id'  => (INT) $frame->last_story_id,
+                'caption'   => $story->title,
                 'src'       => $repository_image->findByFrameId($frame->id)->path
                 ];
            echo $add_frame['src'];
