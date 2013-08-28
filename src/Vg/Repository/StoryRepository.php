@@ -160,14 +160,19 @@ SQL;
      * @return Story[]
      * 
      */
-    public function findsHotStories()
+    public function findsHotStories($startNum, $getNum)
     {
         // ストーリーの「いいね」の多い順にソートする
         $sql = <<< SQL
             SELECT * FROM story
-            ORDER BY favorite DESC;
+            ORDER BY favorite DESC
+            LIMIT :startNum,:getNum;
 SQL;
         $sth = $this->db->prepare($sql);
+
+        $sth->bindValue(':startNum', $startNum, \PDO::PARAM_INT);
+        $sth->bindValue(':getNum'  , $getNum  , \PDO::PARAM_INT);
+
         $sth->execute();
         $stories = [];
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))

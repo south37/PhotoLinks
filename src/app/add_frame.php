@@ -53,6 +53,7 @@ $app->get('/add_frame/:image_id', function($image_id) use ($app,$container) {
         "imgPath" => $img->path]);
     })
     ->name('add_frame_from_upload')
+    
     ;
 
 // push_make_frame 

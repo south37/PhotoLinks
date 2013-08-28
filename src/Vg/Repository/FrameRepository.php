@@ -121,16 +121,15 @@ SQL;
                 frame.parent_id, frame.last_story_id, frame.caption
             FROM frame
                 INNER JOIN frame_story
-                    ON frame.id = frame_story.id
+                    ON frame.id = frame_story.frame_id
                 INNER JOIN story
-                    ON frame_story.id = story.id
+                    ON frame_story.story_id = story.id
             WHERE story_id = :storyId;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
         $sth->execute();
         $frames = [];
-
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
         {
             $frame = new Frame();
