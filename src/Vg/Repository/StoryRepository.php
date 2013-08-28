@@ -31,16 +31,11 @@ class StoryRepository
         $sth->bindValue(':user_id', $story->user_id, \PDO::PARAM_INT);
         $sth->bindValue(':title', $story->title, \PDO::PARAM_STR);
         $sth->bindValue(':favorite', $story->favorite, \PDO::PARAM_INT);
-        try
-        {
-            $sth->execute();
-        }
-        catch(PDOException $e)
-        {
-            die($e->getMessage());
-            return false;
-        }
-        return true;
+
+        $sth->execute();
+
+        $storyId = $this->getLatestId();
+        return $storyId;
     }
 
     /**
@@ -95,6 +90,23 @@ SQL;
 
         return $story;
     }
+
+    /**
+    * 最後のstoryカラムのIDを取得する
+    * @return storyId
+    */
+    private function getLatestId()
+    {
+        // IDを降順にして取得
+        $sql = <<< SQL
+            SELECT * FROM story ORDER BY id DESC;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->execute();
+        // 最初の一個目を取得
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        return $data['id'];
+    }
     
     
     /**
@@ -140,5 +152,30 @@ SQL;
             return false;
         }
         return true;
+    }
+    
+    /**
+     * storyをfavoriteの降順でソートして返す 
+     *
+     * @return Story[]
+     * 
+     */
+    public function findsHotStories()
+    {
+        // ストーリーの「いいね」の多い順にソートする
+        $sql = <<< SQL
+            SELECT * FROM story
+            ORDER BY favorite DESC;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
     }
 }

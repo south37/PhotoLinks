@@ -16,7 +16,7 @@
             -->
            <div class="text-center">
                <a class="btn btn-primary" href="{{urlFor('upload_image')}}"><i class="icon-plus icon-white"></i> 写真から</a>
-               <a class="btn btn-primary" href="{{urlFor('material')}}"><i class="icon-folder-open icon-white"></i> 素材箱から</a>
+               <a class="btn btn-primary" href="{{urlFor('material', {'page': 1})}}"><i class="icon-folder-open icon-white"></i> 素材箱から</a>
            </div>
 
             <div class="text-center">
@@ -37,8 +37,8 @@
                 <div class="controls">
                     <button id="make_frame" type="submit" class="btn btn-primary"
                     onClick="this.form.action='{{urlFor('make_frame')}}'">コマを追加</button>
-                    
                 </div>
+                
                 <br> 
                  <div class="control-group">
                    <label class="control-label" for="Title">Title</label>

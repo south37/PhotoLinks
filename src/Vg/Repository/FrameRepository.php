@@ -16,7 +16,7 @@ class FrameRepository
      +
      * @param $frane
      *
-     * @return boolean 
+     * @return frameId 
      +
      */
     public function insert($frame){
@@ -36,18 +36,28 @@ class FrameRepository
         $sth->bindValue(':parent_id', $frame->parent_id, \PDO::PARAM_INT);
         $sth->bindValue(':last_story_id', $frame->last_story_id, \PDO::PARAM_INT);
         $sth->bindValue(':caption', $frame->caption, \PDO::PARAM_STR);
-        try
-        {
-            $sth->execute();
-        }
-        catch (PDOException $e)
-        {
-            die($e->getMessage());
-            return false;
-        }
-        return true;
+        $sth->execute();
+        $frameId = $this->getLatestId();
+        return $frameId;
     }
     
+    /**
+    * 最後のframeカラムのIDを取得する
+    * @return frameID
+    */
+    private function getLatestId()
+    {
+        // IDを降順にして取得
+        $sql = <<< SQL
+            SELECT * FROM frame ORDER BY id DESC;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->execute();
+        // 最初の一個目を取得
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        return $data['id'];
+    }
+
     /**
      * フレームIDで検索する
      *
@@ -66,7 +76,7 @@ SQL;
         $data = $sth->fetch(\PDO::FETCH_ASSOC);
         $frame = new Frame();
         $frame->setProperties($data);
-
+        
         return $frame;
     }
     

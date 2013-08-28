@@ -4,13 +4,29 @@
     {% include 'error.html.twig' with {errors: errors} %}
 
     <div class="row">
-        <div class="span6 offset3">
+        <div class="span7 offset2">
             <div class="images">
                 {% for image in images %}
-                    <img src="{{ image['src'] }}" alt="image" value="{{ image['id'] }}" width="100" height="100">
+                    <img src="{{ image['src'] }}" alt="image" value="{{ image['id'] }}" width="120" height="120">
                 {% endfor %}
             </div>
+            <div class="pagination pagination-centered">
+                <ul>
+                    {% if (page == 1) %}
+                        <li class="disabled"><a href="#">&laquo;</a></li>
+                    {% else %}
+                        <li><a href="{{ urlFor('material', {'page': page-1}) }}">&laquo;</a></li>
+                    {% endif %}
+                    <li class="active"><a href="#">{{ page }}</a></li>
+                    {% if (page == all_page_num) %}
+                        <li class="disabled"><a href="#">&raquo;</a></li>
+                    {% else %}
+                        <li><a href="{{ urlFor('material', {'page': page+1}) }}">&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
+
 
         <div class="span6 offset3">
             <form action="{{ urlFor('material_post') }}" method="post" id="image-select">

@@ -1,17 +1,21 @@
 <?php
 
 素材: {
-    $app->get('/material', function() use ($app, $container) {
-        $images = $container['repository.image']->findByPage(0);
+    $app->get('/material/:page', function($page) use ($app, $container) {
+        $image_repository = $container['repository.image'];
+        $images = $image_repository->findByPage($page-1);
         $image_array = [];
         foreach ($images as $image) {
             array_push($image_array, [
-                'id' => $image->id,
+                'id'  => $image->id,
                 'src' => $image->path
             ]);
         }
-        
-        $app->render('material/material.html.twig', ['images' => $image_array]);
+
+        $image_num    = $image_repository->getNumOfImageRow();
+        $all_page_num = (INT)($image_num / 20) + 1;
+
+        $app->render('material/material.html.twig', ['images' => $image_array, 'page' => $page, 'all_page_num' => $all_page_num]);
     })
         ->name('material')
         ;

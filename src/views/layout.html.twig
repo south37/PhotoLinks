@@ -31,8 +31,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="brand" href="/">GroupWorkBase</a>
+            <a class="brand" href="/">PhotoLinks</a>
             <div class="nav-collapse collapse">
+                <!--
                 <ul class="nav">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Document <b class="caret"></b></a>
@@ -45,7 +46,6 @@
                         </ul>
                     </li>
                     <li><a href="{{ urlFor('hello', {name: 'VOYAGE_GROUP'}) }}">demo</a></li>
-                    <li><a href="{{ urlFor('upload_image') }}">画像アップロード</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">課題 <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -55,7 +55,7 @@
                         </ul>
                     </li>
                 </ul>
-
+                -->
                 <ul class="nav pull-right">
                     {% block login %}
                         {% if session.get('isLogin') %}
