@@ -4,16 +4,6 @@ use Respect\Validation\Validator as v;
 
 
 画像アップロード: {
-    $redirectIfNotLogin = function ( $session ) {
-        return function () use ( $session ) {
-            if ( $session->get('isLogin') !== true ) {
-                $app = \Slim\Slim::getInstance();
-                $app->flash('error', 'Login required');
-                $app->redirect($app->urlFor('user_login'));
-            }
-        };
-    };
-
     $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app) {
             $app->render('upload/upload.html.twig');
         })
@@ -21,14 +11,26 @@ use Respect\Validation\Validator as v;
     ;
 
     $app->post('/upload', $redirectIfNotLogin($container['session']), function () use ($app,$container) {
+            $input = $app->request()->post();
+                
+            $validator = new \Vg\Validator\Upload();
+            if (!$validator->validate($input)) {
+                $errors = $validator->errors();
+                $error_messages = array_values($errors);
+                $message = implode(PHP_EOL, $error_messages);
+
+                $app->flash('info', $message);
+                $app->redirect($app->urlFor('upload_image'));
+            }
+                
             if (!is_uploaded_file($_FILES['upfile']['tmp_name'])) {
                 $app->flash('info', 'アップロード失敗');
-                $app->redirect($app->urlFor('upload_post'));
+                $app->redirect($app->urlFor('upload_image'));
             }
             
-            if(!move_uploaded_file($_FILES['upfile']['tmp_name'], __DIR__.'/../../public_html/img/public_img/'.$_FILES['upfile']['name'])) {
+            if (!move_uploaded_file($_FILES['upfile']['tmp_name'], __DIR__.'/../../public_html/img/public_img/'.$_FILES['upfile']['name'])) {
                 $app->flash('info', 'アップロード失敗');
-                $app->redirect($app->urlFor('upload_post'));
+                $app->redirect($app->urlFor('upload_image'));
             }
 
             $image = new \Vg\Model\Image();
@@ -37,7 +39,7 @@ use Respect\Validation\Validator as v;
                 "path"    => "",
                 "scope"   => 0,
                 "deleted" => 0
-                ]; 
+            ]; 
             $image->setProperties($imagefile);
             $repository = $container['repository.image'];
             
