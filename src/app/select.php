@@ -96,6 +96,10 @@ function inner(&$list, $tree, $depth) {
                     if (!isset($frame_rows[$depth+1])) {
                         $frame_rows[$depth+1] = [];
                     }
+                    $id = $frame['id'];
+                    if (!isset($frame_rows[$depth+1][$id])) {
+                        $frame_rows[$depth+1][$id] = [];
+                    }
                 }
             }
         }
