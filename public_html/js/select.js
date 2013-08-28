@@ -9,18 +9,22 @@
         $('div.frames').each( function() {
             var depth = $(this).data('depth');
             if(depth > now_depth) {
+                //クリック画像以下すべて非表示
                 $(this).css({'display':'none'});
                 $(this).find('[name=parent-id]').attr('value', '');
                 $(this).find('img').css({'border': '0px solid #000000'});
             } else if (depth === now_depth) {
+                //クリック画像の段の枠を消す
                 $(this).find('img').css({'border': '0px solid #000000'});
             }
         });
+
 
         $(this).css({'border': '2px solid #009999'});
         child_div.css({'display':'block'});
         child_div.find('[name=parent-id]').attr('value', selected_id);
 
+        // 文字列結合
         var frames = '';
         var first = true;
         $('.frames').each( function() {

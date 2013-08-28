@@ -1,7 +1,21 @@
 {% extends 'layout.html.twig' %}
 
+{% block header %}
+    <link rel="stylesheet" href="{{ asset('/js/plugin/sidr/stylesheets/jquery.sidr.dark.css') }}">
+{% endblock %}
+
 {% block contents %}
     {% include 'error.html.twig' with {errors: errors} %}
+    
+    <a id="simple-menu" href="#sidr" class="btn">toggle bar</a>
+    <div id="sidr">
+        <ul>
+            <li class="active"><a href="#">hoge</a></li>
+            <li><a href="#">var</a></li>
+            <li><a href="#">spam</a></li>
+        </ul>
+    </div>
+
 
     <div class="row">
         <div class="span8 offset2 text-center">
@@ -16,10 +30,10 @@
                 {% for frames in frame_row %}
                     <div class="frames" style="display:none" data-depth="{{ frames['depth'] }}" id="{{ frames['parent_id'] }}">
                         <form action="{{ urlFor('add_frame_from_select') }}" method="get">
-
+                   
                         {% for frame in frames['childs'] %}
                             {% if frame['src'] != ''%}
-                                <img src="{{ frame['src'] }}" alt="plus1" value="{{ frame['id'] }}" width="100" height="100">
+                                <img src="{{ frame['src'] }}" alt="plus1" value="{{ frame['id'] }}" width="100" height="100" />
                             {% endif %}
                         {% endfor %}
 
@@ -41,5 +55,31 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ asset('/js/select.js') }}"></script>
+<script src="{{ asset('/js/select.js') }}"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+    // sidr
+    $('#simple-menu').sidr({
+        side:'right',
+        body: null
+    });
+
+    // slider
+    $('.slider-row').bxSlider({
+    auto: true,
+    pause:  5000,
+    speed: 1000,
+    pager: false,
+    slideWidth: 600,
+    minSlides: 3, //一画面に表示する数
+    maxSlides: 4,
+    moveSlides: 1, //移動時にずれる数
+    prevText: '<',
+    nextText: '>'
+    });
+});
+
+</script>
+    
 {% endblock %}
