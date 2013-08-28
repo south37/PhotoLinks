@@ -17,6 +17,9 @@
     </style>
     <link href="{{ asset('/bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet">
 
+    <!--bxSlider-->
+    <link rel="stylesheet" href="{{ asset('/js/plugin/bxSlider/jquery.bxslider.css') }}">
+
 </head>
 
 <body>
@@ -72,7 +75,7 @@
 <div class="container">
     {% block contents '' %}
     <footer>
-        <p>&copy; Company 2013</p>
+        <p>&copy; My N.Y. 2013</p>
     </footer>
 
 </div> <!-- /container -->
@@ -84,6 +87,9 @@
 <script src="{{ asset('/js/underscore.js') }}"></script>
 <script src="{{ asset('/js/backbone.js') }}"></script>
 <script src="{{ asset('/bootstrap/js/bootstrap.js') }}"></script>
+
+<script src="{{ asset('/js/plugin/bxSlider/jquery.bxslider.min.js')}}"></script>
+
 {% block javascript '' %}
 </body>
 </html>

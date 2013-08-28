@@ -42,8 +42,7 @@ class AddStory
         return true;
     }
 
-    /**
-     * エラーメッセージの配列を返す
+  エラーメッセージの配列を返す
      */
     public function errors()
     {

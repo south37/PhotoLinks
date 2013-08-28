@@ -14,10 +14,10 @@ use Respect\Validation\Validator as v;
 // get_from_view2
 $app->get('/add_frame', function() use ($app,$container) {
     //addressを無理やり入れられた時の対策をしましょう
-    
+
 
     //
-    
+
     $input = $app->request()->get();
     var_dump($input);
 
@@ -26,22 +26,34 @@ $app->get('/add_frame', function() use ($app,$container) {
 
     $image_id = -1;
     $parent_id = $input['parent-id'];
+    $imgPath = "/img/ismTest/placeholder.png";
 
-    $app->render('add_frame/add_frame.html.twig',["image_id" => $image_id,"parent_id" => $parent_id]);
-    })
-    ->name('add_frame_from_select')
-    ;
+    $app->render('add_frame/add_frame.html.twig',
+        ["image_id" => $image_id,
+        "parent_id" => $parent_id,
+        "imgPath" => $imgPath]);
+})
+    ->name('add_frame_from_select');
 
 // geti_from_view5
 $app->get('/add_frame/:image_id', function($image_id) use ($app,$container) {
     $input = $app->request()->get();
     $parent_id = $container['session']->get('parent_id');
 
-    $app->render('add_frame/add_frame.html.twig',["image_id"=>$image_id,"parent_id" => $parent_id]);
+    $repository = $container['repository.image'];
+    try{
+        $img = $repository->findById($image_id);
+    } catch (Exception $e) {
+        $app->halt(500, $e->getMessage());
+    }
+
+    $app->render('add_frame/add_frame.html.twig',
+        ["image_id" => $image_id,
+        "parent_id" => $parent_id,
+        "imgPath" => $img->path]);
     })
     ->name('add_frame_from_upload')
     ;
-
 
 // push_make_frame 
 $app->post('/add_frame/make_frame', function() use ($app,$container) { // form情報を取得 
@@ -70,7 +82,6 @@ $app->post('/add_frame/make_frame', function() use ($app,$container) { // form�
     $app->redirect($app->urlFor('select'));
 
 })->name('make_frame');
-
 
 // ストーリーを作成 
 $app->post('/add_frame/make_story', function() use ($app,$container) {
@@ -111,7 +122,6 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
 
     $app->redirect($app->urlFor('select'));
 })->name('make_story');
-
 
 //フレーム追加
 function makeFrame($property,$app,$c){
