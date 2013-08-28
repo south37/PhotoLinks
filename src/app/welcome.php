@@ -3,10 +3,13 @@
  * top画面 
  */
 $app->get('/', function() use ($app) {
-        $app->render('top/index.html.twig');
-    })
+    $app->render('top/index.html.twig');
+
+    // top story 取得
+
+})
     ->name('welcome')
-;
+    ;
 
 /**
  * Demo 用
