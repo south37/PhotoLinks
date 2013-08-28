@@ -19,7 +19,7 @@ use Respect\Validation\Validator as v;
             if($input['token'] != $container['session']->id())
             {
                 $app->flash('info', '画面遷移に失敗しました');
-                $app->redirect($app->urlFor('welcome');
+                $app->redirect($app->urlFor('welcome'));
             }
 
             $validator = new \Vg\Validator\Upload();
