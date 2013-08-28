@@ -4,7 +4,7 @@
     $('div.frames img').click( function () {
         var selected_id = $(this).attr('value');
         var child_div   = $('#' + selected_id);
-        var now_depth   = $(this).parent().parent().data('depth');
+        var now_depth   = $(this).parents('.frames').data('depth');
 
         $('div.frames').each( function() {
             var depth = $(this).data('depth');
@@ -23,7 +23,7 @@
 
         var frames = '';
         var first = true;
-        $('div.frames').each( function() {
+        $('.frames').each( function() {
             var val = $(this).find('input').attr('value');
             if (val !== '') {
                 if (!first) {
