@@ -14,7 +14,8 @@ use Respect\Validation\Validator as v;
 
     $app->post('/upload', $redirectIfNotLogin($container['session']), function () use ($app,$container) {
             $input = $app->request()->post();
-            $mime_type = image_type_to_mime_type(exif_imagetype($_FILES['upfile']['tmp_name']));
+            $input['image_path'] = $_FILES['upfile']['tmp_name'];
+            $input['image_name'] = $_FILES['upfile']['name'];
 
             // CSRF対策
             if($input['token'] != $container['session']->id())
@@ -22,7 +23,12 @@ use Respect\Validation\Validator as v;
                 $app->flash('info', '画面遷移に失敗しました');
                 $app->redirect($app->urlFor('welcome'));
             }
-            
+
+            if (!is_uploaded_file($_FILES['upfile']['tmp_name'])) {
+                $app->flash('info', 'アップロード失敗 画像が取得できませんでした');
+                $app->redirect($app->urlFor('upload_image'));
+            }
+
             $validator = new \Vg\Validator\Upload();
             if (!$validator->validate($input)) {
                 $errors = $validator->errors();
@@ -33,32 +39,11 @@ use Respect\Validation\Validator as v;
                 $app->redirect($app->urlFor('upload_image'));
             }
                 
-            if (!is_uploaded_file($_FILES['upfile']['tmp_name'])) {
-                $app->flash('info', 'アップロード失敗');
-                $app->redirect($app->urlFor('upload_image'));
-            }
-            
             if (!move_uploaded_file($_FILES['upfile']['tmp_name'], __DIR__.'/../../public_html/img/public_img/'.$_FILES['upfile']['name'])) {
                 $app->flash('info', 'アップロード失敗');
                 $app->redirect($app->urlFor('upload_image'));
             }
 
-            $extension = pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
-            if (!in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
-                $app->flash('info', '画像の形式はjpgかpngかgifでお願いします');
-                $app->redirect($app->urlFor('upload_image'));
-            }
-
-            if ($extension === 'jpg') {
-                $mime_extension = 'image/jpeg';
-            } else {
-                $mime_extension = 'image/' + $extension;
-            }
-            if ($mime_extension !== $mime_type) {
-                $app->flash('info', '画像の形式と拡張子が一致していません');
-                $app->redirect($app->urlFor('upload_image'));
-            }
-            
             $image = new \Vg\Model\Image();
             $imagefile = [
                 "user_id" => ($container['session']->get('user.id')),
