@@ -125,7 +125,6 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
 
 //フレーム追加
 function makeFrame($property,$app,$c){
-   
     $frame = new \Vg\Model\Frame();
     $frame->setProperties($property);
     $repository = $c['repository.frame'];
@@ -144,7 +143,7 @@ function makeStory($property,$app,$c){
     $story = new \Vg\Model\Story();
     $story->setProperties($property);
     $repository = $c['repository.story'];
-
+    
     try {
         $repository->insert($story);
         return true;
