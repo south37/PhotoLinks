@@ -35,14 +35,14 @@ class AddStory
                                                  'title.notEmpty' => 'タイトルを入力してください',
                                                  'title.length' => 'タイトルは{{minValue}}〜{{maxValue}}文字内で入力してください',
                                                  ]);
-
             return false;
         }
 
         return true;
     }
 
-  エラーメッセージの配列を返す
+    /*
+     * エラーメッセージの配列を返す
      */
     public function errors()
     {

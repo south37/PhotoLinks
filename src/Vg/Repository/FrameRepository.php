@@ -76,7 +76,7 @@ SQL;
         $data = $sth->fetch(\PDO::FETCH_ASSOC);
         $frame = new Frame();
         $frame->setProperties($data);
-
+        
         return $frame;
     }
     

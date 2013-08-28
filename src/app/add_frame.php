@@ -104,7 +104,8 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
     }
 
     // makeStory + addDB
-    if($storyId = makeStory($input,$app,$container) < 0){
+
+    if(($storyId = makeStory($input,$app,$container)) < 0){
         exit;
     }
 
@@ -115,11 +116,13 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
             'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
         exit;
     }
-
+    
     // makeFrame + addDB 
-    if ($lastFrameId = makeFrame($input,$app,$container) < 0){
+    if (($lastFrameId = makeFrame($input,$app,$container)) < 0){
         exit;
     }
+
+    echo $lastFrameId;
 
     // connect frame to story
     if (!connectFramesToStory($lastFrameId,$storyId,$app,$container)){
@@ -149,9 +152,9 @@ function makeStory($property,$app,$c){
     $story = new \Vg\Model\Story();
     $story->setProperties($property);
     $repository = $c['repository.story'];
-    
     try {
         $newStoryId = $repository->insert($story);
+        echo "newID:".$newStoryId;
         return $newStoryId;
     } catch (Exception $e) {
         $app->halt(500, $e->getMessage());
@@ -162,20 +165,35 @@ function makeStory($property,$app,$c){
 // story_frame関連付け
 function connectFramesToStory($lastFrameId, $storyId, $app, $c){
     $repository_Frame = $c['repository.frame'];
-    $repository_FrameStory = $c['repository.story_frame'];
+    $repository_FrameStory = $c['repository.frame_story'];
 
     try{
+        echo $lastFrameId;
         $tmpFrame = $repository_Frame->findById($lastFrameId);
-
+        var_dump($tmpFrame->id);
+        echo "tmpFrameId:" . $tmpFrame->id . "<br>";
+       
         while($tmpFrame->parent_id){
-            $tmpConnect = ['frame_id' => $tmpFrame->id, 'story_id' => $storyId];
+            $tmpConnect = new \Vg\Model\FrameStory;
+            $tmpConnectProperties = ['frame_id' => $tmpFrame->id, 'story_id' => $storyId];
+            $tmpConnect->setProperties($tmpConnectProperties);
+             
             $repository_FrameStory->insert($tmpConnect);
             $tmpFrame = $repository_Frame->findById($tmpFrame->parent_id);
         }
+
+        $tmpConnect = new \Vg\Model\FrameStory;
+        $tmpConnectProperties = ['frame_id' => $tmpFrame->id, 'story_id' => $storyId];
+        $tmpConnect->setProperties($tmpConnectProperties);
+         
+        $repository_FrameStory->insert($tmpConnect);
+
+
         return true;
 
     } catch (Exception $e){
         $app->halt(500, $e->getMessage());
+        
         return false;
     }
 }
