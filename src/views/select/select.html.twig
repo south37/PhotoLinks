@@ -16,8 +16,8 @@
                             {% endif %}
                         {% endfor %}
 
+                        <input type="hidden" name="parent-id" value="" />
                         {% if (depth != 0) %}
-                            <input type="hidden" name="parent-id" value="" />
                             <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
                             <input type="image" src="/img/public_img/plus.png" alt="コマを追加" width="100" height="100">
                         {% endif %}
