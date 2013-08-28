@@ -1,6 +1,8 @@
 <?php
 use Respect\Validation\Validator as v;
 
+
+
 画像アップロード: {
     $redirectIfNotLogin = function ( $session ) {
         return function () use ( $session ) {
@@ -18,12 +20,17 @@ use Respect\Validation\Validator as v;
         ->name('upload_image')
     ;
 
-    $app->post('/upload',$redirectIfNotLogin($container['session']), function () use ($app,$container) {
+    $app->post('/upload', $redirectIfNotLogin($container['session']), function () use ($app,$container) {
             if (is_uploaded_file($_FILES['upfile']['tmp_name'])) {
                 if(move_uploaded_file($_FILES['upfile']['tmp_name'],__DIR__.'/../../public_html/img/public_img/'.$_FILES['upfile']['name'])) {
 
                     $image = new \Vg\Model\Image();
-                    $imagefile = array("user_id"=>($container['session']->get('user.id')),"path"=>"","scope"=>0,"deleted"=>0); 
+                    $imagefile = [
+                            "user_id" => ($container['session']->get('user.id')),
+                            "path"    => "",
+                            "scope"   => 0,
+                            "deleted" => 0
+                        ]; 
                     $image->setProperties($imagefile);
                     $repository = $container['repository.image'];
                     // 画像データをDBにInsert
@@ -58,5 +65,10 @@ use Respect\Validation\Validator as v;
         ->name('upload_post')
     ;
 
+    $app->get('/upload/policy', $redirectIfNotLogin($container['session']), function () use ($app,$container) {
+            $app->render('upload/policy.html.twig');
+        })
+        ->name('upload_policy')
+    ;
 }
 

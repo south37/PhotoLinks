@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    {% include 'error.html.twig' with {errors: errors} %}
+
+    <div class="row">
+        <div class="span6 offset3">
+            <p>ユーザーポリシー</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('/js/upload.js') }}"></script>
+{% endblock %}
