@@ -21,11 +21,12 @@ $app->get('/', function() use ($app, $container) {
         // 
         foreach ($storyArrayOrderedByFavs as $story) {
             $frames = $repository_frame->findsByStoryId((INT)($story->id));
-            if (!isset($frames[0])) {
+            if (!isset($frames[count($frames)-1])) {
                 continue;
             }
-            $frame  = $frames[0];
-           
+            $frame  = $frames[count($frames)-1];
+
+            var_dump($frame->last_story_id); 
             $add_frame = [
                 'id'        => (INT) $frame->id,
                 'parent_id' => (INT) $frame->parent_id,

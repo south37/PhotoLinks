@@ -96,8 +96,6 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
     $input['user_id'] = $container['session']->get('user.id');
     $input['theme_id'] = $container['session']->get('theme_id');
 
-    var_dump($input);
-
     // CSRF対策
     if($input['token'] != $container['session']->id())
     {
@@ -110,11 +108,27 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
 
     $token = $container['session']->id();
     if (!$validator->validate($input)){
+        // 左のコマ 
+        $frameListStr = $container['session']->get('frame_ids');
+        $frameList = explode(',', $frameListStr);
+        $frame_repository = $container['repository.frame'];
+        $image_repository = $container['repository.image'];
+        $frames = [];
+        foreach($frameList as $frame_id) {
+            $frame = $frame_repository->findById($frame_id);
+            $image = $image_repository->findById($frame->image_id);
+            array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
+        }
+
+        $imgPath = "/img/public_img/200x200.jpg";
+        var_dump($imgPath);
         $app->render('add_frame/add_frame.html.twig',
             ['errors'=> $validator->errors(),
-            'image_id'=>$input['image_id'],
-            'token' => $token,
-            'parent_id'=>$input['parent_id']
+             'image_id'=>$input['image_id'],
+             'imgPath' => $imgPath,
+             'token' => $token,
+             'parent_id'=>$input['parent_id'],
+             'frames' => $frames
             ]);
         exit;
     }
@@ -148,14 +162,31 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
     // validation
     $validator_frame = new  \Vg\Validator\AddFrame();
     $validator_story = new  \Vg\Validator\AddStory();
+    
+    // 左のコマ
+    $frameListStr = $container['session']->get('frame_ids');
+    $frameList = explode(',', $frameListStr);
+    $frame_repository = $container['repository.frame'];
+    $image_repository = $container['repository.image'];
+    $frames = [];
+    foreach($frameList as $frame_id) {
+        $frame = $frame_repository->findById($frame_id);
+        $image = $image_repository->findById($frame->image_id);
+        array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
+    }
+    $imgPath = "/img/public_img/200x200.jpg";
 
     $token = $container['session']->id();
     if (!$validator_story->validate($input)){
+
         $app->render('add_frame/add_frame.html.twig',
             ['errors'=> $validator_story->errors(),
             'image_id'=>$input['image_id'],
+            'imgPah' => $imgPath,
             'token' => $token,
-            'parent_id'=>$input['parent_id']]);
+            'parent_id'=>$input['parent_id'],
+            'frames' => $frames]
+        );
         exit;
     }
 
@@ -163,8 +194,11 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
         $app->render('add_frame/add_frame.html.twig',
             ['errors'=> $validator_frame->errors(),
             'image_id'=>$input['image_id'],
+            'imgPath' => $imgPath,
             'token' => $token,
-            'parent_id'=>$input['parent_id']]);
+            'parent_id'=>$input['parent_id'],
+            'frames' => $frames]
+        );
         exit;
     }
  
