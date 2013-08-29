@@ -139,4 +139,24 @@ SQL;
         if($sth->rowCount() !== 0) return false;
         return true;
     }
+
+    /**
+     * 指定したストーリーの「いいね」された数を取得する
+     *
+     * @param $storyId
+     *
+     * @return boolean 
+     * 
+     */
+    public function getNumberOfLikedByStoryId($storyId)
+    {
+        $sql = <<< SQL
+            SELECT * FROM liked
+            WHERE story_id = :storyId;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->rowCount();
+    }
 }
