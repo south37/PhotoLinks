@@ -5,6 +5,9 @@
         
         $('[id^=field-]').hide();
         $('#field-0').toggle();
+        $('[id^=preview-]').css({'border': '2px solid #000000'});
+
+        $('#field-0 img.frame').click();
 
         
     });
@@ -21,7 +24,7 @@
     $('div.frames-field img.frame').click( function () {
         // step1.
         var selected_id = $(this).attr('value'); // frame
-        var child_div   = $('#childlen-of-' + selected_id);  // frames
+        var child_div   = $('#children-of-' + selected_id);  // frames
         var now_depth   = $(this).parents('[id^="field-"]').data('depth');
 
         // step2.
@@ -58,17 +61,35 @@
                         $(this).show();
                     }else{
                         $(this).hide();
-                        
-                    //alert("sel:"+selected_id+" parent:" + $(this).data('parent'));
                     }});
         }
 
-        child_div.find('div.frames').attr('data-parent', selected_id);//<-何のため？
+        child_div.find('div.frames').attr('data-parent', selected_id);//<-make_frameにおけるparent-id
 
         // step6
         var frames = '';
-        var first = true;
-        $('.frames').each( function() {
+        var first  = true;
+
+        //$('[id^="children-of-"]',).each( function(){
+        $("div.frames").each( function(){
+                if($(this).css('display')=='none'){return;}
+
+                var tmp_depth = $(this).parents('.frames-field').data('depth');
+                if((tmp_depth <= 0) || (tmp_depth > now_depth+1)){return;}
+
+                var tmp_selected_id = $(this).data('parent');
+                if (tmp_selected_id !== '') {
+                   if (!first) {
+                      frames += ',';
+                  }
+                  frames += tmp_selected_id;
+                  $(this).parents("#field-" + tmp_depth).find('[name=parent-id]').val(tmp_selected_id);
+                  first = false;
+                }
+                
+                });
+        /*
+        $('[id^=add_frame_]').each( function() {
             var val = $(this).find('input').attr('value');//<-親ノードidが格納されてる
             if (val !== '') {
                 if (!first) {
@@ -78,6 +99,7 @@
                 first = false;
             }
         });
+        */
         $('#story-fm [name=selected-frames-id]').val(frames);
     });
 })();
