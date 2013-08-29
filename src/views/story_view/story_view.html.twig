@@ -25,7 +25,9 @@
             <!--画像表示するところ-->
             {% for frame in frameDataList %}
                 <img src="{{ frame['image']}}" alt="パス不明" width="400" height="400">
-                <p style="font-size: 3em; margin: 15px;">{{ frame['caption'] }}</p>
+                <div style="margin-bottom: 15px;">
+                    <p style="line-height: 1; font-size: 3em;">{{ frame['caption'] }}</p>
+                </div>
             {% endfor %}
 
             <!--selectに飛ばす-->
