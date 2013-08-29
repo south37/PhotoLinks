@@ -108,52 +108,6 @@ SQL;
         return $data['id'];
     }
     
-    
-    /**
-     * IDで検索する
-     *
-     * @param $id
-     *
-     * @return Story
-     * 
-     * 自作自演は防げるが、ログインが必須になってしまう点が問題
-     */
-    public function incrementFavorite($storyId, $userId)
-    {
-        // ストーリーの投稿者と同じユーザが「いいね」しているかを調べる
-        $sql = <<< SQL
-            SELECT * FROM story
-            WHERE id = :storyId AND user_id = :userId;
-SQL;
-        $sth = $this->db->prepare($sql);
-        $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
-        $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
-        $sth->execute();
-        // 一致するデータがあれば、同じユーザが「いいね」している為、無効にする
-        if($sth->fetchColumn() !== 0)
-        {
-            return false;
-        }
-
-        // 「いいね」の件数をインクリメントする
-        $sql = <<< SQL
-            UPDATE story SET
-               favorite = favorite + 1
-            WHERE id = :id;
-SQL;
-        $sth = $this->db->prepare($sql);
-        try
-        {
-            $sth->execute();
-        }
-        catch(PDOException $e)
-        {
-            die($e->getMessage());
-            return false;
-        }
-        return true;
-    }
-    
     /**
      * storyをfavoriteの降順でソートして返す 
      *
