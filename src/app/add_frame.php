@@ -66,13 +66,23 @@ $app->get('/add_frame/:image_id', $redirectIfNotLogin($container['session']), fu
         $app->halt(500, $e->getMessage());
     }
 
+    $frame_repository = $container['repository.frame'];
+    $image_repository = $container['repository.image'];
+    $frames = [];
+    foreach($frameList as $frame_id) {
+        $frame = $frame_repository->findById($frame_id);
+        $image = $image_repository->findById($frame->image_id);
+        array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
+    }
+    
     $token = $container['session']->id();
     $app->render('add_frame/add_frame.html.twig',
         ["image_id" => $image_id,
          "parent_id" => $parent_id,
          "token" => $token,
          "imgPath" => $img->path,
-         "is_last_frame" => $is_last_frame]);
+         "is_last_frame" => $is_last_frame,
+         "frames"  => $frames]);
     })
     ->name('add_frame_from_upload')
     
