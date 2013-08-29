@@ -5,6 +5,7 @@
 $app->get('/mypage/:user_id', function($user_id) use ($app, $container) {
     // get top story array
     $user_name = $container['session']->get('user.name');
+    $user_id   = $container['session']->get('user.id');
 
     $repository_image = $container['repository.image'];
     $repository_frame = $container['repository.frame'];
@@ -23,9 +24,11 @@ $app->get('/mypage/:user_id', function($user_id) use ($app, $container) {
             $image = $repository_image->findById($frame->image_id);
             $image_path = $image->path;
             $frame->image_path = $image_path;
+            $is_users = ($frame->user_id === $user_id);
             array_push($story_array[$rank]['frames'], [
                 'caption' => $frame->caption,
-                'path' => $image_path
+                'path' => $image_path,
+                'is_users' => $is_users
                 ]);
         }
     }

@@ -19,14 +19,15 @@
      * 3.選択ノード以下depth -> display:none
      * 4.選択画像 -> border 2px
      * 5.選択画像child -> display:block,
-     * 6.view3用.selectedFrameIdのlist,カンマ区切り文字列生成
+     * 6.表示数制限．適当にhideする
+     * 7.view3用.selectedFrameIdのlist,カンマ区切り文字列生成
      * */
     $('div.frames-field img.frame').click( function () {
         // step1.
         var selected_id = $(this).attr('value'); // frame
         var child_div   = $('#children-of-' + selected_id);  // frames
         var now_depth   = $(this).parents('[id^="field-"]').data('depth');
-
+        console.log(child_div);
         // step2.
         $('#preview-'+now_depth).attr('src', $(this).attr('src'));
 
@@ -56,7 +57,7 @@
         if(now_depth !== 0){
             //$('#field-'+(now_depth+1)).find('.frames','[data-parent!='+selected_id+']').hide();
             $('#field-' + (now_depth+1)).find('.frames').each( function() {
-                   
+                 
                     if(selected_id == $(this).data('parent')){
                         $(this).show();
                     }else{
@@ -64,9 +65,21 @@
                     }});
         }
 
-        child_div.find('div.frames').attr('data-parent', selected_id);//<-make_frameにおけるparent-id
+        // step 6
+        
+        var maxNum = 5;
 
-        // step6
+        child_div.find('img.frame').each(function(i){
+                    if(i >= maxNum){
+                        $(this).hide();
+                    }else{
+                        $(this).show();
+                    }});
+
+        child_div.find('div.frames').attr('data-parent', selected_id);//<-make_frameにおけるparent-id
+        
+     
+        // step7
         var frames = '';
         var first  = true;
 
@@ -88,18 +101,8 @@
                 }
                 
                 });
-        /*
-        $('[id^=add_frame_]').each( function() {
-            var val = $(this).find('input').attr('value');//<-親ノードidが格納されてる
-            if (val !== '') {
-                if (!first) {
-                    frames += ',';
-                }
-                frames += val;
-                first = false;
-            }
-        });
-        */
+
         $('#story-fm [name=selected-frames-id]').val(frames);
+        $('[id^=add-frame-] [name=parent-id]').val(frames);
     });
 })();

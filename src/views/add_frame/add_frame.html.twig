@@ -14,32 +14,33 @@
                 </div>
             </form>
             -->
-           <div class="text-center">
+           <div class="span6 text-center" style="margin:10px">
                <a class="btn btn-primary" href="{{urlFor('upload_image')}}"><i class="icon-plus icon-white"></i> 写真から</a>
                <a class="btn btn-primary" href="{{urlFor('material', {'page': 1})}}"><i class="icon-folder-open icon-white"></i> 素材箱から</a>
            </div>
 
-            <div class="text-center">
+            <div class="span6 text-center" style="margin:10px; margin-bottom:20px;">
                 <img src="{{ imgPath }}" alt="file not found" width="200" height="200">
-                <br>{{image_id}}<br>
             </div>
 
             <form action="{{ urlFor('make_frame') }}" method="post" class="form-horizontal well">
               <div class="control-group">
                    <label class="control-label" for="caption">Caption</label>
                    <div class="controls">
-                       <input id="caption" name="caption" type="text"class="span3" value="{{input.caption}}"/>
-                       <input id="parent_id" type="hidden" name="parent_id" value="{{ parent_id }}"/>
+                       <input id="caption" name="caption" type="text"class="span3" value="{{input.caption}}" placeholder="20字以内で入力してください" />
+                       <input id="parent_id" type="hidden" name="parent_id" value="{{ parent_id }}" placeholder="15字以内で入力してください"/>
                        <input id="token" type="hidden" name="token" value="{{ token }}" />
                        <input id="image_id" type="hidden" name="image_id" value="{{ image_id }}"/>
                    </div>
                 </div>
 
+                {% if is_last_frame != true %}
                 <div class="controls">
                     <button id="make_frame" type="submit" class="btn btn-primary"
                     onClick="this.form.action='{{urlFor('make_frame')}}'">コマを追加</button>
                 </div>
-                
+                {% else %} 
+
                 <br> 
                  <div class="control-group">
                    <label class="control-label" for="Title">Title</label>
@@ -52,6 +53,7 @@
                     <button id="make_story" type="submit" class="btn btn-primary"
                     onClick="this.form.action='{{urlFor('make_story')}}'">ストーリーを作成</button>
                 </div>
+                {% endif %}
   
              </form>
 
