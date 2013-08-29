@@ -18,7 +18,7 @@
         
         <div class="span8 well" id="material-box">
             <div class="images">
-                {% for image in images %}
+                {% for image in image_array %}
                     <img src="{{ image['src'] }}" alt="image" value="{{ image['id'] }}" width="120" height="120">
                 {% endfor %}
             </div>

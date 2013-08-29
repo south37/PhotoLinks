@@ -5,21 +5,9 @@ use Respect\Validation\Validator as v;
 
 画像アップロード: {
     $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app, $container) {
-            $frameListStr = $container['session']->get('frame_ids');
-            $frameList = explode(',',$frameListStr);
-            
-            $frame_repository = $container['repository.frame'];
-            $image_repository = $container['repository.image'];
-            $frames = [];
-            foreach($frameList as $frame_id) {
-                $frame = $frame_repository->findById($frame_id);
-                $image = $image_repository->findById($frame->image_id);
-                array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
-            }
-        
             // CSRF対策のトークンを埋め込む
             $token = $container['session']->id();
-            $app->render('upload/upload.html.twig', ['token'=>$token, 'frames'=>$frames]);
+            $app->render('upload/upload.html.twig', ['token'=>$token, 'frames'=>$container['session']->get('frames')]);
         })
         ->name('upload_image')
     ;
@@ -43,11 +31,9 @@ use Respect\Validation\Validator as v;
 
             $validator = new \Vg\Validator\Upload();
             if (!$validator->validate($input)) {
-                $errors = $validator->errors();
-                $error_messages = array_values($errors);
-                $message = implode(PHP_EOL, $error_messages);
+                $error_message = implode(PHP_EOL, $validator->errors());
 
-                $app->flash('info', $message);
+                $app->flash('info', $error_message);
                 $app->redirect($app->urlFor('upload_image'));
             }
                 
