@@ -40,7 +40,8 @@
                     <div class="row text-center">
                         {% for theme in themeArray %}
                             <div class="span2">
-                                <a href="{{ urlFor('select', {'theme_id': theme['id']}) }}"><img src="{{ theme['image_path'] }}" alt="hoge" width="200"></a>title<br>fabs
+                                <a href="{{ urlFor('select', {'theme_id': theme['id']}) }}"><img src="{{ theme['image_path'] }}" alt="hoge" width="200"></a>
+                                <p>{{ theme['caption'] }}</p>
                             </div>
                         {% endfor %}  
                     </div>
