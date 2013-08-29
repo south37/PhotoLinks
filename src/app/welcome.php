@@ -76,7 +76,6 @@ $app->get('/', function() use ($app, $container) {
             }
 
         }
-var_dump($storyArray);
 
     }catch(Exception $e){
         $app->halt(500, $e->getMessage());
