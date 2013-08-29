@@ -63,6 +63,7 @@ echo"\n\n";
         $storyArray   = []; 
         foreach ($recentStories as $no => $story) {
             $storyArray[$no] = [];
+            $storyArray[$no]['id'] = $story->id;
             $storyArray[$no]['title']  = $story->title;
             $storyArray[$no]['frames'] = [];
 
