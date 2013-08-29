@@ -5,13 +5,26 @@
 
     <div class="row">
         <div class="span6 offset3 text-center">
-            <h1>{{ storyTitle  }}</h1>
-            <p>{{ namedUserName  }}</p>
-            <p>favNum:hoge</p>
+            <h1>{{ storyTitle }}</h1>
+           {% if storyId is not null %}
+
+           {% if liked == false%}
+           <div class="span6 offset3 text-center">
+                <button disabled="disabled" id="favorite" class="btn btn-primary"><i class="icon-star-empty icon-white"></i>いいね！</button>
+                <span id="favNum">{{favNum}}</span>
+           </div>
+	   {% else %}
+            <div class="span6 offset3 text-center">
+                <button id="favorite" class="btn btn-primary"><i class="icon-star-empty icon-white"></i>いいね！</button>
+                <span id="favNum">{{favNum}}</span>
+           </div>
+           {% endif %}
+           {% endif %}
+
 
             <!--画像表示するところ-->
             {% for frame in frameDataList %}
-                <img src="{{ frame['image'] }}" alt="パス不明" width="400" height="400">
+                <img src="{{ frame['image']}}" alt="パス不明" width="400" height="400">
                 <br>{{ frame['caption'] }}<br><br>
             {% endfor %}
 
@@ -44,3 +57,17 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascript%}
+     <script type="text/javascript">
+         $("#favorite").click(function(){
+            $.post("{{urlFor('story_view_favorite',{"story_id":storyId})}}",
+            function(data){
+                $("#favorite").attr("disabled","disabled");
+                document.getElementById("favNum").innerText = data;
+            }
+            );
+          });
+</script>
+
+{% endblock%}

@@ -123,7 +123,6 @@ SQL;
             LIMIT :startNum,:getNum;
 SQL;
         $sth = $this->db->prepare($sql);
-
         $sth->bindValue(':startNum', $startNum, \PDO::PARAM_INT);
         $sth->bindValue(':getNum'  , $getNum  , \PDO::PARAM_INT);
 
