@@ -22,18 +22,11 @@ $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() u
     $container['session']->set('frame_ids', $input['frame-ids']);
 
     $frameList = explode(',', $input['frame-ids']);
+    frames_to_session($container, $frameList);
+
     $is_last_frame = (count($frameList) > 2);
     $container['session']->set('is_last_frame', $is_last_frame);
     $parent_id = $frameList[count($frameList)-1];
-
-    $frame_repository = $container['repository.frame'];
-    $image_repository = $container['repository.image'];
-    $frames = [];
-    foreach($frameList as $frame_id) {
-        $frame = $frame_repository->findById($frame_id);
-        $image = $image_repository->findById($frame->image_id);
-        array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
-    }
 
     $image_id = -1;
     $imgPath = "/img/public_img/200x200.jpg";
@@ -45,7 +38,7 @@ $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() u
          "token"     => $token,
          "imgPath"   => $imgPath,
          "is_last_frame" => $is_last_frame,
-         "frames"    => $frames,
+         "frames"    => $container['session']->get('frames'),
          ]);
 })
     ->name('add_frame_from_select');
@@ -66,15 +59,6 @@ $app->get('/add_frame/:image_id', $redirectIfNotLogin($container['session']), fu
         $app->halt(500, $e->getMessage());
     }
 
-    $frame_repository = $container['repository.frame'];
-    $image_repository = $container['repository.image'];
-    $frames = [];
-    foreach($frameList as $frame_id) {
-        $frame = $frame_repository->findById($frame_id);
-        $image = $image_repository->findById($frame->image_id);
-        array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
-    }
-    
     $token = $container['session']->id();
     $app->render('add_frame/add_frame.html.twig',
         ["image_id" => $image_id,
@@ -82,7 +66,7 @@ $app->get('/add_frame/:image_id', $redirectIfNotLogin($container['session']), fu
          "token" => $token,
          "imgPath" => $img->path,
          "is_last_frame" => $is_last_frame,
-         "frames"  => $frames]);
+         "frames"  => $container['session']->get('frames')]);
     })
     ->name('add_frame_from_upload')
     
@@ -108,18 +92,6 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
 
     $token = $container['session']->id();
     if (!$validator->validate($input)){
-        // 左のコマ 
-        $frameListStr = $container['session']->get('frame_ids');
-        $frameList = explode(',', $frameListStr);
-        $frame_repository = $container['repository.frame'];
-        $image_repository = $container['repository.image'];
-        $frames = [];
-        foreach($frameList as $frame_id) {
-            $frame = $frame_repository->findById($frame_id);
-            $image = $image_repository->findById($frame->image_id);
-            array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
-        }
-
         $imgPath = "/img/public_img/200x200.jpg";
         $app->render('add_frame/add_frame.html.twig',
             ['errors'=> $validator->errors(),
@@ -127,7 +99,7 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
              'imgPath' => $imgPath,
              'token' => $token,
              'parent_id'=>$input['parent_id'],
-             'frames' => $frames
+             'frames' => $container['session']->get('frames')
             ]);
         exit;
     }
@@ -161,17 +133,6 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
     $validator_frame = new  \Vg\Validator\AddFrame();
     $validator_story = new  \Vg\Validator\AddStory();
     
-    // 左のコマ
-    $frameListStr = $container['session']->get('frame_ids');
-    $frameList = explode(',', $frameListStr);
-    $frame_repository = $container['repository.frame'];
-    $image_repository = $container['repository.image'];
-    $frames = [];
-    foreach($frameList as $frame_id) {
-        $frame = $frame_repository->findById($frame_id);
-        $image = $image_repository->findById($frame->image_id);
-        array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
-    }
     $imgPath = "/img/public_img/200x200.jpg";
 
     $token = $container['session']->id();
@@ -183,7 +144,7 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
             'imgPah' => $imgPath,
             'token' => $token,
             'parent_id'=>$input['parent_id'],
-            'frames' => $frames]
+            'frames' => $container['session']->get('frames')]
         );
         exit;
     }
@@ -195,7 +156,7 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
             'imgPath' => $imgPath,
             'token' => $token,
             'parent_id'=>$input['parent_id'],
-            'frames' => $frames]
+            'frames' => $container['session']->get('frames')]
         );
         exit;
     }
@@ -286,6 +247,19 @@ function connectFramesToStory($lastFrameId, $storyId, $app, $c){
         
         return false;
     }
+}
+
+// セッションにframeListを格納
+function frames_to_session($container, $frameList) {
+    $frame_repository = $container['repository.frame'];
+    $image_repository = $container['repository.image'];
+    $frames = [];
+    foreach($frameList as $frame_id) {
+        $frame = $frame_repository->findById($frame_id);
+        $image = $image_repository->findById($frame->image_id);
+        array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
+    }
+    $container['session']->set('frames', $frames);
 }
 
 // 確認画面

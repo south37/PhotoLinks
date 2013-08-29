@@ -7,7 +7,8 @@ use Respect\Validation\Validator as v;
     $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app, $container) {
             $frameListStr = $container['session']->get('frame_ids');
             $frameList = explode(',',$frameListStr);
-            
+
+            frames_to_session($container, $frameList); 
             $frame_repository = $container['repository.frame'];
             $image_repository = $container['repository.image'];
             $frames = [];
