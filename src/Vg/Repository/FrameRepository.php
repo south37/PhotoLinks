@@ -43,7 +43,7 @@ class FrameRepository
     
     /**
     * 最後のframeカラムのIDを取得する
-    * @return frameID
+    * @return FrameID
     */
     private function getLatestId()
     {
@@ -85,7 +85,7 @@ SQL;
      *
      * @param $themeId
      *
-     * @return frame[]
+     * @return Frame[]
      */
      public function findsByThemeId($themeId)
      {
@@ -111,7 +111,7 @@ SQL;
      *
      * @param $storyId
      *
-     * @return frame[]
+     * @return Frame[]
      */
      public function findsByStoryId($storyId)
      {
@@ -124,7 +124,8 @@ SQL;
                     ON frame.id = frame_story.frame_id
                 INNER JOIN story
                     ON frame_story.story_id = story.id
-            WHERE story_id = :storyId;
+            WHERE story_id = :storyId
+            ORDER BY frame.id;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
@@ -145,9 +146,9 @@ SQL;
      *
      * @param $id
      *
-     * @return frame
+     * @return Frame
      */
-     public function findByParentId($id)
+     public function findParentById($id)
      {
         $sql = <<< SQL
             SELECT 
@@ -164,4 +165,58 @@ SQL;
         $frame->setProperties($data);
         return $frame;
      }
+
+    /**
+     * 指定したuserがつなげた、締めた、storyのframe郡を返す
+     *
+     * @param $userId
+     *
+     * @return Frame[][]
+     */
+     public function findsFramesEachStoryByUserId($userId)
+     {
+        $sql = <<< SQL
+            SELECT
+               frame.id, frame.user_id, frame.theme_id, frame.parent_id,
+               frame.last_story_id, frame.caption, frame_story.story_id, story.title
+            FROM frame
+                INNER JOIN frame_story
+                    ON frame.id = frame_story.frame_id
+                INNER JOIN story
+                    ON frame_story.story_id = story.id
+            WHERE frame.user_id = :userId
+            ORDER BY story.id, frame.id;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
+        $sth->execute();
+        // 一つ前のストーリーID保持用
+        $preStoryId = -1;
+        // ストーリーID毎にフレーム郡を格納する二次元配列
+        $storyFrames = [[]];
+        // フレーム郡を一時的に格納する配列
+        $frames = null;
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            // storyIdが前のフレームと異なっていた場合
+            if($preStoryId != $data['story_id'])
+            {
+                // 初めては無視
+                // 後は全てstoryIdが変わった時に、二次元配列に格納
+                if($preStoryId != -1) array_push($storyFrames, $frames);
+                // frame郡を格納する配列の初期化
+                $frames = [];
+                // 現在のストーリーIDを一つ前のストーリーID保持用変数に格納
+                $preStoryId = $data['story_id'];
+            }
+            // Frameクラスをインスタンス化し、配列に格納
+            $frame = new Frame();
+            $frame->setProperties($data);
+            array_push($frames, $frame);
+        }
+        // 最後のフレーム郡をnullでなければ二次元配列に格納する
+        if($frames != null) array_push($storyFrames, $frames);
+        return $storyFrames;
+     }
 }
+

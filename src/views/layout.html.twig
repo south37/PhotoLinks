@@ -17,8 +17,12 @@
     </style>
     <link href="{{ asset('/bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet">
 
+
+    {% block header '' %}
+
     <!--bxSlider-->
     <link rel="stylesheet" href="{{ asset('/js/plugin/bxSlider/jquery.bxslider.css') }}">
+
 
 </head>
 
@@ -59,7 +63,7 @@
                 <ul class="nav pull-right">
                     {% block login %}
                         {% if session.get('isLogin') %}
-                            <li><a href="{{ urlFor('user_edit') }}" >{{ session.get('user.name') }}</a></li>
+                        <li><a href="{{ urlFor('mypage', {'user_id' : session.get('user.id')}) }}" >{{ session.get('user.name') }}</a></li>
                             <li><a href="{{ urlFor('user_logout') }}">ログアウト</a></li>
                         {% else %}
                             <li><a href="{{ urlFor('user_login') }}">ログイン</a></li>
@@ -89,7 +93,7 @@
 <script src="{{ asset('/bootstrap/js/bootstrap.js') }}"></script>
 
 <script src="{{ asset('/js/plugin/bxSlider/jquery.bxslider.min.js')}}"></script>
-
+<script src="{{ asset('/js/plugin/sidr/jquery.sidr.min.js') }}"></script>
 {% block javascript '' %}
 </body>
 </html>

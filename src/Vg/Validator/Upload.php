@@ -37,6 +37,24 @@ class Upload
                                                  ]);
             return false;
         }
+      
+        $extension = pathinfo($input['image_name'], PATHINFO_EXTENSION);
+        if (!in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+            $this->errors = ['画像の形式はjpgかpngかgifでお願いします'];
+            return false;
+        }
+
+        $mime_extension = 'image/' . $extension;
+        if ($extension === 'jpg') {
+            $mime_extension = 'image/jpeg';
+        }
+        
+        $mime_type = image_type_to_mime_type(exif_imagetype($input['image_path']));
+        if ($mime_extension !== $mime_type) {
+            $this->errors = ['画像の形式と拡張子が一致していません'];
+            return false;
+        }
+
         return true;
     }
 

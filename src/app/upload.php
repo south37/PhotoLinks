@@ -4,15 +4,31 @@ use Respect\Validation\Validator as v;
 
 
 画像アップロード: {
-    $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app) {
-            $app->render('upload/upload.html.twig');
+    $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app, $container) {
+            // CSRF対策のトークンを埋め込む
+            $token = $container['session']->id();
+            $app->render('upload/upload.html.twig', ['token'=>$token]);
         })
         ->name('upload_image')
     ;
 
     $app->post('/upload', $redirectIfNotLogin($container['session']), function () use ($app,$container) {
             $input = $app->request()->post();
-                
+            $input['image_path'] = $_FILES['upfile']['tmp_name'];
+            $input['image_name'] = $_FILES['upfile']['name'];
+
+            // CSRF対策
+            if($input['token'] != $container['session']->id())
+            {
+                $app->flash('info', '画面遷移に失敗しました');
+                $app->redirect($app->urlFor('welcome'));
+            }
+
+            if (!is_uploaded_file($_FILES['upfile']['tmp_name'])) {
+                $app->flash('info', 'アップロード失敗 画像が取得できませんでした');
+                $app->redirect($app->urlFor('upload_image'));
+            }
+
             $validator = new \Vg\Validator\Upload();
             if (!$validator->validate($input)) {
                 $errors = $validator->errors();
@@ -23,11 +39,6 @@ use Respect\Validation\Validator as v;
                 $app->redirect($app->urlFor('upload_image'));
             }
                 
-            if (!is_uploaded_file($_FILES['upfile']['tmp_name'])) {
-                $app->flash('info', 'アップロード失敗');
-                $app->redirect($app->urlFor('upload_image'));
-            }
-            
             if (!move_uploaded_file($_FILES['upfile']['tmp_name'], __DIR__.'/../../public_html/img/public_img/'.$_FILES['upfile']['name'])) {
                 $app->flash('info', 'アップロード失敗');
                 $app->redirect($app->urlFor('upload_image'));

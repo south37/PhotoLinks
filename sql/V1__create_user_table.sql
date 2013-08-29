@@ -1,7 +1,7 @@
 -- sample sql
 CREATE  TABLE IF NOT EXISTS `user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `nickname` VARCHAR(50) NOT NULL ,
+  `name` VARCHAR(50) NOT NULL ,
   `password_hash` VARCHAR(255) NOT NULL ,
   `hash_method` VARCHAR(255) NOT NULL ,
   `email` VARCHAR(255) NOT NULL ,

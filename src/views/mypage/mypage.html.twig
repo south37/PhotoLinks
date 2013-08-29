@@ -4,29 +4,33 @@
     {% include 'error.html.twig' with {errors: errors} %}
 
     <div class="row">
-        <div class="span6 offset3 text-center">
-            <h1>{{ storyTitle  }}</h1>
-            <p>{{ namedUserName  }}</p>
-            <p>favNum:hoge</p>
-            {% if storyId is not null %}
-            <div class="span6 offset3 text-center">
-                <button id="favorite" type="button" class="btn btn-primary">いいね！</button>
+        <div class="span9 offset1 text-center">
+            <h1>{{ user_name }}のマイページ</h1>
+            <h2>これまでの投稿(人気順)</h2>
+            {% for rank, story in story_array %}
+            <div class="span2 text-center">
+                <h3>{{ rank + 1 }}位</h3>
+                <h3>{{ story['title']  }}</h3>
+                <p>favNum:hoge</p>
+
+                <!--画像表示するところ-->
+                {% for frame in story['frame_list'] %}
+                    <p>{{ frame['image'] }}</p>
+                    <img src="{{ frame['image'] }}" alt="パス不明" width="100" height="100">
+                    <br>{{ frame['caption'] }}<br><br>
+                {% endfor %}
+
+                <!--selectに飛ばす-->
+                <form action = "{{ urlFor('select') }} ">
+                    <div class="controls">
+                        <button id="return_select" type="submit" class="btn btn-primary">コマ選択に戻る</button>
+                    </div>
+                </form>
             </div>
-           {% endif %}
-
-            <!--画像表示するところ-->
-            {% for frame in frameDataList %}
-                <img src="{{ frame['image']}}" alt="パス不明" width="400" height="400">
-                <br>{{ frame['caption'] }}<br><br>
             {% endfor %}
+        </div>
 
-            <!--selectに飛ばす-->
-            <form action = "{{ urlFor('select') }} ">
-                 <div class="controls">
-                    <button id="return_select" type="submit" class="btn btn-primary">コマ選択に戻る</button>
-                </div>
-            </form>
-
+        <div class="span9 offset1 text-center">
             <!-- Share -->
             <!-- twitter -->
             <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja" data-size="large" data-hashtags="PhotoStory（仮）">ツイート</a>
@@ -49,14 +53,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block javascript%}
-     <script type="text/javascript">
-         $("#favorite").click(function(){
-            $.post("{{urlFor('story_view_favorite',{"story_id":storyId})}}",
-            function(data){/*alert(data);*/}
-            );
-          });
-</script>
-
-{% endblock%}

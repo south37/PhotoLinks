@@ -108,59 +108,6 @@ SQL;
         return $data['id'];
     }
     
-    
-    /**
-     * IDで検索する
-     *
-     * @param $id
-     *
-     * @return Story
-     * 
-     * 自作自演は防げるが、ログインが必須になってしまう点が問題
-     */
-    public function incrementFavorite($storyId, $userId)
-    {
-
-        // ストーリーの投稿者と同じユーザが「いいね」しているかを調べる
-        $sql = <<< SQL
-            SELECT * FROM story
-            WHERE id = :storyId AND user_id = :userId;
-SQL;
-        $sth = $this->db->prepare($sql);
-        $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
-        $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
-        $sth->execute();
-        // 一致するデータがあれば、同じユーザが「いいね」している為、無効にする
-        if($sth->rowCount() !== 0)
-        {
-            // return false;
-return "false1";
-        }
-
-        // 「いいね」の件数をインクリメントする
-        $sql = <<< SQL
-            UPDATE story SET
-               favorite = favorite + 1
-            WHERE id = :storyId;
-SQL;
-	var_dump($sql);
-        $sth = $this->db->prepare($sql);
-        $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
-        try
-        {
-            $sth->execute();
-        }
-        catch(PDOException $e)
-        {
-            die($e->getMessage());
-            // return false;
-return "false2";
-        }
-	var_dump($storyId, $userId);
-        // return true;
-return array($storyId,$userId);
-    }
-    
     /**
      * storyをfavoriteの降順でソートして返す 
      *
@@ -176,9 +123,33 @@ return array($storyId,$userId);
             LIMIT :startNum,:getNum;
 SQL;
         $sth = $this->db->prepare($sql);
-
         $sth->bindValue(':startNum', $startNum, \PDO::PARAM_INT);
         $sth->bindValue(':getNum'  , $getNum  , \PDO::PARAM_INT);
+
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
+    }
+
+    public function findsByUserId($user_id, $page)
+    {
+        // ストーリーの「いいね」の多い順にソートする
+        $sql = <<< SQL
+            SELECT * FROM story
+            WHERE user_id = :user_id
+            ORDER BY favorite DESC
+            LIMIT :page, 4;
+SQL;
+        $sth = $this->db->prepare($sql);
+
+        $sth->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
+        $sth->bindValue(':page', $page, \PDO::PARAM_INT);
 
         $sth->execute();
         $stories = [];

@@ -12,7 +12,7 @@
 use Respect\Validation\Validator as v;
  
 // get_from_view2
-$app->get('/add_frame', function() use ($app,$container) {
+$app->get('/add_frame', $redirectIfNotLogin($container['session']), function() use ($app,$container) {
     //addressを無理やり入れられた時の対策をしましょう
 
 
@@ -36,7 +36,7 @@ $app->get('/add_frame', function() use ($app,$container) {
     ->name('add_frame_from_select');
 
 // geti_from_view5
-$app->get('/add_frame/:image_id', function($image_id) use ($app,$container) {
+$app->get('/add_frame/:image_id', $redirectIfNotLogin($container['session']), function($image_id) use ($app,$container) {
     $input = $app->request()->get();
     $parent_id = $container['session']->get('parent_id');
 
@@ -47,9 +47,11 @@ $app->get('/add_frame/:image_id', function($image_id) use ($app,$container) {
         $app->halt(500, $e->getMessage());
     }
 
+    $token = $container['session']->id();
     $app->render('add_frame/add_frame.html.twig',
         ["image_id" => $image_id,
         "parent_id" => $parent_id,
+        "token" => $token,
         "imgPath" => $img->path]);
     })
     ->name('add_frame_from_upload')
@@ -57,7 +59,7 @@ $app->get('/add_frame/:image_id', function($image_id) use ($app,$container) {
     ;
 
 // push_make_frame 
-$app->post('/add_frame/make_frame', function() use ($app,$container) { // form情報を取得 
+$app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), function() use ($app,$container) { // form情報を取得 
     // make data
     $input = $app->request()->post();
     $input['last_story_id'] = 0;
@@ -65,6 +67,13 @@ $app->post('/add_frame/make_frame', function() use ($app,$container) { // form�
     $input['theme_id'] = $container['session']->get('theme_id');
 
     var_dump($input);
+
+    // CSRF対策
+    if($input['token'] != $container['session']->id())
+    {
+        $app->flash('info', '画面遷移に失敗しました');
+        $app->redirect($app->urlFor('welcome'));
+    }
 
     // validation
     $validator = new \Vg\Validator\AddFrame();
@@ -85,7 +94,7 @@ $app->post('/add_frame/make_frame', function() use ($app,$container) { // form�
 })->name('make_frame');
 
 // ストーリーを作成 
-$app->post('/add_frame/make_story', function() use ($app,$container) {
+$app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), function() use ($app,$container) {
     // make data 
     $input = $app->request()->post();
     $input['last_story_id'] = 0;
@@ -93,6 +102,13 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
     $input['theme_id'] = $container['session']->get('theme_id');
 
     var_dump($input);
+
+    // CSRF対策
+    if($input['token'] != $container['session']->id())
+    {
+        $app->flash('info', '画面遷移に失敗しました');
+        $app->redirect($app->urlFor('welcome'));
+    }
 
     // validation
     $validator_frame = new  \Vg\Validator\AddFrame();
@@ -104,6 +120,12 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
         exit;
     }
 
+    if (!$validator_frame->validate($input)){
+        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_frame->errors(),
+            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
+        exit;
+    }
+ 
     // makeStory + addDB
 
     if(($storyId = makeStory($input,$app,$container)) < 0){
@@ -111,13 +133,7 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
     }
 
     $input['last_story_id'] = $storyId; 
-
-    if (!$validator_frame->validate($input)){
-        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_frame->errors(),
-            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
-        exit;
-    }
-    
+   
     // makeFrame + addDB 
     if (($lastFrameId = makeFrame($input,$app,$container)) < 0){
         exit;
