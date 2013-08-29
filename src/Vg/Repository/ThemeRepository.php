@@ -56,4 +56,24 @@ SQL;
         return $theme;
     }
 
+    public function findsRecentThemes($page) {
+        $sql = <<< SQL
+            SELECT * FROM theme
+            ORDER BY id DESC
+            LIMIT :page, 5;
+SQL;
+        $sth = $this->db->prepare($sql);
+
+        $sth->bindValue(':page', $page, \PDO::PARAM_INT);
+
+        $sth->execute();
+        $themes = [];
+        while ($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $theme = new Theme();
+            $theme->setProperties($data);
+            array_push($themes, $theme);
+        }
+        return $themes;
+    }
 }

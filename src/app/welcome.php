@@ -38,12 +38,25 @@ $app->get('/', function() use ($app, $container) {
 
     }catch(Exception $e){
         $app->halt(500, $e->getMessage());
-   
+
     }
-    
+
+    $repository_theme = $container['repository.theme'];
+    try{
+        $recentThemes = $repository_theme->findsRecentThemes(0);
+        $themeArray = [];
+        foreach ($recentThemes as $theme) {
+            $first_frame = $repository_frame->findById($theme->frame_id);
+            $first_image = $repository_image->findById($first_frame->image_id);
+            array_push($themeArray, ['id' => $theme->id, 'image_path' => $first_image->path]);
+        }
+    }catch(Exception $e){
+        $app->halt(500, $e->getMessage());
+
+    }
+
     // rendering
-    $app->render('top/index.html.twig',["frameArray"=>$frameArray]);
-    //$app->render('top/index.html.twig');
+    $app->render('top/index.html.twig',["frameArray"=>$frameArray, "themeArray" => $themeArray]);
 })
     ->name('welcome')
     ;
