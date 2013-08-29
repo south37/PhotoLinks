@@ -24,14 +24,20 @@
     $app->get('/story_view/story/:story_id',function($storyId) use($app, $container){
        $tmpStory = $container['repository.story']->findByID($storyId);
        $storyTitle = $tmpStory->title;
-
+       $tmpUser = $container['repository.user']->findById($tmpStory->user_id);
+       // 各種SNSへのShareのために、GETパラメータを含めたURL、タイトル
+       $shareUrl = '/story_view/story/story_id='. $storyId;
+       $shareTitle = "Photo Story（仮）";
        $tmpFrameStories = $container['repository.frame']->findsByStoryId($storyId);
        $frameList = []; 
        foreach( $tmpFrameStories as $tmpFrameStory){
            array_push($frameList,$tmpFrameStory->id);
        }
        $liked = $container['repository.liked']->isSameLikedUser($storyId,$container['session']->get('user.id'));
-       $app->render('story_view/story_view.html.twig',["storyId"=>$storyId,"storyTitle"=>$storyTitle,"liked"=>$liked,"frameDataList"=>select_frame_data_list($container,$frameList)]);  
+       $favNum = $container['repository.liked']->getNumberOfLikedByStoryId($storyId);
+       $app->render('story_view/story_view.html.twig',
+            ["storyId"=>$storyId,"storyTitle"=>$storyTitle,"liked"=>$liked,"favNum"=>$favNum,"frameDataList"=>select_frame_data_list($container,$frameList),
+            "shareURL" => $shareUrl, "shareTitle" => $shareTitle]);  
     }) ->name('story_view_story')
     ;
 
@@ -54,6 +60,7 @@
     $app->post('/story_view/favorite/:story_id',function($storyId) use($app,$container){
         $userId = $container['session']->get('user.id');
         $favorite = $container['repository.liked']->incrementFavorite($storyId, $userId);
-        var_dump($favorite);
+        $favNum = $container['repository.liked']->getNumberOfLikedByStoryId($storyId);
+        print $favNum;
     }) ->name('story_view_favorite')
     ;

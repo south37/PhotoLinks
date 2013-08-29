@@ -28,9 +28,11 @@ $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() u
     $parent_id = $input['parent-id'];
     $imgPath = "/img/ismTest/placeholder.png";
 
+    $token = $container['session']->id();
     $app->render('add_frame/add_frame.html.twig',
         ["image_id" => $image_id,
         "parent_id" => $parent_id,
+        "token" => $token,
         "imgPath" => $imgPath]);
 })
     ->name('add_frame_from_select');
@@ -78,9 +80,14 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
     // validation
     $validator = new \Vg\Validator\AddFrame();
 
+    $token = $container['session']->id();
     if (!$validator->validate($input)){
-        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator->errors(),
-            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
+        $app->render('add_frame/add_frame.html.twig',
+            ['errors'=> $validator->errors(),
+            'image_id'=>$input['image_id'],
+            'token' => $token,
+            'parent_id'=>$input['parent_id']
+            ]);
         exit;
     }
 
@@ -114,15 +121,22 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
     $validator_frame = new  \Vg\Validator\AddFrame();
     $validator_story = new  \Vg\Validator\AddStory();
 
+    $token = $container['session']->id();
     if (!$validator_story->validate($input)){
-        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_story->errors(),
-            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
+        $app->render('add_frame/add_frame.html.twig',
+            ['errors'=> $validator_story->errors(),
+            'image_id'=>$input['image_id'],
+            'token' => $token,
+            'parent_id'=>$input['parent_id']]);
         exit;
     }
 
     if (!$validator_frame->validate($input)){
-        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_frame->errors(),
-            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
+        $app->render('add_frame/add_frame.html.twig',
+            ['errors'=> $validator_frame->errors(),
+            'image_id'=>$input['image_id'],
+            'token' => $token,
+            'parent_id'=>$input['parent_id']]);
         exit;
     }
  

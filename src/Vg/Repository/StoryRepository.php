@@ -161,4 +161,62 @@ SQL;
         }
         return $stories;
     }
+
+    /**
+     * 指定したユーザが「いいね」したストーリーを全て取得する
+     *
+     * @param $userId
+     *
+     * @return Story[] 
+     * 
+     */
+    public function findsStoryByUserId($userId)
+    {
+        $sql = <<< SQL
+            SELECT
+                story.id, story.user_id, story.title, COUNT(*) AS like_count
+            FROM story 
+                INNER JOIN liked
+                    ON story.id = liked.story_id 
+            WHERE story.id IN
+                (SELECT DISTINCT story_id FROM liked WHERE user_id = :userId)
+            GROUP BY story.id ORDER BY like_count DESC;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
+    }
+    
+    /**
+     * 最近のストーリーを取得する 
+     *
+     * @return Story[] 
+     *
+     * 取得件数を定数の20としてるので後で使用者の方で適当に変更しておいてください.
+     */
+    public function findsRecentStory()
+    {
+        $sql = <<< SQL
+            SELECT * FROM story
+            ORDER BY id DESC LIMIT 0, 4;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
+    }
 }

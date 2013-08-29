@@ -123,7 +123,7 @@ SQL;
      * @return boolean 
      * 
      */
-    private function isSameLikedUser($storyId, $userId)
+    public function isSameLikedUser($storyId, $userId)
     {
         $sql = <<< SQL
             SELECT * FROM story
@@ -138,5 +138,25 @@ SQL;
         // 一致するデータがあれば、同じユーザが「いいね」している為、無効にする
         if($sth->rowCount() !== 0) return false;
         return true;
+    }
+
+    /**
+     * 指定したストーリーの「いいね」された数を取得する
+     *
+     * @param $storyId
+     *
+     * @return int 
+     * 
+     */
+    public function getNumberOfLikedByStoryId($storyId)
+    {
+        $sql = <<< SQL
+            SELECT * FROM liked
+            WHERE story_id = :storyId;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->rowCount();
     }
 }

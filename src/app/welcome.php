@@ -40,12 +40,49 @@ echo"\n\n";
 
     }catch(Exception $e){
         $app->halt(500, $e->getMessage());
-   
+
     }
-    
+
+    $repository_theme = $container['repository.theme'];
+    try{
+        $recentThemes = $repository_theme->findsRecentThemes(0);
+        $themeArray = [];
+        foreach ($recentThemes as $theme) {
+            $first_frame = $repository_frame->findById($theme->frame_id);
+            $first_image = $repository_image->findById($first_frame->image_id);
+            array_push($themeArray, ['id' => $theme->id, 'image_path' => $first_image->path]);
+        }
+    }catch(Exception $e){
+        $app->halt(500, $e->getMessage());
+
+    }
+
+    try{
+        // storyの配列
+        $recentStories= $repository_story->findsRecentStory(0);
+        $storyArray   = []; 
+        foreach ($recentStories as $no => $story) {
+            $storyArray[$no] = [];
+            $storyArray[$no]['title']  = $story->title;
+            $storyArray[$no]['frames'] = [];
+
+            $frames = $repository_frame->findsByStoryId((INT)($story->id));
+            foreach ($frames as $frame) {
+                $image = $repository_image->findById($frame->image_id);
+                array_push($storyArray[$no]['frames'], [
+                    'caption' => $frame->caption,
+                    'path'    => $image->path
+                    ]);
+            }
+        }
+
+    }catch(Exception $e){
+        $app->halt(500, $e->getMessage());
+
+    }
+
     // rendering
-    $app->render('top/index.html.twig',["frameArray"=>$frameArray]);
-    //$app->render('top/index.html.twig');
+    $app->render('top/index.html.twig',["frameArray"=>$frameArray, "themeArray" => $themeArray, "storyArray" => $storyArray]);
 })
     ->name('welcome')
     ;
