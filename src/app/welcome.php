@@ -26,7 +26,6 @@ $app->get('/', function() use ($app, $container) {
             }
             $frame  = $frames[count($frames)-1];
 
-            var_dump($frame->last_story_id); 
             $add_frame = [
                 'id'        => (INT) $frame->id,
                 'parent_id' => (INT) $frame->parent_id,

@@ -77,7 +77,6 @@ function inner(&$list, $tree, $depth) {
 
         $frames = [];
         foreach ($frame_array as $frame) {
-            //print_r($frame);
             $temp_frame = [
                 'id'        => (INT) $frame->id,
                 'parent_id' => (INT) $frame->parent_id,
