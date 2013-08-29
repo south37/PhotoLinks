@@ -47,7 +47,7 @@
                     {% for no, story in storyArray %}
                         <div class="span2 text-center">
                             <h3>{{ story['title']  }}</h3>
-                            <p>favNum:hoge</p>
+                            <p>{{story['favNum']}} いいね！</p>
 
                             {% for frame in story['frames'] %}
                                 <img src="{{ frame['path'] }}" alt="パス不明" width="100" height="100">
