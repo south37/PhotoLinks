@@ -3,6 +3,10 @@
 {% block contents %}
     {% include 'error.html.twig' with {errors: errors} %}
 
+    <div class="row text center">
+        <h1>素材あっぷろーど</h1>
+    </div>
+
     <div class="row">
         <div class="span6 offset3">
             <form action="{{ urlFor('upload_post')}}" method="post" enctype="multipart/form-data" class="form-vertical well">
