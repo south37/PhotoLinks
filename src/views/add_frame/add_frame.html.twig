@@ -4,8 +4,16 @@
 {% block contents %}
     {% include 'error.html.twig' with {errors: errors} %}
 
-    <div class="row">
-        <div class="span6 offset3">
+    <div class="row frames-field">
+        <div class="span3 text-center">
+            {% for frame in frames %}
+            <img class="preview-frame" src="{{ frame['path'] }}" alt="no_source" width="150" height="150" id="prev    iew-{{depth}}" />
+            <br>
+            <p id="preview-caption-{{depth}}">{{ frame['caption']}}</p>
+            {% endfor %}
+        </div>
+
+            <div class="span6">
             <!--
             <form action="{{urlFor('upload_image')}}" method="get" class="form-horizontal">
                 <div class="text-center">

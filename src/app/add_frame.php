@@ -14,7 +14,6 @@ use Respect\Validation\Validator as v;
 // get_from_view2
 $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() use ($app,$container) {
     $input = $app->request()->get();
-    var_dump($input);
     if ($input === []) {
         $app->redirect($app->urlFor('welcome'));
     }
@@ -22,22 +21,32 @@ $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() u
     $container['session']->set('theme_id',  $input['theme-id']);
     $container['session']->set('frame_ids', $input['frame-ids']);
 
-    $frameListStr = $input['frame-ids'];
-    $frameList = explode(',',$frameListStr);
+    $frameList = explode(',', $input['frame-ids']);
     $is_last_frame = (count($frameList) > 2);
     $container['session']->set('is_last_frame', $is_last_frame);
     $parent_id = $frameList[count($frameList)-1];
+
+    $frame_repository = $container['repository.frame'];
+    $image_repository = $container['repository.image'];
+    $frames = [];
+    foreach($frameList as $frame_id) {
+        $frame = $frame_repository->findById($frame_id);
+        $image = $image_repository->findById($frame->image_id);
+        array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
+    }
 
     $image_id = -1;
     $imgPath = "/img/public_img/200x200.jpg";
 
     $token = $container['session']->id();
     $app->render('add_frame/add_frame.html.twig',
-        ["image_id" => $image_id,
+        ["image_id"  => $image_id,
          "parent_id" => $parent_id,
-         "token" => $token,
-         "imgPath" => $imgPath,
-         "is_last_frame" => $is_last_frame]);
+         "token"     => $token,
+         "imgPath"   => $imgPath,
+         "is_last_frame" => $is_last_frame,
+         "frames"    => $frames,
+         ]);
 })
     ->name('add_frame_from_select');
 
