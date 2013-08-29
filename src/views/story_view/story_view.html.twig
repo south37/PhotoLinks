@@ -24,13 +24,13 @@
 
             <!-- Share -->
             <!-- twitter -->
-            <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja" data-size="large" data-hashtags="PhotoStory（仮）">ツイート</a>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja" data-size="large" data-hashtags="{{ shareTitle }}">ツイート</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
             <!-- FaceBook -->
-            <a name="fb_share" type="box_count" share_url="{{urlFor('welcome')}}">シェア</a>
+            <a name="fb_share" type="box_count" share_url="{{ shareURL }}">シェア</a>
             <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
             <!-- Google -->
-            <div class="g-plusone" data-size="tall" data-href="{{ urlFor('welcome') }}"></div>
+            <div class="g-plusone" data-size="tall" data-href="{{ shareURL }}"></div>
             <script type="text/javascript">
             window.___gcfg = {lang: 'ja'};
             (function() {
@@ -40,7 +40,7 @@
              })();
             </script>
             <!-- はてなブックマーク -->
-            <a href="http://b.hatena.ne.jp/entry/{{urlFor('welcome')}}" class="hatena-bookmark-button" data-hatena-bookmark-title="PhotoStory（仮）" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+            <a href="http://b.hatena.ne.jp/entry/{{ shareURL }}" class="hatena-bookmark-button" data-hatena-bookmark-title="{{ shareTitle }}" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
         </div>
     </div>
 {% endblock %}
