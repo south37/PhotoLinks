@@ -145,7 +145,7 @@ SQL;
      *
      * @param $storyId
      *
-     * @return boolean 
+     * @return int 
      * 
      */
     public function getNumberOfLikedByStoryId($storyId)

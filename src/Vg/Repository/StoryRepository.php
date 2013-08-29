@@ -162,4 +162,36 @@ SQL;
         }
         return $stories;
     }
+
+    /**
+     * 指定したユーザが「いいね」したストーリーを全て取得する
+     *
+     * @param $userId
+     *
+     * @return Story[] 
+     * 
+     * LIMITを付けたので後で欲しい数を適当に指定しておいてください.
+     */
+    public function findsStoryByUserId($userId)
+    {
+        $sql = <<< SQL
+            SELECT
+                story.id, story.user_id, story.title, story.favorite
+            FROM story 
+                INNER JOIN liked
+                    ON story.id = liked.story_id 
+            WHERE liked.user_id = :userId;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
+    }
 }
