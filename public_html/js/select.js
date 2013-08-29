@@ -33,7 +33,6 @@
         // step2.
         $('#preview-'+now_depth).attr('src', $(this).attr('src'));
         $('#preview-caption-'+now_depth).empty().append($(this).attr('alt'));
-        
 
         // step3
         $('div.frames-field').each( function() {
@@ -75,14 +74,32 @@
         // step 6
         
         var maxNum = 5;
-
+        var num =child_div.find('img.frame').size(); 
+        console.log(num);
+        /*
         child_div.find('img.frame').each(function(i){
                     if(i >= maxNum){
                         $(this).hide();
                     }else{
                         $(this).show();
                     }});
+*/
+        var item =child_div.find('img.frame').get().sort(function(){return Math.random()-0.5;});
+        console.log(item);
 
+        for(var i=0; i<item.length; i++){
+            console.log(item[i]);
+            if (i<maxNum) {
+                //item[i].show();
+                $(item[i]).show();
+            }else{
+                $(item[i]).hide();
+            }
+        }
+        /*
+        item.slice(0,maxNum).show();
+        item.slice(maxNum,num).hide();
+        */
         child_div.find('div.frames').attr('data-parent', selected_id);//<-make_frameにおけるparent-id
         
         // step7

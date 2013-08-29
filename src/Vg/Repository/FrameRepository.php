@@ -167,12 +167,13 @@ SQL;
      }
 
     /**
-     * 指定したuserがつなげた、締めた、storyのframe郡を返す
+     * 指定したuserがつなげた、締めた、storyのframe郡をFavoritの降順でソートして返す
      *
      * @param $userId
      *
      * @return Frame[][]
      */
+     /*
      public function findsFramesEachStoryByUserId($userId)
      {
         $sql = <<< SQL
@@ -228,5 +229,6 @@ SQL;
         }
         return ['frames' => $storyFrames, 'titles' => $storyTitles];
      }
+     */
 }
 
