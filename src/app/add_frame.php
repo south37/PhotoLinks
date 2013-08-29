@@ -104,6 +104,12 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
         exit;
     }
 
+    if (!$validator_frame->validate($input)){
+        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_frame->errors(),
+            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
+        exit;
+    }
+ 
     // makeStory + addDB
 
     if(($storyId = makeStory($input,$app,$container)) < 0){
@@ -111,13 +117,7 @@ $app->post('/add_frame/make_story', function() use ($app,$container) {
     }
 
     $input['last_story_id'] = $storyId; 
-
-    if (!$validator_frame->validate($input)){
-        $app->render('add_frame/add_frame.html.twig',['errors'=> $validator_frame->errors(),
-            'image_id'=>$input['image_id'],'parent_id'=>$input['parent_id']]);
-        exit;
-    }
-    
+   
     // makeFrame + addDB 
     if (($lastFrameId = makeFrame($input,$app,$container)) < 0){
         exit;
