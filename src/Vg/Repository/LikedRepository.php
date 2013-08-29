@@ -21,9 +21,9 @@ class LikedRepository
      */
     public function insert($liked)
     {
-        $sth = $this->db->prepare('insert into frame_story set
-                                         story_id=:storyId,
-                                         user_id=:userId,
+        $sth = $this->db->prepare('insert into liked set
+                                         story_id=:story_id,
+                                         user_id=:user_id,
                                          created_at=now(),
                                          updated_at=now()');
 
@@ -107,7 +107,7 @@ SQL;
     public function incrementFavorite($storyId, $userId)
     {
         // 指定しストーリーに同じユーザが「いいね」しているかを調べる
-        if($this->isSameLikedUser($storyId, $userId)) return false;
+        if(!$this->isSameLikedUser($storyId, $userId)) return false;
         // 「いいね」の件数を増やす
         $liked = new Liked();
         $liked->setProperties(['story_id' => $storyId, 'user_id' => $userId]);
