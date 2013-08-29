@@ -31,7 +31,7 @@
             {% endfor %}
 
             <!--selectに飛ばす-->
-            <form action = "{{ urlFor('select') }} ">
+            <form action = "{{ urlFor('select', {'theme_id' : theme_id}) }} ">
                  <div class="controls">
                     <button id="return_select" type="submit" class="btn btn-primary">コマ選択に戻る</button>
                 </div>

@@ -9,13 +9,16 @@
         $frameDataList = [];
 
 	for($i = 0; $i < count($frameList); $i++){
-	    $tmpFrame = $container['repository.frame']->findById($frameList[$i]);
+        $tmpFrame = $container['repository.frame']->findById($frameList[$i]);
+        // theme_idを取得
+        $theme_id = $tmpFrame->theme_id;
+
 	    $tmpImage = $container['repository.image']->findByFrameId($tmpFrame->id);
             $tmpCaption = $container['repository.frame']->findById($frameList[$i]);
             $tmpFrameData = array("image"=>$tmpImage->path,"caption"=>$tmpCaption->caption); 
             array_push($frameDataList,$tmpFrameData);
 	}
-        return $frameDataList;
+        return [$frameDataList, $theme_id];
     }
    
 
@@ -34,8 +37,12 @@
        }
        $liked = $container['repository.liked']->isSameLikedUser($storyId,$container['session']->get('user.id'));
        $favNum = $container['repository.liked']->getNumberOfLikedByStoryId($storyId);
+
+       $tmp = select_frame_data_list($container, $frameList);
+       $frameDataList = $tmp[0];
+       $theme_id = $tmp[1];
        $app->render('story_view/story_view.html.twig',
-            ["storyId"=>$storyId,"storyTitle"=>$storyTitle,"liked"=>$liked,"favNum"=>$favNum,"frameDataList"=>select_frame_data_list($container,$frameList),
+            ["storyId"=>$storyId,"storyTitle"=>$storyTitle,"liked"=>$liked,"favNum"=>$favNum,"frameDataList"=>$frameDataList, 'theme_id' => $theme_id,
             "shareURL" => $shareUrl, "shareTitle" => $shareTitle]);  
     }) ->name('story_view_story')
     ;
@@ -50,7 +57,10 @@
 	$frameListStr = $input["selected-frames-id"];
 	$frameList = explode(',',$frameListStr);
 
-	$app->render('story_view/story_view.html.twig',["frameDataList"=>select_frame_data_list($container,$frameList)]);
+    $tmp = select_frame_data_list($container, $frameList);
+    $frameDataList = $tmp[0];
+    $theme_id = $tmp[1];
+	$app->render('story_view/story_view.html.twig',["frameDataList"=>select_frame_data_list($container,$frameList), "theme_id" => $theme_id]);
     })  ->name('story_view_frames')
     ;
 
