@@ -48,6 +48,7 @@ function inner(&$list, $tree, $depth) {
         $num = array_push($list[$depth][$parent_id], [
             'id'        => $node['id'],
             'src'       => $node['src'],
+            'caption'   => $node['caption'],
             'is_grandchild_exists' => true
         ]);
         
@@ -62,6 +63,7 @@ function inner(&$list, $tree, $depth) {
 見る: {
     $app->get('/select', function() use ($app, $container) {
         $input = $app->request()->get();
+
         if (isset($input['theme_id'])) {
             $theme_id = $input['theme_id'];
         }
@@ -75,6 +77,7 @@ function inner(&$list, $tree, $depth) {
 
         $frames = [];
         foreach ($frame_array as $frame) {
+            //print_r($frame);
             $temp_frame = [
                 'id'        => (INT) $frame->id,
                 'parent_id' => (INT) $frame->parent_id,

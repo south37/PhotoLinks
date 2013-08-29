@@ -61,6 +61,7 @@ $app->get('/', function() use ($app, $container) {
         $storyArray   = []; 
         foreach ($recentStories as $no => $story) {
             $storyArray[$no] = [];
+            $storyArray[$no]['id'] = $story->id;
             $storyArray[$no]['title']  = $story->title;
             $storyArray[$no]['frames'] = [];
             // $favNums = $repository_favNum->getNumberOfLikedByStoryId((INT)($story->id));

@@ -50,7 +50,9 @@
                             <p>{{story['favNum']}} いいね！</p>
 
                             {% for frame in story['frames'] %}
-                                <img src="{{ frame['path'] }}" alt="パス不明" width="100" height="100">
+                                <a href="{{ urlFor('story_view_story', {'story_id': story['id']}) }}">
+                                    <img src="{{ frame['path'] }}" alt="パス不明" width="100" height="100">
+                                </a>
                                 <br>{{ frame['caption'] }}<br><br>
                             {% endfor %}
                        </div>

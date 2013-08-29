@@ -14,22 +14,21 @@ use Respect\Validation\Validator as v;
 // get_from_view2
 $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() use ($app,$container) {
     $input = $app->request()->get();
+    var_dump($input);
     if ($input === []) {
         $app->redirect($app->urlFor('welcome'));
     }
 
-    $input['selected-frames-id'] = '1,2';
+    $container['session']->set('theme_id',  $input['theme-id']);
+    $container['session']->set('frame_ids', $input['frame-ids']);
 
-    $container['session']->set('theme_id', $input['theme-id']);
-    $container['session']->set('parent_id',$input['parent-id']);
-
-    $frameListStr = $input['selected-frames-id'];
+    $frameListStr = $input['frame-ids'];
     $frameList = explode(',',$frameListStr);
     $is_last_frame = (count($frameList) > 2);
     $container['session']->set('is_last_frame', $is_last_frame);
+    $parent_id = $frameList[count($frameList)-1];
 
     $image_id = -1;
-    $parent_id = $input['parent-id'];
     $imgPath = "/img/public_img/200x200.jpg";
 
     $token = $container['session']->id();
@@ -45,8 +44,11 @@ $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() u
 // geti_from_view5
 $app->get('/add_frame/:image_id', $redirectIfNotLogin($container['session']), function($image_id) use ($app,$container) {
     $input = $app->request()->get();
-    $parent_id = $container['session']->get('parent_id');
     $is_last_frame = $container['session']->get('is_last_frame');
+
+    $frameListStr = $container['session']->get('frame_ids');
+    $frameList = explode(',',$frameListStr);
+    $parent_id = $frameList[count($frameList) -1]; 
 
     $repository = $container['repository.image'];
     try{
@@ -58,10 +60,10 @@ $app->get('/add_frame/:image_id', $redirectIfNotLogin($container['session']), fu
     $token = $container['session']->id();
     $app->render('add_frame/add_frame.html.twig',
         ["image_id" => $image_id,
-        "parent_id" => $parent_id,
-        "token" => $token,
-        "imgPath" => $img->path,
-        "is_last_frame" => $is_last_frame]);
+         "parent_id" => $parent_id,
+         "token" => $token,
+         "imgPath" => $img->path,
+         "is_last_frame" => $is_last_frame]);
     })
     ->name('add_frame_from_upload')
     
