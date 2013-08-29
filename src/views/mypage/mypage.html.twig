@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="span9 offset1 text-center">
-            <h1>{{ user_name }}のマイページ</h1>
+            <h1>{{ user_name }}のページ</h1>
             <h2>これまでの投稿(人気順)</h2>
             {% for rank, story in story_array %}
             <div class="span2 text-center">
@@ -19,12 +19,6 @@
                     <br>{{ frame['caption'] }}<br><br>
                 {% endfor %}
 
-                <!--selectに飛ばす-->
-                <form action = "{{ urlFor('select') }} ">
-                    <div class="controls">
-                        <button id="return_select" type="submit" class="btn btn-primary">コマ選択に戻る</button>
-                    </div>
-                </form>
             </div>
             {% endfor %}
         </div>
