@@ -163,14 +163,14 @@ SQL;
     }
 
     /**
-     * 指定したユーザが「いいね」したストーリーを全て取得する
+     * 指定したユーザが「いいね」したストーリーを全てFavoritの降順でソートして取得する
      *
      * @param $userId
      *
      * @return Story[] 
      * 
      */
-    public function findsStoryByUserId($userId)
+    public function findsFavoriteStoryByUserId($userId)
     {
         $sql = <<< SQL
             SELECT
@@ -219,4 +219,39 @@ SQL;
         }
         return $stories;
     }
+
+    /**
+     * 指定したuserがつなげた、締めた、storyのframe郡をFavoritの降順でソートして返す
+     *
+     * @param $userId
+     *
+     * @return Story[]
+     */
+     public function findsPopularJoinedStoryByUserId($userId)
+     {
+        $sql = <<< SQL
+            SELECT
+                story.id, story.user_id, story.title, story.favorite, COUNT(*) AS like_count
+            FROM story 
+            WHERE story.id IN
+                (SELECT DISTINCT story.id FROM story
+                    INNER JOIN frame_story
+                        ON story.id = frame_story.story_id
+                    INNER JOIN frame
+                        ON frame_story.frame_id = frame.id
+                WHERE frame.user_id = :userId)
+            GROUP BY story.id ORDER BY like_count DESC;
+SQL;
+        $sth = $this->db->prepare($sql);
+        $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
+     }
 }
