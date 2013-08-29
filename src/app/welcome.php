@@ -48,7 +48,7 @@ $app->get('/', function() use ($app, $container) {
         foreach ($recentThemes as $theme) {
             $first_frame = $repository_frame->findById($theme->frame_id);
             $first_image = $repository_image->findById($first_frame->image_id);
-            array_push($themeArray, ['id' => $theme->id, 'caption' => $frame->caption, 'image_path' => $first_image->path]);
+            array_push($themeArray, ['id' => $theme->id, 'caption' => $first_frame->caption, 'image_path' => $first_image->path]);
         }
     }catch(Exception $e){
         $app->halt(500, $e->getMessage());
