@@ -177,7 +177,7 @@ SQL;
      {
         $sql = <<< SQL
             SELECT
-               frame.id, frame.user_id, frame.theme_id, frame.parent_id,
+               frame.id, frame.user_id, frame.theme_id, frame.parent_id, frame.image_id,
                frame.last_story_id, frame.caption, frame_story.story_id, story.title
             FROM frame
                 INNER JOIN frame_story
@@ -193,17 +193,25 @@ SQL;
         // 一つ前のストーリーID保持用
         $preStoryId = -1;
         // ストーリーID毎にフレーム郡を格納する二次元配列
-        $storyFrames = [[]];
+        $storyFrames = [];
+        // title
+        $storyTitles = [];
         // フレーム郡を一時的に格納する配列
         $frames = null;
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
         {
+            if (!in_array($data['title'], $storyTitles)) {
+                array_push($storyTitles, $data['title']);
+            }
+
             // storyIdが前のフレームと異なっていた場合
             if($preStoryId != $data['story_id'])
             {
                 // 初めては無視
                 // 後は全てstoryIdが変わった時に、二次元配列に格納
-                if($preStoryId != -1) array_push($storyFrames, $frames);
+                if($preStoryId != -1) {
+                    array_push($storyFrames, $frames);
+                }
                 // frame郡を格納する配列の初期化
                 $frames = [];
                 // 現在のストーリーIDを一つ前のストーリーID保持用変数に格納
@@ -215,8 +223,10 @@ SQL;
             array_push($frames, $frame);
         }
         // 最後のフレーム郡をnullでなければ二次元配列に格納する
-        if($frames != null) array_push($storyFrames, $frames);
-        return $storyFrames;
+        if($frames != null) {
+            array_push($storyFrames, $frames);
+        }
+        return ['frames' => $storyFrames, 'titles' => $storyTitles];
      }
 }
 
