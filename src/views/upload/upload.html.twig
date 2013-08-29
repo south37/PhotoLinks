@@ -19,6 +19,8 @@
         <div class="span6">
             <form action="{{ urlFor('upload_post')}}" method="post" enctype="multipart/form-data" class="form-vertical well">
                 <div class="control-group">
+                    <p>画像の形式はjpgかpngかgifでお願いします</p>
+                    <p>画像のサイズは2MB以内でお願いします</p>
                     <input id="image-select" type="file" name="upfile" accept="image/*" class="span3"/>
                     <input id="token" type="hidden" name="token" value="{{token}}" />
                     <img src="/img/public_img/200x200.jpg" id="preview" alt="preview" width="320" />

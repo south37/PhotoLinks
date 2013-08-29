@@ -54,6 +54,13 @@ class Upload
             $this->errors = ['画像の形式と拡張子が一致していません'];
             return false;
         }
+    
+        $binary = file_get_contents($input['image_path']);
+        $size_MB = strlen($binary)/(1024*1024); 
+        if ($size_MB > 2) {
+            $this->errors = ['画像のサイズが2MBを超えています'];
+            return false;
+        }
 
         return true;
     }
