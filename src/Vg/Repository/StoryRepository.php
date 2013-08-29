@@ -170,7 +170,6 @@ SQL;
      *
      * @return Story[] 
      * 
-     * LIMITを付けたので後で欲しい数を適当に指定しておいてください.
      */
     public function findsStoryByUserId($userId)
     {
@@ -184,6 +183,31 @@ SQL;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
+    }
+    
+    /**
+     * 最近のストーリーを取得する 
+     *
+     * @return Story[] 
+     *
+     * 取得件数を定数の20としてるので後で使用者の方で適当に変更しておいてください.
+     */
+    public function findsRecentStory($userId)
+    {
+        $sql = <<< SQL
+            SELECT * FROM story
+            ORDER BY id DESC LIMIT 0, 20;
+SQL;
+        $sth = $this->db->prepare($sql);
         $sth->execute();
         $stories = [];
         while($data = $sth->fetch(\PDO::FETCH_ASSOC))
