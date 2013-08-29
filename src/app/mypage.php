@@ -56,7 +56,6 @@ $app->get('/mypage/:user_id', function($user_id) use ($app, $container) {
             }
             $storyArray += array(array("rank"=>$rank,"storyTitle"=>$story->title,"favNum"=>$favNum,"frames"=>$frames));
     }
-var_dump($storyArray);
     $app->render('mypage/mypage.html.twig',['storyArray' => $storyArray, 'userName' => $userName]);
         }) 
         ->name('mypage')

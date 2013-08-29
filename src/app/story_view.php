@@ -15,7 +15,6 @@
             $tmpFrameData = array("image"=>$tmpImage->path,"caption"=>$tmpCaption->caption); 
             array_push($frameDataList,$tmpFrameData);
 	}
-var_dump($frameDataList);
         return $frameDataList;
     }
    
