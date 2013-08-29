@@ -7,7 +7,7 @@
         <p>let's make our stories.</p>
     </div>
 
-   <h2>Top Favs!</h2>
+   <h2>Top Fav Stories!</h2>
    <div class="row">
     <ul class="bxslider" id="slider">
         {% for frame in frameArray %}
@@ -26,8 +26,8 @@
    <div class="row">
         <div class="tabbable span12">
             <ul class="nav nav-tabs text-center">
-                <li class="active span5"><a href="#1" data-toggle="tab">theme</a></li>
-                <li class="span5 offset1"><a href="#2"data-toggle="tab">stories</a></li>
+                <li class="active span5"><a href="#1" data-toggle="tab">Recent Themes</a></li>
+                <li class="span5 offset1"><a href="#2"data-toggle="tab">Recent Stories</a></li>
             </ul>
             
             <div class="tab-content">
@@ -43,7 +43,7 @@
                 </div>
                 
                 <!--２つめのtab.新着ストーリ-->
-                <div id="2" class="tab-pane">
+                <div id="2" class="span9 offset1 tab-pane">
                     {% for no, story in storyArray %}
                         <div class="span2 text-center">
                             <h3>{{ story['title']  }}</h3>
