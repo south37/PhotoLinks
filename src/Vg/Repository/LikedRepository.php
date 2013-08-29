@@ -123,7 +123,7 @@ SQL;
      * @return boolean 
      * 
      */
-    private function isSameLikedUser($storyId, $userId)
+    public function isSameLikedUser($storyId, $userId)
     {
         $sql = <<< SQL
             SELECT * FROM story
