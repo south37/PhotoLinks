@@ -5,7 +5,8 @@
         
         $('[id^=field-]').hide();
         $('#field-0').toggle();
-        $('[id^=preview-frame]').css({'border': '0px solid #000000'});
+
+        $('[id^=preview-frame]').css({'border': '2px solid #000000'});
         $('[id^=preview-caption]').css({'border': '0px solid #000000'});
 
         $('#field-0 img.frame').click();
@@ -13,6 +14,9 @@
         
     });
 
+    $('img').hover(function(){
+            $(this).css("cursor","pointer");
+            });
     /*
      * 画像クリック時：選択ノード以下展開．
      * 1.選択ノードdepth取得 -> now_depth
@@ -57,6 +61,8 @@
         // step5
         if(now_depth < 3){
           $('#field-' + (now_depth+1)).show();
+          $('#field-' + (now_depth+1)).find('[id^=preview-]').attr("src","/img/assets/searchIcon.png");
+          
           $('#field-' + (now_depth+1)).find('div.frames').show();
         }
 

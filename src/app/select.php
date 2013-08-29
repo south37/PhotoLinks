@@ -61,14 +61,10 @@ function inner(&$list, $tree, $depth) {
 }
 
 見る: {
-    $app->get('/select', function() use ($app, $container) {
+    $app->get('/select/:theme_id', function($theme_id) use ($app, $container) {
         $input = $app->request()->get();
 
-        if (isset($input['theme_id'])) {
-            $theme_id = $input['theme_id'];
-        }
-        $theme_id = 1;
-
+        $container['session']->set('theme_id', $theme_id);
         $theme = $container['repository.theme']->findById($theme_id);
         $root_id = $theme->frame_id;
 
@@ -77,7 +73,6 @@ function inner(&$list, $tree, $depth) {
 
         $frames = [];
         foreach ($frame_array as $frame) {
-            //print_r($frame);
             $temp_frame = [
                 'id'        => (INT) $frame->id,
                 'parent_id' => (INT) $frame->parent_id,

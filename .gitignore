@@ -8,3 +8,5 @@ var/log/*
 var/cache/*
 vendor/*
 *.swp
+.gitignore
+public_html/img/public_img/*

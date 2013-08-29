@@ -44,7 +44,6 @@ var_dump($frameDataList);
     // Selectページからの遷移
     $app->get('/story_view/frames',function() use($app, $container){
 	$input = $app->request()->get();
-	var_dump($input);
 	// todo intのエラー処理！
 
 
