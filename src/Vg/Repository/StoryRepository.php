@@ -170,7 +170,7 @@ SQL;
      * @return Story[] 
      * 
      */
-    public function findsFavoriteStoryByUserId($userId)
+    public function findsFavoriteStoriesByUserId($userId)
     {
         $sql = <<< SQL
             SELECT

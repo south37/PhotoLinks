@@ -4,10 +4,9 @@
  */
 $app->get('/mypage/:user_id', function($user_id) use ($app, $container) {
     // get top story array
+    $userName = $container['session']->get('user.name');
+    $userId   = $container['session']->get('user.id');
 /*
-    $user_name = $container['session']->get('user.name');
-    $user_id   = $container['session']->get('user.id');
-
     $repository_image = $container['repository.image'];
     $repository_frame = $container['repository.frame'];
     $repository_story = $container['repository.story'];
@@ -37,12 +36,28 @@ $app->get('/mypage/:user_id', function($user_id) use ($app, $container) {
         }
     }
 */
+    $repository_image = $container['repository.image'];
+    $repository_frame = $container['repository.frame'];
+    $repository_story = $container['repository.story'];
+    $repository_liked = $container['repository.liked'];
 
-    $story_array = $container['repository.story']->findsPopularJoinedStoriesByUserId($user_id);
-    
-
-var_dump($story_array);
-    $app->render('mypage/mypage.html.twig',['story_array' => $story_array, 'user_name' => $user_name]);
+    $stories = $repository_story->findsPopularJoinedStoryByUserId($userId);
+    $storyArray = [];
+    $rank = 0;
+    foreach ($stories as $story) {
+            $rank = $rank+1;
+            $favNum = $repository_liked->getNumberOfLikedByStoryId(($story->id));
+            $frames = [];
+            $tmpFrames = $repository_frame->findsByStoryId($story->id);
+            foreach ($tmpFrames as $tmpFrame) {
+                $imagePath = $repository_image->findById($tmpFrame->image_id);
+                $is_users = ($tmpFrame->user_id === $userId);
+                array_push($frames,array("path"=>$imagePath->path,"caption"=>$tmpFrame->caption,"is_users"=>$is_users));
+            }
+            $storyArray += array(array("rank"=>$rank,"storyTitle"=>$story->title,"favNum"=>$favNum,"frames"=>$frames));
+    }
+var_dump($storyArray);
+    $app->render('mypage/mypage.html.twig',['storyArray' => $storyArray, 'userName' => $userName]);
         }) 
         ->name('mypage')
     ;

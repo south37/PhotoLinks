@@ -5,13 +5,13 @@
 
     <div class="row">
         <div class="span9 offset1 text-center">
-            <h1>{{ user_name }}のページ</h1>
+            <h1>{{ userName }}のページ</h1>
             <h2>これまでの投稿(人気順)</h2>
-            {% for rank, story in story_array %}
+          {% for story in storyArray %}
             <div class="span2 text-center">
-                <h3>{{ rank + 1 }}位</h3>
-                <h3>{{ story['title']  }}</h3>
-                <p>favNum:hoge</p>
+                <h3>{{ story["rank"] }}位</h3>
+                <h3>{{ story.storyTitle }}</h3>
+                <p>{{ story.favNum }}いいね！</p>
 
                 <!--画像表示するところ-->
                 {% for frame in story['frames'] %}
