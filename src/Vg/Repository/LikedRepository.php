@@ -149,12 +149,13 @@ SQL;
     public function getNumberOfLikedByStoryId($storyId)
     {
         $sql = <<< SQL
-            SELECT * FROM liked
+            SELECT COUNT(*) AS liked_count FROM liked
             WHERE story_id = :storyId;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
         $sth->execute();
-        return $sth->rowCount();
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        return $data['liked_count'];
     }
 }
