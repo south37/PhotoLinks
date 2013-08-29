@@ -15,6 +15,7 @@
 
                 <!--画像表示するところ-->
                 {% for frame in story['frame_list'] %}
+                    <p>{{ frame['image'] }}</p>
                     <img src="{{ frame['image'] }}" alt="パス不明" width="100" height="100">
                     <br>{{ frame['caption'] }}<br><br>
                 {% endfor %}
@@ -27,7 +28,9 @@
                 </form>
             </div>
             {% endfor %}
+        </div>
 
+        <div class="span9 offset1 text-center">
             <!-- Share -->
             <!-- twitter -->
             <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja" data-size="large" data-hashtags="PhotoStory（仮）">ツイート</a>

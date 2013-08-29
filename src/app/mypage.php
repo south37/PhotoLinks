@@ -7,7 +7,7 @@ $app->get('/mypage/:user_id', function($user_id) use ($app, $container) {
     $user_name = $container['session']->get('user.name');
 
     $repository_story = $container['repository.story'];
-    $stories = $repository_story->findsByUserId($user_id);
+    $stories = $repository_story->findsByUserId($user_id, 0);
     $story_array = [];
     foreach ($stories as $story) {
         $story_id   = $story->id;

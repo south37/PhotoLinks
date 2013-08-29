@@ -184,18 +184,19 @@ SQL;
         return $stories;
     }
 
-    public function findsByUserId($user_id)
+    public function findsByUserId($user_id, $page)
     {
         // ストーリーの「いいね」の多い順にソートする
         $sql = <<< SQL
             SELECT * FROM story
             WHERE user_id = :user_id
             ORDER BY favorite DESC
-            LIMIT 0, 4;
+            LIMIT :page, 4;
 SQL;
         $sth = $this->db->prepare($sql);
 
         $sth->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
+        $sth->bindValue(':page', $page, \PDO::PARAM_INT);
 
         $sth->execute();
         $stories = [];
