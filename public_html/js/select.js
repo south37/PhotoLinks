@@ -101,18 +101,8 @@
                 }
                 
                 });
-        /*
-        $('[id^=add_frame_]').each( function() {
-            var val = $(this).find('input').attr('value');//<-親ノードidが格納されてる
-            if (val !== '') {
-                if (!first) {
-                    frames += ',';
-                }
-                frames += val;
-                first = false;
-            }
-        });
-        */
+
         $('#story-fm [name=selected-frames-id]').val(frames);
+        $('[id^=add-frame-] [name=parent-id]').val(frames);
     });
 })();
