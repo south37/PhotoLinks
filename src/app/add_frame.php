@@ -14,6 +14,7 @@ use Respect\Validation\Validator as v;
 // get_from_view2
 $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() use ($app,$container) {
     $input = $app->request()->get();
+    var_dump($input);
     if ($input === []) {
         $app->redirect($app->urlFor('welcome'));
     }
