@@ -6,12 +6,17 @@
     <div class="row">
         <div class="span6 offset3 text-center">
             <h1>{{ storyTitle  }}</h1>
-            <p>{{ namedUserName  }}</p>
             <p>favNum:hoge</p>
             {% if storyId is not null %}
             <div class="span6 offset3 text-center">
-                <button id="favorite" type="button" class="btn btn-primary">いいね！</button>
-            </div>
+                <button id="favorite" class="btn btn-primary"><i class="icon-star-empty icon-white"></i>いいね！</button>
+           </div>
+
+           {% if liked %}
+           <div class="span6 offset3 text-center">
+                <button disabled="disabled" id="favorite" class="btn btn-primary"><i class="icon-star-empty icon-white"></i>いいね！</button>
+           </div>
+           {% endif %}
            {% endif %}
 
             <!--画像表示するところ-->
@@ -54,7 +59,11 @@
      <script type="text/javascript">
          $("#favorite").click(function(){
             $.post("{{urlFor('story_view_favorite',{"story_id":storyId})}}",
-            function(data){/*alert(data);*/}
+            function(data){
+alert(data);
+                $("#favorite").attr("disabled","disabled");
+
+            }
             );
           });
 </script>

@@ -72,6 +72,12 @@ $container['repository.frame_story'] = $container->share(function($c){
         return new \Vg\Repository\FrameStoryRepository($c['db']);
 });
 
+// ストーリリポジトリ
+$container['repository.liked'] = $container->share(function($c){
+        return new \Vg\Repository\LikedRepository($c['db']);
+});
+
+
 
 
 
