@@ -16,7 +16,7 @@
             {% endfor %}
         </div>
         
-        <div class="span6">
+        <div class="span8 well" id="material-box">
             <div class="images">
                 {% for image in images %}
                     <img src="{{ image['src'] }}" alt="image" value="{{ image['id'] }}" width="120" height="120">
@@ -29,7 +29,7 @@
                     {% else %}
                         <li><a href="{{ urlFor('material', {'page': page-1}) }}">&laquo;</a></li>
                     {% endif %}
-                    <li class="active"><a href="#">{{ page }}</a></li>
+                       <li class="active"><a href="#">{{ page }}</a></li>
                     {% if (page == all_page_num) %}
                         <li class="disabled"><a href="#">&raquo;</a></li>
                     {% else %}
@@ -37,18 +37,29 @@
                     {% endif %}
                 </ul>
             </div>
-        </div>
 
-
-        <div class="span6 offset3">
+            <div class="offset3">
             <form action="{{ urlFor('material_post') }}" method="post" id="image-select">
-                <input type="text" name="image-id" value="" />
-                <button id="image-select-btn" type="submit" class="btn btn-primary">コマ作成へ</button>
+                <input type="hidden" name="image-id" value="" />
+                <button id="image-select-btn" type="submit" class="btn btn-primary">この画像を使う</button>
             </form>
+            </div>
         </div>
+
+
     </div>
 {% endblock %}
 
 {% block javascript %}
     <script src="{{ asset('/js/material.js') }}"></script>
+
+<script>
+$(document).ready(function(){
+ 
+   $('#material-box').css({
+   });
+});
+
+</script>
+    
 {% endblock %}

@@ -28,7 +28,7 @@
             </form>
             -->
            <div class="span6 text-center" style="margin:10px">
-               <a class="btn btn-primary" href="{{urlFor('upload_image')}}"><i class="icon-plus icon-white"></i> 写真から</a>
+               <a class="btn btn-primary" href="{{urlFor('upload_image')}}"><i class="icon-camera icon-white"></i> 写真から</a>
                <a class="btn btn-primary" href="{{urlFor('material', {'page': 1})}}"><i class="icon-folder-open icon-white"></i> 素材箱から</a>
            </div>
 
@@ -41,7 +41,7 @@
                    <label class="control-label" for="caption">Caption</label>
                    <div class="controls">
                        <input id="caption" name="caption" type="text"class="span3" value="{{input.caption}}" placeholder="20字以内で入力してください" />
-                       <input id="parent_id" type="hidden" name="parent_id" value="{{ parent_id }}" placeholder="15字以内で入力してください"/>
+                       <input id="parent_id" type="hidden" name="parent_id" value="{{ parent_id }}" >
                        <input id="token" type="hidden" name="token" value="{{ token }}" />
                        <input id="image_id" type="hidden" name="image_id" value="{{ image_id }}"/>
                    </div>
@@ -58,7 +58,7 @@
                  <div class="control-group">
                    <label class="control-label" for="Title">Title</label>
                    <div class="controls">
-                       <input id="title" name="title" type="text" class="span3" value="{{ input.title }}" />
+                       <input id="title" name="title" type="text" class="span3" value="{{ input.title }}" placeholder="15字以内で入力してください"//>
                    </div>
                 </div>
 
