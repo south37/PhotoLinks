@@ -201,11 +201,11 @@ SQL;
      *
      * 取得件数を定数の20としてるので後で使用者の方で適当に変更しておいてください.
      */
-    public function findsRecentStory($userId)
+    public function findsRecentStory()
     {
         $sql = <<< SQL
             SELECT * FROM story
-            ORDER BY id DESC LIMIT 0, 20;
+            ORDER BY id DESC LIMIT 0, 4;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->execute();

@@ -44,7 +44,17 @@
                 
                 <!--２つめのtab.新着ストーリ-->
                 <div id="2" class="tab-pane">
-                    <p>var</p>
+                    {% for no, story in storyArray %}
+                        <div class="span2 text-center">
+                            <h3>{{ story['title']  }}</h3>
+                            <p>favNum:hoge</p>
+
+                            {% for frame in story['frames'] %}
+                                <img src="{{ frame['path'] }}" alt="パス不明" width="100" height="100">
+                                <br>{{ frame['caption'] }}<br><br>
+                            {% endfor %}
+                       </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
