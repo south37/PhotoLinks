@@ -8,16 +8,16 @@
     </div>
 
    <h2>Top Favs!</h2>
-   <p>push [+] : go to select with theme_id(予定)</p>
-   <div class="row text-center">
+   <div class="row">
     <ul class="bxslider" id="slider">
-        <li><a href="{{urlFor('story_view_story')}}"><img src="img/plus.png" alt="hoge" width="300"></a>title<br>fabs</li>
-        <li><a href="{{urlFor('select')}}"><img src="img/plus.png" alt="hoge" width="300"></a>title<br>fabs</li>
-        <li><a href="{{urlFor('select')}}"><img src="img/plus.png" alt="hoge" width="300"></a>title<br>fabs</li>
-        <li><img src="img/study2.png" alt=""width="200" ></li>
         {% for frame in frameArray %}
         <li>
-        <a href="{{urlFor('story_view_story',{'story_id': frame['story_id']}) }}"><img src="{{frame['src']}}" alt="not found" width="300"><br>{{frame['caption']}}</a>
+        <a href="{{urlFor('story_view_story',{'story_id': frame['story_id']}) }}">
+            <div class="span2 text-center">
+                <img src="{{frame['src']}}" alt="not found" width="200">
+                <p>{{ frame['caption'] }}</p>
+            </div>
+        </a>
         </li>
         {% endfor %}
     </ul>
@@ -26,25 +26,25 @@
    <div class="row">
         <div class="tabbable span12">
             <ul class="nav nav-tabs text-center">
-                <li class="active span3"><a href="#1" data-toggle="tab">theme</a></li>
-                <li class="span3 offset1"><a href="#2"data-toggle="tab"> stories</a></li>
-                <li class="span3 offset1"><a href="#3"data-toggle="tab"> material</a></li>
+                <li class="active span5"><a href="#1" data-toggle="tab">theme</a></li>
+                <li class="span5 offset1"><a href="#2"data-toggle="tab">stories</a></li>
             </ul>
             
             <div class="tab-content">
                 <!--1つめのtab内容．新着テーマ順-->
                 <div id="1" class="tab-pane active">
-                    <p>hoge</p>
+                    <div class="row text-center">
+                        {% for theme in themeArray %}
+                            <div class="span2">
+                                <a href="{{ urlFor('select', {'theme_id': theme['id']}) }}"><img src="{{ theme['image_path'] }}" alt="hoge" width="200"></a>title<br>fabs
+                            </div>
+                        {% endfor %}  
+                    </div>
                 </div>
                 
                 <!--２つめのtab.新着ストーリ-->
                 <div id="2" class="tab-pane">
                     <p>var</p>
-                </div>
-                
-                <!--3つめのtab.新着material-->
-                <div id="3" class="tab-pane">
-                    <p>nya</p>
                 </div>
             </div>
         </div>
