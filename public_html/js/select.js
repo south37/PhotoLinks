@@ -19,7 +19,8 @@
      * 3.選択ノード以下depth -> display:none
      * 4.選択画像 -> border 2px
      * 5.選択画像child -> display:block,
-     * 6.view3用.selectedFrameIdのlist,カンマ区切り文字列生成
+     * 6.表示数制限．適当にhideする
+     * 7.view3用.selectedFrameIdのlist,カンマ区切り文字列生成
      * */
     $('div.frames-field img.frame').click( function () {
         // step1.
@@ -56,7 +57,7 @@
         if(now_depth !== 0){
             //$('#field-'+(now_depth+1)).find('.frames','[data-parent!='+selected_id+']').hide();
             $('#field-' + (now_depth+1)).find('.frames').each( function() {
-                   
+                 
                     if(selected_id == $(this).data('parent')){
                         $(this).show();
                     }else{
@@ -64,9 +65,24 @@
                     }});
         }
 
+        // step 6
+        /*
+        var num = $('#field-' + (now_depth+1)).find('.frames').size();
+        var maxNum = 5;
+         
+        $('#field-' + (now_depth+1)).find('.frames').each( function() {
+                 
+                    if(num > maxNum){
+                        $(this).hide();
+                        num -= 1;
+                    }else{
+                        $(this).show();
+                    }});
+*/
         child_div.find('div.frames').attr('data-parent', selected_id);//<-make_frameにおけるparent-id
 
-        // step6
+     
+        // step7
         var frames = '';
         var first  = true;
 
