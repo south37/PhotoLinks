@@ -8,10 +8,15 @@
             <h1>{{ storyTitle  }}</h1>
             <p>{{ namedUserName  }}</p>
             <p>favNum:hoge</p>
+            {% if storyId is not null %}
+            <div class="span6 offset3 text-center">
+                <button id="favorite" type="button" class="btn btn-primary">いいね！</button>
+            </div>
+           {% endif %}
 
             <!--画像表示するところ-->
             {% for frame in frameDataList %}
-                <img src="{{ frame['image'] }}" alt="パス不明" width="400" height="400">
+                <img src="{{ frame['image']}}" alt="パス不明" width="400" height="400">
                 <br>{{ frame['caption'] }}<br><br>
             {% endfor %}
 
@@ -25,3 +30,14 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascript%}
+     <script type="text/javascript">
+         $("#favorite").click(function(){
+            $.post("{{urlFor('story_view_favorite',{"story_id":storyId})}}",
+            function(data){/*alert(data);*/}
+            );
+          });
+</script>
+
+{% endblock%}

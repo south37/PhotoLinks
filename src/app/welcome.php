@@ -31,6 +31,8 @@ $app->get('/', function() use ($app, $container) {
                 ];
            echo $add_frame['src'];
             array_push($frameArray, $add_frame);
+var_dump($add_frame);
+echo"\n\n";
         }
 
     }catch(Exception $e){

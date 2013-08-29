@@ -120,6 +120,7 @@ SQL;
      */
     public function incrementFavorite($storyId, $userId)
     {
+
         // ストーリーの投稿者と同じユーザが「いいね」しているかを調べる
         $sql = <<< SQL
             SELECT * FROM story
@@ -130,18 +131,21 @@ SQL;
         $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
         $sth->execute();
         // 一致するデータがあれば、同じユーザが「いいね」している為、無効にする
-        if($sth->fetchColumn() !== 0)
+        if($sth->rowCount() !== 0)
         {
-            return false;
+            // return false;
+return "false1";
         }
 
         // 「いいね」の件数をインクリメントする
         $sql = <<< SQL
             UPDATE story SET
                favorite = favorite + 1
-            WHERE id = :id;
+            WHERE id = :storyId;
 SQL;
+	var_dump($sql);
         $sth = $this->db->prepare($sql);
+        $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
         try
         {
             $sth->execute();
@@ -149,9 +153,12 @@ SQL;
         catch(PDOException $e)
         {
             die($e->getMessage());
-            return false;
+            // return false;
+return "false2";
         }
-        return true;
+	var_dump($storyId, $userId);
+        // return true;
+return array($storyId,$userId);
     }
     
     /**

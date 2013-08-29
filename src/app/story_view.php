@@ -25,6 +25,7 @@
    //  $app->get('/story_view/story',function() use($app, $container){
        
       //  $storyId = 1;
+var_dump($storyId);
        $tmpStory = $container['repository.story']->findByID($storyId);
        $storyTitle = $tmpStory->title;
        $tmpUser = $container['repository.user']->findById($tmpStory->user_id);
@@ -35,7 +36,7 @@
        foreach( $tmpFrameStories as $tmpFrameStory){
            array_push($frameList,$tmpFrameStory->id);
        }
-       $app->render('story_view/story_view.html.twig',["storyTitle"=>$storyTitle,"namedUserName"=>$namedUserName,"frameDataList"=>select_frame_data_list($container,$frameList)]);  
+       $app->render('story_view/story_view.html.twig',["storyId"=>$storyId,"storyTitle"=>$storyTitle,"namedUserName"=>$namedUserName,"frameDataList"=>select_frame_data_list($container,$frameList)]);  
     }) ->name('story_view_story')
     ;
 
@@ -52,4 +53,15 @@
 
 	$app->render('story_view/story_view.html.twig',["frameDataList"=>select_frame_data_list($container,$frameList)]);
     })  ->name('story_view_frames')
+    ;
+
+    // いいね機能
+    $app->post('/story_view/favorite/:story_id',function($storyId) use($app,$container){
+        // $tmpStory = $container['repository.story']->findByID($storyId);
+        $userId = $container['session']->get('user.id');
+        $favorite = $container['repository.story']->incrementFavorite($storyId, $userId);
+
+// var_dump($favorite);
+// echo "storyId:".$storyId;
+    }) ->name('story_view_favorite')
     ;
