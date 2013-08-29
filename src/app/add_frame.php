@@ -22,11 +22,16 @@ $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() u
     $container['session']->set('theme_id',  $input['theme-id']);
     $container['session']->set('frame_ids', $input['frame-ids']);
 
-    $frameListStr = $input['frame-ids'];
-    $frameList = explode(',',$frameListStr);
+    $frameList = explode(',', $input['frame-ids']);
     $is_last_frame = (count($frameList) > 2);
     $container['session']->set('is_last_frame', $is_last_frame);
     $parent_id = $frameList[count($frameList)-1];
+
+    $image_repository = $container['repository.image'];
+    $images = [];
+    foreach($frameList as $frame) {
+        $image = $image_repository;
+    }
 
     $image_id = -1;
     $imgPath = "/img/public_img/200x200.jpg";
