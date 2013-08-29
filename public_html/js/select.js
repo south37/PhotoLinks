@@ -32,6 +32,8 @@
 
         // step2.
         $('#preview-'+now_depth).attr('src', $(this).attr('src'));
+        $('#preview-caption-'+now_depth).empty().append($(this).attr('alt'));
+        
 
         // step3
         $('div.frames-field').each( function() {
@@ -52,7 +54,7 @@
 
         // step4
         $(this).css({'border': '2px solid #009999'});
-
+        
         // step5
         if(now_depth < 3){
           $('#field-' + (now_depth+1)).show();
