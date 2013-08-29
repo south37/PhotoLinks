@@ -55,8 +55,32 @@ $app->get('/', function() use ($app, $container) {
 
     }
 
+    try{
+        // storyの配列
+        $recentStories= $repository_story->findsRecentStory(0);
+        $storyArray   = []; 
+        foreach ($recentStories as $no => $story) {
+            $storyArray[$no] = [];
+            $storyArray[$no]['title']  = $story->title;
+            $storyArray[$no]['frames'] = [];
+
+            $frames = $repository_frame->findsByStoryId((INT)($story->id));
+            foreach ($frames as $frame) {
+                $image = $repository_image->findById($frame->image_id);
+                array_push($storyArray[$no]['frames'], [
+                    'caption' => $frame->caption,
+                    'path'    => $image->path
+                    ]);
+            }
+        }
+
+    }catch(Exception $e){
+        $app->halt(500, $e->getMessage());
+
+    }
+
     // rendering
-    $app->render('top/index.html.twig',["frameArray"=>$frameArray, "themeArray" => $themeArray]);
+    $app->render('top/index.html.twig',["frameArray"=>$frameArray, "themeArray" => $themeArray, "storyArray" => $storyArray]);
 })
     ->name('welcome')
     ;
