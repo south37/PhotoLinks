@@ -13,6 +13,9 @@
         
     });
 
+    $('img').hover(function(){
+            $(this).css("cursor","pointer");
+            });
     /*
      * 画像クリック時：選択ノード以下展開．
      * 1.選択ノードdepth取得 -> now_depth

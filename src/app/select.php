@@ -66,9 +66,9 @@ function inner(&$list, $tree, $depth) {
 
         if (isset($input['theme_id'])) {
             $theme_id = $input['theme_id'];
+        } else {
+            $theme_id = 1;
         }
-        $theme_id = 1;
-
         $theme = $container['repository.theme']->findById($theme_id);
         $root_id = $theme->frame_id;
 
@@ -94,7 +94,7 @@ function inner(&$list, $tree, $depth) {
         $frame_tree = list_to_tree($frames);
         $frame_rows = tree_to_list_with_depth($frame_tree);
         
-        foreach ($frame_rows as $depth => $frame_row) {
+        foreach ($frame_rows as $depth => $frame_row) {/
             foreach ($frame_row as $frames) {
                 foreach ($frames as $frame) {
                     if (!isset($frame_rows[$depth+1])) {

@@ -7,6 +7,10 @@
 {% block contents %}
     {% include 'error.html.twig' with {errors: errors} %}
     
+    <div class="row text-center">
+        <h1>つながるよ！</h1>
+    </div>
+
     {% for depth, frames_row in frame_rows %}
         <div class="row frames-field"  data-depth="{{ depth }}" id="field-{{depth}}">
         
