@@ -27,7 +27,7 @@
         var selected_id = $(this).attr('value'); // frame
         var child_div   = $('#children-of-' + selected_id);  // frames
         var now_depth   = $(this).parents('[id^="field-"]').data('depth');
-
+        console.log(child_div);
         // step2.
         $('#preview-'+now_depth).attr('src', $(this).attr('src'));
 
@@ -66,21 +66,25 @@
         }
 
         // step 6
-        /*
-        var num = $('#field-' + (now_depth+1)).find('.frames').size();
+       
+        
+        var num = child_div.find('img.frame').size();
         var maxNum = 5;
-         
-        $('#field-' + (now_depth+1)).find('.frames').each( function() {
-                 
-                    if(num > maxNum){
+        console.log(child_div);
+        console.log(num);
+
+        //$('#field-' + (now_depth+1)).find('.frame').each( function() {
+        child_div.find('img.frame').each(function(i){
+                    console.log($(this)); 
+                    if(i >= maxNum){
                         $(this).hide();
                         num -= 1;
                     }else{
                         $(this).show();
                     }});
-*/
-        child_div.find('div.frames').attr('data-parent', selected_id);//<-make_frameにおけるparent-id
 
+        child_div.find('div.frames').attr('data-parent', selected_id);//<-make_frameにおけるparent-id
+        
      
         // step7
         var frames = '';
