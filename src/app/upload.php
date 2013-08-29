@@ -5,9 +5,21 @@ use Respect\Validation\Validator as v;
 
 画像アップロード: {
     $app->get('/upload', $redirectIfNotLogin($container['session']), function() use ($app, $container) {
+            $frameListStr = $container['session']->get('frame_ids');
+            $frameList = explode(',',$frameListStr);
+            
+            $frame_repository = $container['repository.frame'];
+            $image_repository = $container['repository.image'];
+            $frames = [];
+            foreach($frameList as $frame_id) {
+                $frame = $frame_repository->findById($frame_id);
+                $image = $image_repository->findById($frame->image_id);
+                array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
+            }
+        
             // CSRF対策のトークンを埋め込む
             $token = $container['session']->id();
-            $app->render('upload/upload.html.twig', ['token'=>$token]);
+            $app->render('upload/upload.html.twig', ['token'=>$token, 'frames'=>$frames]);
         })
         ->name('upload_image')
     ;

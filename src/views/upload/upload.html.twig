@@ -8,7 +8,15 @@
     </div>
 
     <div class="row">
-        <div class="span6 offset3">
+        <div class="span3 text-center">
+            {% for frame in frames %}
+            <img class="preview-frame" src="{{ frame['path'] }}" alt="no_source" width="150" height="150" id="prev    iew-{{depth}}" />
+            <br>
+            <p id="preview-caption-{{depth}}">{{ frame['caption']}}</p>
+            {% endfor %}
+        </div>
+        
+        <div class="span6">
             <form action="{{ urlFor('upload_post')}}" method="post" enctype="multipart/form-data" class="form-vertical well">
                 <div class="control-group">
                     <input id="image-select" type="file" name="upfile" accept="image/*" class="span3"/>
