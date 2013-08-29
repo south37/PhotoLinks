@@ -9,6 +9,7 @@ $app->get('/', function() use ($app, $container) {
     $repository_story = $container['repository.story'];
     $repository_frame = $container['repository.frame'];
     $repository_image = $container['repository.image'];
+    $repository_liked = $container['repository.liked'];
 
     $storyArrayOrderedByFavs = [];
     $lastFrameArrayOrderedByFavs = [];
@@ -32,10 +33,7 @@ $app->get('/', function() use ($app, $container) {
                 'caption'   => $story->title,
                 'src'       => $repository_image->findByFrameId($frame->id)->path
                 ];
-           echo $add_frame['src'];
             array_push($frameArray, $add_frame);
-var_dump($add_frame);
-echo"\n\n";
         }
 
     }catch(Exception $e){
@@ -63,9 +61,11 @@ echo"\n\n";
         $storyArray   = []; 
         foreach ($recentStories as $no => $story) {
             $storyArray[$no] = [];
+            $storyArray[$no]['id'] = $story->id;
             $storyArray[$no]['title']  = $story->title;
             $storyArray[$no]['frames'] = [];
-
+            // $favNums = $repository_favNum->getNumberOfLikedByStoryId((INT)($story->id));
+            $storyArray[$no]['favNum'] = $repository_liked->getNumberOfLikedByStoryId((INT)($story->id));
             $frames = $repository_frame->findsByStoryId((INT)($story->id));
             foreach ($frames as $frame) {
                 $image = $repository_image->findById($frame->image_id);
@@ -74,7 +74,9 @@ echo"\n\n";
                     'path'    => $image->path
                     ]);
             }
+
         }
+var_dump($storyArray);
 
     }catch(Exception $e){
         $app->halt(500, $e->getMessage());
