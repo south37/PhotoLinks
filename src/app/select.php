@@ -78,6 +78,7 @@ function inner(&$list, $tree, $depth) {
             $temp_frame = [
                 'id'        => (INT) $frame->id,
                 'parent_id' => (INT) $frame->parent_id,
+                'caption'   => $frame->caption,
                 'src'       => $image_repository->findByFrameId($frame->id)->path
             ];
 

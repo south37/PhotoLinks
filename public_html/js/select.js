@@ -5,7 +5,8 @@
         
         $('[id^=field-]').hide();
         $('#field-0').toggle();
-        $('[id^=preview-]').css({'border': '2px solid #000000'});
+        $('[id^=preview-frame]').css({'border': '0px solid #000000'});
+        $('[id^=preview-caption]').css({'border': '0px solid #000000'});
 
         $('#field-0 img.frame').click();
 
@@ -103,6 +104,6 @@
                 });
 
         $('#story-fm [name=selected-frames-id]').val(frames);
-        $('[id^=add-frame-] [name=parent-id]').val(frames);
+        $('[id^=add-frame-] [name=frame-ids]').val(frames);
     });
 })();

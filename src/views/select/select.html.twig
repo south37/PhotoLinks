@@ -7,21 +7,14 @@
 {% block contents %}
     {% include 'error.html.twig' with {errors: errors} %}
     
-    <a id="simple-menu" href="#sidr" class="btn">toggle bar</a>
-    <div id="sidr">
-        <ul>
-            <li class="active"><a href="#">hoge</a></li>
-            <li><a href="#">var</a></li>
-            <li><a href="#">spam</a></li>
-        </ul>
-    </div>
-
     {% for depth, frames_row in frame_rows %}
         <div class="row frames-field"  data-depth="{{ depth }}" id="field-{{depth}}">
         
             <!--left_img_frame-->
             <div class="span3 text-center">
                 <img class="preview-frame" src="/img/assets/searchIcon.png" alt="no_source" width="150" height="150" id="preview-{{depth}}" />
+                <br>
+                <p id="preview-caption-{{depth}}">コマを選んでください</p>
             </div>
        
             <!--main frames-->
@@ -43,7 +36,7 @@
             <div class="span2 text-center" id="add-frame-{{depth}}">
                <!--hidden param from here-->
                <form action="{{ urlFor('add_frame_from_select') }}" method="get">
-                   <input type="hidden" name="parent-id" value="" />
+                   <input type="hidden" name="frame-ids" value="" />
                    {% if (depth != 0) %}
                        <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
                        <input type="image" src="/img/assets/plusIcon.png" alt="コマを追加" width="50" height="50">
