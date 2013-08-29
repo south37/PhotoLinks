@@ -121,7 +121,6 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
         }
 
         $imgPath = "/img/public_img/200x200.jpg";
-        var_dump($imgPath);
         $app->render('add_frame/add_frame.html.twig',
             ['errors'=> $validator->errors(),
              'image_id'=>$input['image_id'],
@@ -150,7 +149,6 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
     $input['user_id'] = $container['session']->get('user.id');
     $input['theme_id'] = $container['session']->get('theme_id');
 
-    var_dump($input);
 
     // CSRF対策
     if($input['token'] != $container['session']->id())
@@ -263,7 +261,6 @@ function connectFramesToStory($lastFrameId, $storyId, $app, $c){
     try{
         echo $lastFrameId;
         $tmpFrame = $repository_Frame->findById($lastFrameId);
-        var_dump($tmpFrame->id);
         echo "tmpFrameId:" . $tmpFrame->id . "<br>";
        
         while($tmpFrame->parent_id){

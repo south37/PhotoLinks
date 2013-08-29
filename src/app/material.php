@@ -39,7 +39,6 @@
     $app->post('/material', function() use ($app, $container) {
         $input = $app->request()->post();
         $image_id = $input['image-id'];
-        var_dump($input);
         $app->redirect($app->urlFor('add_frame_from_upload', ['image_id' => $image_id]));
     })
         ->name('material_post')
