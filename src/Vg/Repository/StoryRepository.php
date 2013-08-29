@@ -175,11 +175,13 @@ SQL;
     {
         $sql = <<< SQL
             SELECT
-                story.id, story.user_id, story.title, story.favorite
+                story.id, story.user_id, story.title, COUNT(*) AS like_count
             FROM story 
                 INNER JOIN liked
                     ON story.id = liked.story_id 
-            WHERE liked.user_id = :userId;
+            WHERE story.id IN
+                (SELECT DISTINCT story_id FROM liked WHERE user_id = :userId)
+            GROUP BY story.id ORDER BY like_count DESC;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);
