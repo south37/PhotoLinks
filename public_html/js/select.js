@@ -5,7 +5,8 @@
         
         $('[id^=field-]').hide();
         $('#field-0').toggle();
-        $('[id^=preview-frame]').css({'border': '0px solid #000000'});
+
+        $('[id^=preview-frame]').css({'border': '2px solid #000000'});
         $('[id^=preview-caption]').css({'border': '0px solid #000000'});
 
         $('#field-0 img.frame').click();
