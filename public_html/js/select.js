@@ -66,19 +66,12 @@
         }
 
         // step 6
-       
         
-        var num = child_div.find('img.frame').size();
         var maxNum = 5;
-        console.log(child_div);
-        console.log(num);
 
-        //$('#field-' + (now_depth+1)).find('.frame').each( function() {
         child_div.find('img.frame').each(function(i){
-                    console.log($(this)); 
                     if(i >= maxNum){
                         $(this).hide();
-                        num -= 1;
                     }else{
                         $(this).show();
                     }});
