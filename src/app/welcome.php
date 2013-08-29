@@ -20,6 +20,9 @@ $app->get('/', function() use ($app, $container) {
         // 
         foreach ($storyArrayOrderedByFavs as $story) {
             $frames = $repository_frame->findsByStoryId((INT)($story->id));
+            if (!isset($frames[0])) {
+                continue;
+            }
             $frame  = $frames[0];
            
             $add_frame = [

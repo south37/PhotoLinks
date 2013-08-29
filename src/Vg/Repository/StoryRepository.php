@@ -183,4 +183,28 @@ SQL;
         }
         return $stories;
     }
+
+    public function findsByUserId($user_id)
+    {
+        // ストーリーの「いいね」の多い順にソートする
+        $sql = <<< SQL
+            SELECT * FROM story
+            WHERE user_id = :user_id
+            ORDER BY favorite DESC
+            LIMIT 0, 4;
+SQL;
+        $sth = $this->db->prepare($sql);
+
+        $sth->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
+
+        $sth->execute();
+        $stories = [];
+        while($data = $sth->fetch(\PDO::FETCH_ASSOC))
+        {
+            $story = new Story();
+            $story->setProperties($data);
+            array_push($stories, $story);
+        }
+        return $stories;
+    }
 }
