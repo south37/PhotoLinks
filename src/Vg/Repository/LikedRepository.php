@@ -126,10 +126,8 @@ SQL;
     public function isSameLikedUser($storyId, $userId)
     {
         $sql = <<< SQL
-            SELECT * FROM story
-                INNER JOIN liked
-                    ON story.id = liked.story_id
-            WHERE story.id = :storyId AND liked.user_id = :userId;
+            SELECT * FROM liked
+            WHERE story_id = :storyId AND user_id = :userId;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
@@ -151,12 +149,13 @@ SQL;
     public function getNumberOfLikedByStoryId($storyId)
     {
         $sql = <<< SQL
-            SELECT * FROM liked
+            SELECT COUNT(*) AS liked_count FROM liked
             WHERE story_id = :storyId;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':storyId', $storyId, \PDO::PARAM_INT);
         $sth->execute();
-        return $sth->rowCount();
+        $data = $sth->fetch(\PDO::FETCH_ASSOC);
+        return $data['liked_count'];
     }
 }
