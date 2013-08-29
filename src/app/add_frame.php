@@ -137,7 +137,7 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
         exit;
     }
 
-    $app->redirect($app->urlFor('select'));
+    $app->redirect($app->urlFor('select', ['theme_id' => $container['session']->get('theme_id')]));
 
 })->name('make_frame');
 
@@ -220,7 +220,7 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
         exit;
     }
 
-    $app->redirect($app->urlFor('select'));
+    $app->redirect($app->urlFor('select', ['theme_id' => $container['session']->get('theme_id')]));
 })->name('make_story');
 
 //フレーム追加

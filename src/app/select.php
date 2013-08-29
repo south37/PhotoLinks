@@ -61,14 +61,10 @@ function inner(&$list, $tree, $depth) {
 }
 
 見る: {
-    $app->get('/select', function() use ($app, $container) {
+    $app->get('/select/:theme_id', function($theme_id) use ($app, $container) {
         $input = $app->request()->get();
 
-        if (isset($input['theme_id'])) {
-            $theme_id = $input['theme_id'];
-        } else {
-            $theme_id = 1;
-        }
+        $container['session']->set('theme_id', $theme_id);
         $theme = $container['repository.theme']->findById($theme_id);
         $root_id = $theme->frame_id;
 
