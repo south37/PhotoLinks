@@ -49,7 +49,7 @@
 
     // Selectページからの遷移
     $app->get('/story_view/frames',function() use($app, $container){
-	$input = $app->request()->get();
+    $input = $app->request()->get();
 	// todo intのエラー処理！
 
 
@@ -60,7 +60,7 @@
     $tmp = select_frame_data_list($container, $frameList);
     $frameDataList = $tmp[0];
     $theme_id = $tmp[1];
-	$app->render('story_view/story_view.html.twig',["frameDataList"=>select_frame_data_list($container,$frameList), "theme_id" => $theme_id]);
+	$app->render('story_view/story_view.html.twig',["frameDataList"=>$frameDataList, "theme_id" => $theme_id]);
     })  ->name('story_view_frames')
     ;
 
