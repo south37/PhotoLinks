@@ -1,6 +1,8 @@
 {% extends 'layout.html.twig' %}
 
 {% block contents %}
+
+    {% include 'error.html.twig' with {errors: errors} %} 
     <!-- Main hero unit for a primary marketing message or call to action -->
     <div class="hero-unit text-center">
         <h1>Photo Links</h1>
