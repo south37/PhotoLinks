@@ -24,7 +24,17 @@ $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() u
     $frameList = explode(',', $input['frame-ids']);
     frames_to_session($container, $frameList);
 
-    $is_last_frame = (count($frameList) > 2);
+    // frame数ではじく 
+    $frame_num = count($frameList);
+    if ($frame_num > 3) {
+        $app->flash('info', 'コマは4つまでしか追加できません');
+        $app->redirect($app->urlFor('select', ['theme_id' => $container['session']->get('theme_id')]));
+    } else if ($frame_num === 3) {
+        $is_last_frame = true;
+    } else {
+        $is_last_frame = false;
+    }
+
     $container['session']->set('is_last_frame', $is_last_frame);
     $parent_id = $frameList[count($frameList)-1];
 
@@ -47,6 +57,12 @@ $app->get('/add_frame', $redirectIfNotLogin($container['session']), function() u
 $app->get('/add_frame/:image_id', $redirectIfNotLogin($container['session']), function($image_id) use ($app,$container) {
     $input = $app->request()->get();
     $is_last_frame = $container['session']->get('is_last_frame');
+
+    $frameList = $container['session']->get('frame');
+    $frame_num = count($frameList);
+    if ($frame_num > 3) {
+        $app->redirect($app->urlFor('select', ['theme_id' => $container['session']->get('theme_id')]));
+    }
 
     $frameListStr = $container['session']->get('frame_ids');
     $frameList = explode(',',$frameListStr);
@@ -87,6 +103,14 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
         $app->redirect($app->urlFor('welcome'));
     }
 
+    // frame数ではじく 
+    $frameList = $container['session']->get('frame');
+    $frame_num = count($frameList);
+    if ($frame_num > 3) {
+        $app->flash('info', 'コマは4つまでしか追加できません');
+        $app->redirect($app->urlFor('select', ['theme_id' => $container['session']->get('theme_id')]));
+    }
+    
     // validation
     $validator = new \Vg\Validator\AddFrame();
 
@@ -127,6 +151,14 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
     {
         $app->flash('info', '画面遷移に失敗しました');
         $app->redirect($app->urlFor('welcome'));
+    }
+
+    // frame数ではじく 
+    $frameList = $container['session']->get('frame');
+    $frame_num = count($frameList);
+    if ($frame_num > 3) {
+        $app->flash('info', 'コマは4つまでしか追加できません');
+        $app->redirect($app->urlFor('select', ['theme_id' => $container['session']->get('theme_id')]));
     }
 
     // validation
