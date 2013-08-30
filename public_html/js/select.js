@@ -62,6 +62,8 @@
         if(now_depth < 3){
           $('#field-' + (now_depth+1)).show();
           $('#field-' + (now_depth+1)).find('[id^=preview-]').attr("src","/img/assets/searchIcon.png");
+          $('#preview-caption-'+(now_depth+1)).empty().append("コマを選んでください");
+
           $('#field-' + (now_depth+1)).find('div.frames').show();
           if(now_depth == 2){
             $('#field-' + (now_depth+1)).find('[id^=add-frame-]').hide();
