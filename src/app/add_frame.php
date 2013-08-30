@@ -296,6 +296,7 @@ function frames_to_session($container, $frameList) {
     foreach($frameList as $frame_id) {
         $frame = $frame_repository->findById($frame_id);
         $image = $image_repository->findById($frame->image_id);
+        htmlspecialchars($frame->caption, 'ENT_QUOTES', 'UTF-8');
         array_push($frames, ['path' => $image->path, 'caption' => $frame->caption]);
     }
     $container['session']->set('frames', $frames);
