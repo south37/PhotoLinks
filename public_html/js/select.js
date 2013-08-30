@@ -14,7 +14,7 @@
         
     });
 
-    $('img').hover(function(){
+    $('img:not(.preview-frame):not(#field-0 img)').hover(function(){
             $(this).css("cursor","pointer");
             });
     /*

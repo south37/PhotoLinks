@@ -10,6 +10,15 @@
     <div class="row text-center">
         <h1>つながるよ！</h1>
     </div>
+    <div class="row">
+        <div class="span3 text-center">    
+           <form action="{{ urlFor('story_view_frames') }}" method="get" id="story-fm">
+                <input type="hidden"   name="selected-frames-id" value="" />
+                <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
+                <button id="story-view-btn" type="submit" class="btn btn-primary">ストーリーを見る</button>
+           </form>
+        </div>
+    </div>
 
     {% for depth, frames_row in frame_rows %}
         <div class="row frames-field"  data-depth="{{ depth }}" id="field-{{depth}}">
@@ -51,15 +60,6 @@
 
         </div>
     {% endfor %}
-    <div class="row">
-        <div class="span3 text-center">    
-           <form action="{{ urlFor('story_view_frames') }}" method="get" id="story-fm">
-                <input type="hidden"   name="selected-frames-id" value="" />
-                <input type="hidden" name="theme-id"  value="{{ theme_id }}" />
-                <button id="story-view-btn" type="submit" class="btn btn-primary">ストーリーを見る</button>
-           </form>
-        </div>
-    </div>
 {% endblock %}
 
 {% block javascript %}
