@@ -44,8 +44,7 @@ $app->get('/mypage/:user_id', function($user_id) use ($app, $container) {
     $stories = $repository_story->findsPopularJoinedStoryByUserId($userId);
     $storyArray = [];
     $rank = 0;
-    for ($i = 0; $i < 4; $i++) {
-            $story = $stories[$i];
+    foreach ($stories as $story) {
             $rank = $rank+1;
             $favNum = $repository_liked->getNumberOfLikedByStoryId(($story->id));
             $frames = [];
