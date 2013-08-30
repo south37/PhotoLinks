@@ -26,6 +26,13 @@
         }
 
         $image_id = $input['image-id'];
+        $image = $container['repository.image']->findbyId($image_id);
+        
+        if ($image->path === '') {
+            $app->flash('errors', '不正な値です');
+            $app->redirect($app->urlFor('material', ['page' => 1]));
+        }
+
         $app->redirect($app->urlFor('add_frame_from_upload', ['image_id' => $image_id]));
     })
         ->name('material_post')
