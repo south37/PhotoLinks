@@ -65,7 +65,7 @@
           $('#field-' + (now_depth+1)).find('div.frames').show();
           if(now_depth == 2){
             $('#field-' + (now_depth+1)).find('[id^=add-frame-]').hide();
-          k}
+          }
         }
 
         if(now_depth != 0){
