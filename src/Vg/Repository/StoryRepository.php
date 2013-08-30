@@ -242,7 +242,8 @@ SQL;
                     INNER JOIN frame
                         ON frame_story.frame_id = frame.id
                 WHERE frame.user_id = :userId)
-            GROUP BY story.id ORDER BY like_count DESC;
+            GROUP BY story.id ORDER BY like_count DESC
+                LIMIT 0, 4;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);

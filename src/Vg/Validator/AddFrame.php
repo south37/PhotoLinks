@@ -15,7 +15,7 @@ class AddFrame
     public function __construct()
     {
         $this->validator = v::arr()
-        ->key('caption', v::string()->setName('caption')->notEmpty()->length(1,255))
+        ->key('caption', v::string()->setName('caption')->notEmpty()->length(1,20))
         ->key('image_id',v::int()->setName('image_id')->notEmpty()->min(0));
         
     }
