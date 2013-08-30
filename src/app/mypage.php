@@ -54,7 +54,7 @@ $app->get('/mypage/:user_id', function($user_id) use ($app, $container) {
                 $is_users = ($tmpFrame->user_id === $userId);
                 array_push($frames,array("path"=>$imagePath->path,"caption"=>$tmpFrame->caption,"is_users"=>$is_users));
             }
-            $storyArray += array(array("rank"=>$rank,"storyTitle"=>$story->title,"favNum"=>$favNum,"frames"=>$frames));
+            array_push($storyArray, array("rank"=>$rank,"storyTitle"=>$story->title,"favNum"=>$favNum,"frames"=>$frames));
     }
     $app->render('mypage/mypage.html.twig',['storyArray' => $storyArray, 'userName' => $userName]);
         }) 
