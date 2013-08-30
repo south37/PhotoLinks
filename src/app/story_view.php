@@ -29,20 +29,21 @@
        $tmpUser = $container['repository.user']->findById($tmpStory->user_id);
        // 各種SNSへのShareのために、GETパラメータを含めたURL、タイトル
        $shareUrl = '/story_view/story/story_id='. $storyId;
-       $shareTitle = "Photo Story（仮）";
+       $shareTitle = "Photo Story";
        $tmpFrameStories = $container['repository.frame']->findsByStoryId($storyId);
        $frameList = []; 
        foreach( $tmpFrameStories as $tmpFrameStory){
            array_push($frameList,$tmpFrameStory->id);
        }
-       $liked = $container['repository.liked']->isSameLikedUser($storyId,$container['session']->get('user.id'));
+       $userId = $container['session']->get('user.id');
+       $liked = $container['repository.liked']->isSameLikedUser($storyId,$userId);
        $favNum = $container['repository.liked']->getNumberOfLikedByStoryId($storyId);
 
        $tmp = select_frame_data_list($container, $frameList);
        $frameDataList = $tmp[0];
        $theme_id = $tmp[1];
        $app->render('story_view/story_view.html.twig',
-            ["storyId"=>$storyId,"storyTitle"=>$storyTitle,"liked"=>$liked,"favNum"=>$favNum,"frameDataList"=>$frameDataList, 'theme_id' => $theme_id,
+            ["userId"=>$userId,"storyId"=>$storyId,"storyTitle"=>$storyTitle,"liked"=>$liked,"favNum"=>$favNum,"frameDataList"=>$frameDataList, 'theme_id' => $theme_id,
             "shareURL" => $shareUrl, "shareTitle" => $shareTitle]);  
     }) ->name('story_view_story')
     ;
@@ -56,11 +57,24 @@
 	//postでframe_idをカンマ区切りで取得．
 	$frameListStr = $input["selected-frames-id"];
 	$frameList = explode(',',$frameListStr);
-
-    $tmp = select_frame_data_list($container, $frameList);
-    $frameDataList = $tmp[0];
-    $theme_id = $tmp[1];
-	$app->render('story_view/story_view.html.twig',["frameDataList"=>$frameDataList, "theme_id" => $theme_id]);
+        $tmpFrame =  $container['repository.frame']->findById($frameList[count($frameList)-1]);
+        $storyId = $tmpFrame->last_story_id;
+        if ($storyId) {
+             $userId = $container['session']->get('user.id');
+             $tmpStory = $container['repository.story']->findByID($storyId);
+             $storyTitle = $tmpStory->title;
+             $liked = $container['repository.liked']->isSameLikedUser($storyId,$userId);
+             $favNum = $container['repository.liked']->getNumberOfLikedByStoryId($storyId);
+        } else {
+            $userId = NULL;
+            $storyTitle = NULL;
+            $liked = false;
+            $favNum = NULL;
+        }
+        $tmp = select_frame_data_list($container, $frameList);
+        $frameDataList = $tmp[0];
+        $theme_id = $tmp[1];
+    $app->render('story_view/story_view.html.twig',["userId"=>$userId,"storyId"=>$storyId,"liked"=>$liked,"favNum"=>$favNum,"storyTitle"=>$storyTitle,"frameDataList"=>$frameDataList, "theme_id" => $theme_id]);
     })  ->name('story_view_frames')
     ;
 

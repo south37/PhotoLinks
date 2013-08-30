@@ -5,22 +5,22 @@
 
      <div class="row">
         <div class="span6 offset3 text-center">
-            <h1>{{ storyTitle }}</h1>
            {% if storyId is not null %}
-
-           {% if liked == false%}
-           <div class="span6 offset3 text-center">
-                <button disabled="disabled" id="favorite" class="btn btn-primary"><i class="icon-star-empty icon-white"></i>いいね！</button>
-                <span id="favNum">{{favNum}}</span>
-           </div>
-	   {% else %}
-            <div class="span6 offset3 text-center">
-                <button id="favorite" class="btn btn-primary"><i class="icon-star-empty icon-white"></i>いいね！</button>
-                <span id="favNum">{{favNum}}</span>
-           </div>
-           {% endif %}
-           {% endif %}
-
+            <h1>{{ storyTitle }}</h1>
+               {% if userId is not null %}
+                   {% if liked == false %}
+                       <div class="span6 offset3 text-center">
+                            <button disabled="disabled" id="favorite" class="btn btn-primary"><i class="icon-star-empty icon-white"></i>いいね！</button>
+                            <span id="favNum">{{favNum}}</span>
+                       </div>
+	           {% else %}
+                        <div class="span6 offset3 text-center">
+                            <button id="favorite" class="btn btn-primary"><i class="icon-star-empty icon-white"></i>いいね！</button>
+                            <span id="favNum">{{favNum}}</span>
+                       </div>
+                   {% endif %}
+                {% endif  %}
+            {% endif %}
 
             <!--画像表示するところ-->
             {% for frame in frameDataList %}
