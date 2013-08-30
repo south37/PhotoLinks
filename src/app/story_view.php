@@ -28,8 +28,8 @@
        $storyTitle = $tmpStory->title;
        $tmpUser = $container['repository.user']->findById($tmpStory->user_id);
        // 各種SNSへのShareのために、GETパラメータを含めたURL、タイトル
-       $shareUrl = '/story_view/story/story_id='. $storyId;
-       $shareTitle = "Photo Story（仮）";
+       $shareUrl = '/story_view/story/'. $storyId;
+       $shareTitle = "PhotoLinks";
        $tmpFrameStories = $container['repository.frame']->findsByStoryId($storyId);
        $frameList = []; 
        foreach( $tmpFrameStories as $tmpFrameStory){
