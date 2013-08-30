@@ -233,6 +233,8 @@ SQL;
             SELECT
                 story.id, story.user_id, story.title, story.favorite, COUNT(*) AS like_count
             FROM story 
+                INNER JOIN liked
+                    ON story.id = liked.story_id 
             WHERE story.id IN
                 (SELECT DISTINCT story.id FROM story
                     INNER JOIN frame_story
