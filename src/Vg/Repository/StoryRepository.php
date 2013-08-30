@@ -233,6 +233,8 @@ SQL;
             SELECT
                 story.id, story.user_id, story.title, story.favorite, COUNT(*) AS like_count
             FROM story 
+                INNER JOIN liked
+                    ON story.id = liked.story_id 
             WHERE story.id IN
                 (SELECT DISTINCT story.id FROM story
                     INNER JOIN frame_story
@@ -240,7 +242,8 @@ SQL;
                     INNER JOIN frame
                         ON frame_story.frame_id = frame.id
                 WHERE frame.user_id = :userId)
-            GROUP BY story.id ORDER BY like_count DESC;
+            GROUP BY story.id ORDER BY like_count DESC
+                LIMIT 0, 4;
 SQL;
         $sth = $this->db->prepare($sql);
         $sth->bindValue(':userId', $userId, \PDO::PARAM_INT);

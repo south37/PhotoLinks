@@ -15,7 +15,7 @@ class AddStory
     public function __construct()
     {
         $this->validator = v::arr()
-        ->key('title', v::string()->setName('title')->notEmpty()->length(1,255))
+        ->key('title', v::string()->setName('title')->notEmpty()->length(1,15))
         ;
     }
 
