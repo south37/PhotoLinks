@@ -95,6 +95,9 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
     $input['last_story_id'] = 0;
     $input['user_id'] = $container['session']->get('user.id');
     $input['theme_id'] = $container['session']->get('theme_id');
+    
+    // lastかどうか
+    $is_last_frame = $container['session']->get('is_last_frame');
 
     // CSRF対策
     if($input['token'] != $container['session']->id())
@@ -123,6 +126,7 @@ $app->post('/add_frame/make_frame', $redirectIfNotLogin($container['session']), 
              'imgPath' => $imgPath,
              'token' => $token,
              'parent_id'=>$input['parent_id'],
+             'is_last_frame' => $is_last_frame,
              'frames' => $container['session']->get('frames')
             ]);
         exit;
@@ -145,6 +149,8 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
     $input['user_id'] = $container['session']->get('user.id');
     $input['theme_id'] = $container['session']->get('theme_id');
 
+    // last
+    $is_last_frame = $container['session']->get('is_last_frame');
 
     // CSRF対策
     if($input['token'] != $container['session']->id())
@@ -176,6 +182,7 @@ $app->post('/add_frame/make_story', $redirectIfNotLogin($container['session']), 
             'imgPah' => $imgPath,
             'token' => $token,
             'parent_id'=>$input['parent_id'],
+            'is_last_frame' => $is_last_frame,
             'frames' => $container['session']->get('frames')]
         );
         exit;
